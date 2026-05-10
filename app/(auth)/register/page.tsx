@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Logo } from '@/components/ui/logo';
-import { Mail, Lock, ShieldCheck, UserPlus, EyeOff, KeyRound, AlertCircle } from 'lucide-react';
+import { Mail, Lock, ShieldCheck, UserPlus, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
@@ -142,14 +142,13 @@ export default function RegisterPage() {
             </div>
           </form>
 
-          {/* Login Link */}
           <div className="pt-10 border-t border-white/5 flex flex-col items-center gap-6">
             <p className="text-slate-500 text-sm font-medium">
               ¿Ya tienes cuenta? <Link href="/login" className="text-accent font-bold hover:text-white transition-colors">Ingresar al Sistema</Link>
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
