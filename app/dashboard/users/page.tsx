@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
 import { db } from '@/lib/firebase';
 import { collection, query, getDocs, doc, updateDoc, deleteDoc, setDoc } from 'firebase/firestore';
+import { getApiUrl } from '@/lib/api';
 
 export default function UsersPage() {
   const { role } = useAuth();
@@ -63,7 +64,7 @@ export default function UsersPage() {
     toast.loading("Actualizando estado en Auth...", { id: 'status-toggle' });
     try {
       // Update Auth via Backend
-      const response = await fetch('http://127.0.0.1:8000/api/admin/users/toggle-status', {
+      const response = await fetch(getApiUrl('/api/admin/users/toggle-status'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uid: userId, status: newStatus })
@@ -90,7 +91,7 @@ export default function UsersPage() {
     toast.loading("Actualizando privilegios en Auth...", { id: 'role-toggle' });
     try {
       // Update Auth via Backend
-      const response = await fetch('http://127.0.0.1:8000/api/admin/users/update-role', {
+      const response = await fetch(getApiUrl('/api/admin/users/update-role'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, role: newRole, password: '', displayName: '' }) // Only email/role used
@@ -118,7 +119,7 @@ export default function UsersPage() {
     toast.loading("Eliminando de Auth y Base de Datos...", { id: 'delete-user' });
     try {
       // Delete from Auth via Backend
-      const response = await fetch(`http://127.0.0.1:8000/api/admin/users/delete/${userId}`, {
+      const response = await fetch(getApiUrl(`/api/admin/users/delete/${userId}`), {
         method: 'DELETE'
       });
 
@@ -140,7 +141,7 @@ export default function UsersPage() {
     
     try {
       // For now, we'll use the backend to create the user in Auth
-      const response = await fetch('http://127.0.0.1:8000/api/admin/users/create', {
+      const response = await fetch(getApiUrl('/api/admin/users/create'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUserData)

@@ -93,20 +93,20 @@ export default function DashboardLayout({
           <NavItem 
             icon={<LayoutDashboard size={22} />} 
             label="Panel Principal" 
-            href="/" 
-            active={pathname === "/"} 
+            href="/dashboard" 
+            active={pathname === "/dashboard"} 
           />
           <NavItem 
             icon={<PlusCircle size={22} />} 
             label="Nueva Tesis" 
-            href="/new-project" 
-            active={pathname === "/new-project"} 
+            href="/dashboard/new-project" 
+            active={pathname === "/dashboard/new-project"} 
           />
           <NavItem 
             icon={<BookOpen size={22} />} 
             label="Mis Proyectos" 
-            href="/projects" 
-            active={pathname === "/projects"} 
+            href="/dashboard/projects" 
+            active={pathname === "/dashboard/projects"} 
           />
           
           <div className="pt-8 pb-4">
@@ -116,14 +116,14 @@ export default function DashboardLayout({
           <NavItem 
             icon={<User size={22} />} 
             label="Perfil" 
-            href="/profile" 
-            active={pathname === "/profile"} 
+            href="/dashboard/profile" 
+            active={pathname === "/dashboard/profile"} 
           />
           <NavItem 
             icon={<Settings size={22} />} 
             label="Configuración" 
-            href="/settings" 
-            active={pathname === "/settings"} 
+            href="/dashboard/settings" 
+            active={pathname === "/dashboard/settings"} 
           />
 
           {role === 'admin' && (
@@ -134,8 +134,8 @@ export default function DashboardLayout({
               <NavItem 
                 icon={<UsersIcon size={22} />} 
                 label="Investigadores" 
-                href="/users" 
-                active={pathname === "/users"} 
+                href="/dashboard/users" 
+                active={pathname === "/dashboard/users"} 
               />
             </>
           )}
