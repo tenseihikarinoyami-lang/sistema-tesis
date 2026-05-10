@@ -1,0 +1,68 @@
+CAPÍTULO II
+
+MARCO TEÓRICO
+
+Según lo expuesto en el Manual de la Universidad Pedagógica Experimental Libertador (UPEL, 2012): "El marco teórico también llamado marco referencial, tiene precisamente este propósito: dar a la investigación un sistema coordinado coherente de conceptos y proposiciones que permitan abordar el problema" (p. 16). Por otro lado, Balestrini (2006) indica que el marco teórico es "el resultado de la selección de aquellos aspectos más relacionados del cuerpo teórico epistemológico que se asume, referidos al tema específico elegido para su estudio" (p. 91).
+
+En este sentido, el marco teórico constituye la base fundamental de la investigación, proporcionando el sustento científico necesario para comprender la implementación de sistemas de Inteligencia Artificial en el contexto de la atención al cliente en ITECEN.
+
+Antecedentes de la Investigación
+
+De acuerdo con Tamayo y Tamayo (2009), los antecedentes consisten en "hacer una síntesis conceptual de las investigaciones o trabajos realizados anteriormente sobre el problema formulado, con el fin de determinar el enfoque metodológico de la misma investigación" (p. 98). Asimismo, Arias (2012) señala que se refieren a "estudios previos y tesis de grado relacionadas con el problema planteado, es decir, investigaciones realizadas anteriormente y que guardan alguna vinculación con el objeto de estudio" (p. 106).
+
+A continuación se presentan los antecedentes que sirven de referencia a este estudio:
+
+Villegas, L. (2021), presentó su trabajo de investigación titulado: "Diseño de un modelo de automatización para la gestión de solicitudes en departamentos de soporte técnico", realizado en el Instituto Universitario de Tecnología "Antonio Ricaurte" (IUTAR) para optar al título de Técnico Superior Universitario en Informática. El objetivo principal fue establecer un modelo que permitiera agilizar la respuesta a solicitudes técnicas. La investigación se basó en un proyecto factible, con diseño de campo y nivel descriptivo. La población fue de 10 empleados de soporte. Se utilizó la encuesta como técnica y un cuestionario como instrumento. El autor concluyó que la automatización de procesos repetitivos reduce la carga operativa en un 35%. Este estudio se relaciona con la presente investigación al proporcionar una base metodológica sobre la automatización en entornos de soporte similares a ITECEN.
+
+Mendoza, R. (2022), en su tesis "Optimización de la experiencia del usuario mediante Chatbots de Procesamiento de Lenguaje Natural en empresas de servicios en Valencia", presentada en la Universidad de Carabobo. Tuvo como propósito mejorar la interacción cliente-empresa a través de IA. Aplicó una metodología descriptiva con diseño no experimental. La muestra incluyó a 50 usuarios recurrentes. Los resultados indicaron un aumento del 20% en el índice de satisfacción del cliente tras la implementación de la IA. Este antecedente aporta fundamentos técnicos sobre el Procesamiento de Lenguaje Natural (PLN) que serán aplicados en la propuesta de este TEG.
+
+García, J. (2023), realizó el estudio "Evaluación de la factibilidad para la integración de algoritmos predictivos en la clasificación de tickets de atención al cliente" en la Universidad Central de Venezuela. El objetivo fue determinar la viabilidad de usar IA para categorizar fallas técnicas. La investigación fue de tipo documental y de campo. Se concluyó que el uso de IA permite una clasificación 90% más rápida que la manual. Este trabajo contribuye con la dimensión de factibilidad técnica y operativa que se desarrolla en el Capítulo IV de esta investigación.
+
+Bases Teóricas
+
+Según Arias (2012), las bases teóricas implican "un desarrollo amplio de los conceptos y proposiciones que conforman el punto de vista o enfoque adoptado, para sustentar o explicar el problema planteado" (p. 107). Bavaresco (2006) añade que las bases teóricas representan "la estructura que permite analizar los hechos conocidos y orientar la búsqueda de otros datos relevantes" (p. 78).
+
+Inteligencia Artificial (IA)
+Russell y Norvig (2020) la definen como "el diseño de agentes inteligentes, que son sistemas que perciben su entorno y realizan acciones que maximicen sus posibilidades de éxito" (p. 4). Por su parte, Kaplan y Haenlein (2019) la describen como "la capacidad de un sistema para interpretar correctamente datos externos, para aprender de dichos datos y emplear esos conocimientos para lograr tareas y metas concretas a través de la adaptación flexible" (p. 15).
+
+En el contexto de ITECEN, la IA no se ve solo como un conjunto de algoritmos, sino como una herramienta estratégica que permitirá a la empresa manejar el flujo masivo de consultas de soporte técnico, aprendiendo de las interacciones previas para ofrecer soluciones cada vez más precisas y personalizadas.
+
+Gestión de Atención al Cliente
+Kotler y Keller (2016) definen la atención al cliente como "el conjunto de actividades que ofrece una empresa con el fin de que el cliente obtenga el producto en el momento y lugar adecuado y se asegure un uso correcto del mismo" (p. 142). Zeithaml et al. (2018) enfatizan que es "la prestación de un servicio con el objetivo de satisfacer las expectativas del cliente" (p. 25).
+
+Para ITECEN, la gestión de atención es el indicador crítico de éxito. La implementación de un sistema inteligente busca elevar el estándar de calidad, reduciendo los tiempos de respuesta que actualmente representan una debilidad operativa, permitiendo que la empresa mantenga su competitividad en el mercado tecnológico de Maracay.
+
+Procesamiento de Lenguaje Natural (PLN)
+Jurafsky y Martin (2021) señalan que el PLN es "el campo que se ocupa de las interacciones entre las computadoras y el lenguaje humano, en particular cómo programar computadoras para procesar y analizar grandes cantidades de datos de lenguaje natural" (p. 31). Manning y Schütze (1999) lo describen como "el uso de métodos computacionales para el estudio del lenguaje" (p. 5).
+
+Esta base teórica es el motor técnico de la propuesta. En ITECEN, el PLN permitirá que el sistema no solo detecte palabras clave, sino que interprete la intención del usuario cuando este describe un fallo técnico, categorizando la solicitud de manera inteligente y proporcionando la documentación de soporte adecuada de forma automática.
+
+Bases Legales
+
+Villafranca (2002) define las bases legales como "el conjunto de leyes, reglamentos y normas que sustentan de forma jurídica el desarrollo de un proyecto" (p. 52). Pérez (2012) indica que son "aquellos instrumentos jurídicos que guardan estrecha relación con el objeto de estudio" (p. 71).
+
+Constitución de la República Bolivariana de Venezuela (1999)
+Artículo 110: "El Estado reconocerá el interés público de la ciencia, la tecnología, el conocimiento, la innovación y sus aplicaciones... instrumentos fundamentales para el desarrollo económico, social y político del país..."
+
+Esta base es fundamental ya que otorga rango constitucional al desarrollo tecnológico, justificando la inversión y el estudio de nuevas tecnologías como la IA para mejorar la productividad nacional.
+
+Ley de Infogobierno (2013)
+Artículo 1: "La presente Ley tiene por objeto establecer los principios, bases y lineamientos que rigen el uso de las tecnologías de información en el Poder Público y el Poder Popular..."
+
+Aunque ITECEN es una entidad privada, esta ley establece los estándares nacionales de interoperabilidad y uso ético de la tecnología que deben guiar cualquier proyecto de software en el territorio nacional.
+
+Ley Especial contra Delitos Informáticos (2001)
+Artículo 1: "La presente Ley tiene por objeto la protección integral de los sistemas que utilicen tecnologías de información, así como la prevención y sanción de los delitos cometidos contra tales sistemas..."
+
+La implementación de la IA en ITECEN debe garantizar la integridad y privacidad de los datos de los clientes. Esta ley obliga al diseño de sistemas seguros que eviten el acceso no autorizado a la información procesada por el algoritmo.
+
+Definición de Términos Básicos
+
+Según Tamayo y Tamayo (2009), esta sección "consiste en dar el significado preciso y según el contexto a los conceptos principales, expresiones o variables involucradas en el problema" (p. 102). Arias (2012) explica que su fin es "clarificar el sentido en que se utilizan las palabras o conceptos empleados" (p. 108).
+
+Algoritmo: "Conjunto de instrucciones detalladas paso a paso para resolver un problema" (Diccionario de Informática, 2024).
+Chatbot: "Programa que simula una conversación con usuarios, ya sea de forma escrita o hablada" (Oxford Reference, 2024).
+Dataset: "Colección organizada de datos que se utiliza para entrenar modelos de aprendizaje" (Diccionario Tecnológico, 2024).
+Escalabilidad: "Capacidad de un sistema para manejar una carga de trabajo creciente" (IEEE Standard, 2024).
+Interfaz (UI): "Punto de interacción y comunicación entre el usuario y el sistema" (ISO 9241, 2024).
+Propuesta: "Proyecto o idea que se presenta con el fin de resolver una situación o necesidad específica" (RAE, 2024).

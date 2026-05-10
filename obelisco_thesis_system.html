@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBELISCO - Sistema de Generación de Tesis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold-primary: #D4AC0D;
+            --gold-light: #F4D03F;
+            --gold-dark: #9A7D0A;
+            --bg-dark: #0F0F1A;
+            --bg-card: #1A1A2E;
+            --bg-input: #252540;
+            --text-primary: #E8E8F0;
+            --text-secondary: #A0A0B8;
+            --accent: #D4AC0D;
+            --success: #27AE60;
+            --error: #E74C3C;
+            --warning: #F39C12;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 50%, #0F0F1A 100%);
+        }
+        .bg-animation::before {
+            content: '';
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 172, 13, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 172, 13, 0.03) 0%, transparent 50%);
+        }
+        /* LOGIN */
+        .login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; background: var(--bg-dark);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .login-screen.hidden { opacity: 0; transform: scale(1.1); pointer-events: none; }
+        .login-container {
+            background: var(--bg-card);
+            border: 1px solid rgba(212, 172, 13, 0.2);
+            border-radius: 20px; padding: 50px; width: 100%; max-width: 420px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(212, 172, 13, 0.05);
+            position: relative; overflow: hidden;
+        }
+        .login-container::before {
+            content: '';
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(212, 172, 13, 0.1), transparent 30%);
+            animation: rotate 4s linear infinite;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        .login-content { position: relative; z-index: 1; }
+        .login-logo { width: 120px; height: 120px; margin: 0 auto 20px; }
+        .login-logo svg { width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(212, 172, 13, 0.3)); }
+        .login-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold-light); margin-bottom: 8px; letter-spacing: 3px; }
+        .login-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 35px; letter-spacing: 2px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group input {
+            width: 100%; padding: 14px 18px; background: var(--bg-input);
+            border: 2px solid rgba(212, 172, 13, 0.15); border-radius: 12px;
+            color: var(--text-primary); font-size: 1rem; font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease; outline: none;
+        }
+        .input-group input:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212, 172, 13, 0.2); }
+        .input-group input::placeholder { color: rgba(160, 160, 184, 0.4); }
+        .btn {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            border: none; border-radius: 12px; color: #0F0F1A;
+            font-size: 1rem; font-weight: 700; font-family: 'Inter', sans-serif;
+            cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 2px; margin-top: 10px;
+            position: relative; overflow: hidden;
+        }
+        .btn::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg); transition: all 0.5s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212, 172, 13, 0.3); }
+        .btn:hover::after { left: 100%; }
+        .btn:active { transform: translateY(0); }
+        .error-msg { color: var(--error); font-size: 0.85rem; margin-top: 15px; display: none; animation: shake 0.5s ease; }
+        .error-msg.show { display: block; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+
+        /* MAIN APP */
+        .app-container { display: none; min-height: 100vh; flex-direction: column; }
+        .app-container.active { display: flex; }
+
+        /* HEADER */
+        .header {
+            background: rgba(26, 26, 46, 0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(212, 172, 13, 0.1);
+            padding: 15px 40px; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .header-logo { width: 45px; height: 45px; }
+        .header-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--gold-light); letter-spacing: 2px; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .user-info { display: flex; align-items: center; gap: 10px; color: var(--text-secondary); font-size: 0.9rem; }
+        .user-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            color: var(--bg-dark); font-weight: 700; font-size: 1rem;
+        }
+        .btn-logout {
+            padding: 8px 20px; background: transparent;
+            border: 1px solid rgba(212, 172, 13, 0.3); border-radius: 8px;
+            color: var(--gold-light); font-size: 0.85rem; cursor: pointer;
+            transition: all 0.3s ease; font-family: 'Inter', sans-serif;
+        }
+        .btn-logout:hover { background: rgba(212, 172, 13, 0.1); border-color: var(--gold-primary); }
+
+        /* MAIN CONTENT */
+        .main-content { flex: 1; padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+        .page-subtitle { color: var(--text-secondary); font-size: 1rem; margin-bottom: 40px; }
+
+        /* WIZARD */
+        .wizard-container { background: var(--bg-card); border: 1px solid rgba(212, 172, 13, 0.1); border-radius: 20px; overflow: hidden; }
+        .wizard-steps {
+            display: flex; background: rgba(15, 15, 26, 0.5);
+            padding: 25px 40px; border-bottom: 1px solid rgba(212, 172, 13, 0.1);
+        }
+        .step { display: flex; align-items: center; gap: 12px; flex: 1; position: relative; }
+        .step:not(:last-child)::after {
+            content: ''; position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            width: 40%; height: 2px; background: rgba(212, 172, 13, 0.2);
+        }
+        .step.completed::after { background: var(--gold-primary); }
+        .step-number {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(212, 172, 13, 0.1); border: 2px solid rgba(212, 172, 13, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: var(--text-secondary); transition: all 0.3s ease; flex-shrink: 0;
+        }
+        .step.active .step-number { background: var(--gold-primary); border-color: var(--gold-primary); color: var(--bg-dark); box-shadow: 0 0 20px rgba(212, 172, 13, 0.3); }
+        .step.completed .step-number { background: var(--success); border-color: var(--success); color: white; }
+        .step-info h4 { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+        .step-info p { font-size: 0.75rem; color: var(--text-secondary); }
+
+        .step-content { padding: 40px; display: none; }
+        .step-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-section { margin-bottom: 30px; }
+        .form-section-title { font-size: 1.1rem; font-weight: 600; color: var(--gold-light); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .form-section-title::before { content: ''; width: 4px; height: 20px; background: var(--gold-primary); border-radius: 2px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .form-group { margin-bottom: 5px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; }
+        .form-group label .required { color: var(--error); margin-left: 3px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 14px 16px; background: var(--bg-input);
+            border: 2px solid rgba(212, 172, 13, 0.1); border-radius: 12px;
+            color: var(--text-primary); font-size: 0.95rem; font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease; outline: none;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212, 172, 13, 0.15); }
+        .form-group textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+        .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23D4AC0D' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+        .form-group select option { background: var(--bg-input); color: var(--text-primary); }
+
+        /* UPLOAD */
+        .upload-zone {
+            border: 2px dashed rgba(212, 172, 13, 0.3); border-radius: 16px;
+            padding: 50px 30px; text-align: center; cursor: pointer;
+            transition: all 0.3s ease; background: rgba(212, 172, 13, 0.02);
+        }
+        .upload-zone:hover { border-color: var(--gold-primary); background: rgba(212, 172, 13, 0.05); }
+        .upload-zone.dragover { border-color: var(--gold-primary); background: rgba(212, 172, 13, 0.1); }
+        .upload-icon { font-size: 3rem; margin-bottom: 15px; color: var(--gold-primary); }
+        .upload-text { color: var(--text-secondary); font-size: 1rem; margin-bottom: 8px; }
+        .upload-hint { color: rgba(160, 160, 184, 0.5); font-size: 0.8rem; }
+        .file-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--bg-input); border-radius: 10px; border: 1px solid rgba(212, 172, 13, 0.1); }
+        .file-item-info { display: flex; align-items: center; gap: 12px; }
+        .file-icon { font-size: 1.5rem; }
+        .file-name { font-weight: 500; color: var(--text-primary); }
+        .file-size { color: var(--text-secondary); font-size: 0.8rem; }
+        .file-remove { background: none; border: none; color: var(--error); cursor: pointer; font-size: 1.2rem; padding: 5px; transition: transform 0.2s; }
+        .file-remove:hover { transform: scale(1.2); }
+
+        /* NAV */
+        .step-nav { display: flex; justify-content: space-between; padding: 25px 40px; background: rgba(15, 15, 26, 0.5); border-top: 1px solid rgba(212, 172, 13, 0.1); }
+        .btn-nav { padding: 14px 35px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; }
+        .btn-prev { background: transparent; border: 2px solid rgba(212, 172, 13, 0.3); color: var(--gold-light); }
+        .btn-prev:hover { background: rgba(212, 172, 13, 0.1); border-color: var(--gold-primary); }
+        .btn-next, .btn-generate { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); border: none; color: var(--bg-dark); }
+        .btn-next:hover, .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212, 172, 13, 0.3); }
+        .btn-generate { padding: 16px 50px; font-size: 1.1rem; }
+
+        /* GENERATING */
+        .generating-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 15, 26, 0.95); z-index: 1000;
+            flex-direction: column; align-items: center; justify-content: center;
+        }
+        .generating-screen.active { display: flex; }
+        .generating-logo { width: 100px; height: 100px; margin-bottom: 30px; animation: pulse 2s ease infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } }
+        .generating-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold-light); margin-bottom: 15px; }
+        .generating-status { color: var(--text-secondary); font-size: 1rem; margin-bottom: 30px; }
+        .progress-bar { width: 400px; max-width: 80vw; height: 6px; background: rgba(212, 172, 13, 0.1); border-radius: 3px; overflow: hidden; margin-bottom: 15px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-primary), var(--gold-light)); border-radius: 3px; transition: width 0.5s ease; width: 0%; }
+        .progress-text { color: var(--gold-light); font-weight: 600; font-size: 0.9rem; }
+
+        /* RESULT */
+        .result-screen { display: none; padding: 40px; }
+        .result-screen.active { display: block; animation: fadeIn 0.5s ease; }
+        .result-header { text-align: center; margin-bottom: 40px; }
+        .result-header h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold-light); margin-bottom: 10px; }
+        .result-header p { color: var(--text-secondary); }
+        .thesis-document {
+            background: white; color: #333; border-radius: 16px;
+            padding: 60px; max-width: 900px; margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            font-family: 'Times New Roman', serif; line-height: 1.8; font-size: 1.05rem;
+        }
+        .thesis-document h1 { font-family: 'Times New Roman', serif; font-size: 1.8rem; text-align: center; margin-bottom: 30px; color: #1a1a1a; font-weight: bold; }
+        .thesis-document h2 { font-family: 'Times New Roman', serif; font-size: 1.3rem; margin-top: 30px; margin-bottom: 15px; color: #1a1a1a; font-weight: bold; }
+        .thesis-document h3 { font-family: 'Times New Roman', serif; font-size: 1.1rem; margin-top: 20px; margin-bottom: 10px; color: #333; font-weight: bold; }
+        .thesis-document p { text-align: justify; margin-bottom: 15px; text-indent: 30px; }
+        .thesis-document .abstract { font-style: italic; margin: 20px 40px; padding: 20px; border-left: 3px solid #D4AC0D; background: #fafafa; }
+        .thesis-document .keywords { margin: 15px 40px; font-size: 0.95rem; }
+        .thesis-document .keywords strong { color: #1a1a1a; }
+        .result-actions { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .btn-action { padding: 14px 30px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; }
+        .btn-download { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); border: none; color: var(--bg-dark); }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212, 172, 13, 0.3); }
+        .btn-new { background: transparent; border: 2px solid rgba(212, 172, 13, 0.3); color: var(--gold-light); }
+        .btn-new:hover { background: rgba(212, 172, 13, 0.1); }
+
+        /* FOOTER */
+        .footer {
+            background: rgba(15, 15, 26, 0.9); border-top: 1px solid rgba(212, 172, 13, 0.1);
+            padding: 25px 40px; text-align: center; margin-top: auto;
+        }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .footer-logo { width: 30px; height: 30px; opacity: 0.7; }
+        .footer-text { color: var(--text-secondary); font-size: 0.85rem; letter-spacing: 2px; }
+        .footer-text strong { color: var(--gold-light); font-weight: 700; }
+        .footer-copyright { color: rgba(160, 160, 184, 0.4); font-size: 0.75rem; }
+
+        /* TEMPLATES */
+        .template-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .template-card { background: var(--bg-input); border: 2px solid rgba(212, 172, 13, 0.1); border-radius: 16px; padding: 25px; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+        .template-card:hover { border-color: var(--gold-primary); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); }
+        .template-card.selected { border-color: var(--gold-primary); background: rgba(212, 172, 13, 0.05); box-shadow: 0 0 30px rgba(212, 172, 13, 0.15); }
+        .template-icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .template-name { font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+        .template-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* CHAPTERS */
+        .chapter-list { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .chapter-item { display: flex; align-items: center; gap: 15px; padding: 16px 20px; background: var(--bg-input); border-radius: 12px; border: 1px solid rgba(212, 172, 13, 0.1); transition: all 0.3s ease; }
+        .chapter-item:hover { border-color: rgba(212, 172, 13, 0.3); }
+        .chapter-checkbox { width: 22px; height: 22px; accent-color: var(--gold-primary); cursor: pointer; }
+        .chapter-info { flex: 1; }
+        .chapter-title { font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+        .chapter-desc { font-size: 0.8rem; color: var(--text-secondary); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header { padding: 15px 20px; }
+            .main-content { padding: 20px; }
+            .wizard-steps { flex-direction: column; gap: 15px; padding: 20px; }
+            .step:not(:last-child)::after { display: none; }
+            .step-content { padding: 25px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .thesis-document { padding: 30px; }
+            .step-nav { flex-direction: column; gap: 10px; padding: 20px; }
+            .btn-nav { width: 100%; }
+            .result-actions { flex-direction: column; }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: rgba(212, 172, 13, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(212, 172, 13, 0.5); }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-content">
+                <div class="login-logo">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#F4D03F"/>
+                                <stop offset="30%" style="stop-color:#D4AC0D"/>
+                                <stop offset="70%" style="stop-color:#B7950B"/>
+                                <stop offset="100%" style="stop-color:#9A7D0A"/>
+                            </linearGradient>
+                            <radialGradient id="circleGrad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#1A1A2E"/>
+                                <stop offset="100%" style="stop-color:#0F0F1A"/>
+                            </radialGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="blur"/>
+                                <feMerge>
+                                    <feMergeNode in="blur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <circle cx="200" cy="200" r="190" fill="url(#circleGrad)" stroke="url(#goldGrad)" stroke-width="3"/>
+                        <circle cx="80" cy="100" r="2" fill="#F4D03F" opacity="0.6"/>
+                        <circle cx="320" cy="90" r="2.5" fill="#F4D03F" opacity="0.5"/>
+                        <circle cx="100" cy="300" r="1.5" fill="#F4D03F" opacity="0.7"/>
+                        <circle cx="310" cy="310" r="2" fill="#F4D03F" opacity="0.4"/>
+                        <circle cx="200" cy="50" r="2" fill="#F4D03F" opacity="0.5"/>
+                        <polygon points="130,310 270,310 250,280 150,280" fill="url(#goldGrad)" filter="url(#glow)"/>
+                        <polygon points="150,280 250,280 220,80 180,80" fill="url(#goldGrad)" filter="url(#glow)"/>
+                        <polygon points="180,80 220,80 200,40" fill="#F4D03F" filter="url(#glow)"/>
+                        <line x1="170" y1="260" x2="230" y2="260" stroke="#9A7D0A" stroke-width="1.5" opacity="0.6"/>
+                        <line x1="175" y1="220" x2="225" y2="220" stroke="#9A7D0A" stroke-width="1.5" opacity="0.5"/>
+                        <line x1="180" y1="180" x2="220" y2="180" stroke="#9A7D0A" stroke-width="1.5" opacity="0.4"/>
+                        <line x1="185" y1="140" x2="215" y2="140" stroke="#9A7D0A" stroke-width="1.5" opacity="0.3"/>
+                        <text x="200" y="355" text-anchor="middle" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="url(#goldGrad)" letter-spacing="4" filter="url(#glow)">OBELISCO</text>
+                        <text x="200" y="375" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#B7950B" letter-spacing="6" opacity="0.8">THESIS SYSTEM</text>
+                    </svg>
+                </div>
+                <h1 class="login-title">OBELISCO</h1>
+                <p class="login-subtitle">SISTEMA DE GENERACIÓN DE TESIS</p>
+
+                <div class="input-group">
+                    <label for="loginEmail">Correo Electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="tu@email.com" value="usuario@obelisco.com">
+                </div>
+
+                <div class="input-group">
+                    <label for="loginPassword">Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" value="obelisco2024">
+                </div>
+
+                <button class="btn" onclick="handleLogin()">Iniciar Sesión</button>
+
+                <p class="error-msg" id="loginError">Credenciales incorrectas. Intente nuevamente.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="app-container" id="appContainer">
+        <header class="header">
+            <div class="header-left">
+                <div class="header-logo">
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="headerGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#F4D03F"/>
+                                <stop offset="100%" style="stop-color:#9A7D0A"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="200" cy="200" r="190" fill="none" stroke="url(#headerGold)" stroke-width="8"/>
+                        <polygon points="150,280 250,280 220,80 180,80" fill="url(#headerGold)"/>
+                        <polygon points="180,80 220,80 200,40" fill="#F4D03F"/>
+                        <polygon points="130,310 270,310 250,280 150,280" fill="url(#headerGold)"/>
+                    </svg>
+                </div>
+                <span class="header-brand">OBELISCO</span>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">Usuario</span>
+                </div>
+                <button class="btn-logout" onclick="handleLogout()">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <h1 class="page-title">Nueva Tesis</h1>
+            <p class="page-subtitle">Complete los siguientes pasos para generar su tesis académica de manera profesional y humana.</p>
+
+            <div class="wizard-container">
+                <div class="wizard-steps">
+                    <div class="step active" id="step1Indicator">
+                        <div class="step-number">1</div>
+                        <div class="step-info"><h4>Requisitos</h4><p>Información básica</p></div>
+                    </div>
+                    <div class="step" id="step2Indicator">
+                        <div class="step-number">2</div>
+                        <div class="step-info"><h4>Estructura</h4><p>Capítulos y formato</p></div>
+                    </div>
+                    <div class="step" id="step3Indicator">
+                        <div class="step-number">3</div>
+                        <div class="step-info"><h4>Contenido</h4><p>Tema y fuentes</p></div>
+                    </div>
+                    <div class="step" id="step4Indicator">
+                        <div class="step-number">4</div>
+                        <div class="step-info"><h4>Revisión</h4><p>Verificar y generar</p></div>
+                    </div>
+                </div>
+
+                <!-- STEP 1 -->
+                <div class="step-content active" id="step1">
+                    <div class="form-section">
+                        <h3 class="form-section-title">Información de la Institución</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Universidad / Institución <span class="required">*</span></label>
+                                <input type="text" id="institucion" placeholder="Ej: Universidad Nacional Autónoma de México">
+                            </div>
+                            <div class="form-group">
+                                <label>Facultad / Escuela <span class="required">*</span></label>
+                                <input type="text" id="facultad" placeholder="Ej: Facultad de Ingeniería">
+                            </div>
+                            <div class="form-group">
+                                <label>Programa / Carrera <span class="required">*</span></label>
+                                <input type="text" id="carrera" placeholder="Ej: Ingeniería en Sistemas Computacionales">
+                            </div>
+                            <div class="form-group">
+                                <label>Nivel Académico <span class="required">*</span></label>
+                                <select id="nivel">
+                                    <option value="">Seleccione...</option>
+                                    <option value="licenciatura">Licenciatura</option>
+                                    <option value="maestria">Maestría</option>
+                                    <option value="doctorado">Doctorado</option>
+                                    <option value="posdoctorado">Posdoctorado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Información del Autor</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nombre Completo <span class="required">*</span></label>
+                                <input type="text" id="autorNombre" placeholder="Ej: Juan Carlos Pérez García">
+                            </div>
+                            <div class="form-group">
+                                <label>Matrícula / ID Estudiantil</label>
+                                <input type="text" id="matricula" placeholder="Ej: 123456789">
+                            </div>
+                            <div class="form-group">
+                                <label>Correo Institucional</label>
+                                <input type="email" id="correoInst" placeholder="Ej: juan.perez@universidad.edu">
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono de Contacto</label>
+                                <input type="tel" id="telefono" placeholder="Ej: +52 55 1234 5678">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Información del Director de Tesis</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nombre del Director <span class="required">*</span></label>
+                                <input type="text" id="director" placeholder="Ej: Dra. María Elena Rodríguez López">
+                            </div>
+                            <div class="form-group">
+                                <label>Título Académico</label>
+                                <select id="tituloDirector">
+                                    <option value="">Seleccione...</option>
+                                    <option value="Dr.">Dr.</option>
+                                    <option value="Dra.">Dra.</option>
+                                    <option value="Mtro.">Mtro.</option>
+                                    <option value="Mtra.">Mtra.</option>
+                                    <option value="Lic.">Lic.</option>
+                                    <option value="Ing.">Ing.</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Grado Académico</label>
+                                <input type="text" id="gradoDirector" placeholder="Ej: Doctor en Ciencias de la Computación">
+                            </div>
+                            <div class="form-group">
+                                <label>Correo del Director</label>
+                                <input type="email" id="correoDirector" placeholder="Ej: maria.rodriguez@universidad.edu">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="step-content" id="step2">
+                    <div class="form-section">
+                        <h3 class="form-section-title">Estilo de Citación</h3>
+                        <div class="template-grid">
+                            <div class="template-card" data-citation="apa" onclick="selectCitation(this)">
+                                <div class="template-icon">📚</div>
+                                <div class="template-name">APA 7ª Edición</div>
+                                <div class="template-desc">American Psychological Association. Estándar para ciencias sociales y humanidades.</div>
+                            </div>
+                            <div class="template-card" data-citation="iso" onclick="selectCitation(this)">
+                                <div class="template-icon">📖</div>
+                                <div class="template-name">ISO 690</div>
+                                <div class="template-desc">Norma internacional ISO. Usada comúnmente en Europa y Latinoamérica.</div>
+                            </div>
+                            <div class="template-card" data-citation="vancouver" onclick="selectCitation(this)">
+                                <div class="template-icon">🔬</div>
+                                <div class="template-name">Vancouver</div>
+                                <div class="template-desc">Estándar para ciencias de la salud y áreas técnicas.</div>
+                            </div>
+                            <div class="template-card" data-citation="chicago" onclick="selectCitation(this)">
+                                <div class="template-icon">📝</div>
+                                <div class="template-name">Chicago</div>
+                                <div class="template-desc">Manual de estilo Chicago. Usado en historia, arte y literatura.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Estructura de Capítulos</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 0.9rem;">Seleccione los capítulos que desea incluir:</p>
+                        <div class="chapter-list">
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch1" checked>
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Capítulo I - Introducción</div>
+                                    <div class="chapter-desc">Planteamiento del problema, justificación, objetivos y preguntas de investigación</div>
+                                </div>
+                            </div>
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch2" checked>
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Capítulo II - Marco Teórico</div>
+                                    <div class="chapter-desc">Antecedentes, fundamentos teóricos, estado del arte y revisión de literatura</div>
+                                </div>
+                            </div>
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch3" checked>
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Capítulo III - Metodología</div>
+                                    <div class="chapter-desc">Diseño de investigación, tipo de estudio, población, muestra, instrumentos y procedimiento</div>
+                                </div>
+                            </div>
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch4" checked>
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Capítulo IV - Resultados</div>
+                                    <div class="chapter-desc">Presentación de hallazgos, análisis de datos, tablas y figuras</div>
+                                </div>
+                            </div>
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch5" checked>
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Capítulo V - Discusión</div>
+                                    <div class="chapter-desc">Interpretación de resultados, comparación con literatura, implicaciones</div>
+                                </div>
+                            </div>
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch6" checked>
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Capítulo VI - Conclusiones y Recomendaciones</div>
+                                    <div class="chapter-desc">Conclusiones generales, limitaciones del estudio, recomendaciones futuras</div>
+                                </div>
+                            </div>
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch7">
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Referencias Bibliográficas</div>
+                                    <div class="chapter-desc">Lista completa de fuentes consultadas en formato seleccionado</div>
+                                </div>
+                            </div>
+                            <div class="chapter-item">
+                                <input type="checkbox" class="chapter-checkbox" id="ch8">
+                                <div class="chapter-info">
+                                    <div class="chapter-title">Anexos</div>
+                                    <div class="chapter-desc">Material complementario: encuestas, tablas adicionales, permisos, etc.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Configuración Adicional</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Extensión Aproximada (páginas)</label>
+                                <select id="extension">
+                                    <option value="60-80">60 - 80 páginas</option>
+                                    <option value="80-100" selected>80 - 100 páginas</option>
+                                    <option value="100-150">100 - 150 páginas</option>
+                                    <option value="150-200">150 - 200 páginas</option>
+                                    <option value="200+">Más de 200 páginas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Idioma de la Tesis</label>
+                                <select id="idioma">
+                                    <option value="es" selected>Español</option>
+                                    <option value="en">Inglés</option>
+                                    <option value="pt">Portugués</option>
+                                    <option value="fr">Francés</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de Investigación</label>
+                                <select id="tipoInvestigacion">
+                                    <option value="">Seleccione...</option>
+                                    <option value="cualitativa">Cualitativa</option>
+                                    <option value="cuantitativa">Cuantitativa</option>
+                                    <option value="mixta">Mixta (Cualitativa + Cuantitativa)</option>
+                                    <option value="experimental">Experimental</option>
+                                    <option value="documental">Documental / Bibliográfica</option>
+                                    <option value="accion">Investigación-Acción</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Formato de Entrega</label>
+                                <select id="formato">
+                                    <option value="docx" selected>Microsoft Word (.docx)</option>
+                                    <option value="pdf">PDF Académico (.pdf)</option>
+                                    <option value="latex">LaTeX (.tex)</option>
+                                    <option value="html">HTML Web (.html)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="step-content" id="step3">
+                    <div class="form-section">
+                        <h3 class="form-section-title">Título y Tema de Investigación</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Título de la Tesis <span class="required">*</span></label>
+                                <input type="text" id="tituloTesis" placeholder="Ej: Impacto de la Inteligencia Artificial en la Educación Superior: Un Análisis Comparativo">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Descripción del Tema <span class="required">*</span></label>
+                                <textarea id="descripcionTema" placeholder="Describa detalladamente el tema de investigación, el contexto, la problemática identificada y lo que espera investigar. Sea lo más específico posible para obtener mejores resultados."></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Hipótesis / Pregunta de Investigación</label>
+                                <textarea id="hipotesis" placeholder="Escriba su hipótesis principal o preguntas de investigación que desea responder."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Palabras Clave y Área de Conocimiento</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Palabras Clave (separadas por comas) <span class="required">*</span></label>
+                                <input type="text" id="palabrasClave" placeholder="Ej: inteligencia artificial, educación, aprendizaje automático, universidades">
+                            </div>
+                            <div class="form-group">
+                                <label>Área de Conocimiento</label>
+                                <select id="areaConocimiento">
+                                    <option value="">Seleccione...</option>
+                                    <option value="ciencias-sociales">Ciencias Sociales y Humanidades</option>
+                                    <option value="ciencias-naturales">Ciencias Naturales y Exactas</option>
+                                    <option value="ingenieria">Ingeniería y Tecnología</option>
+                                    <option value="salud">Ciencias de la Salud</option>
+                                    <option value="economia">Economía y Administración</option>
+                                    <option value="arte">Artes y Diseño</option>
+                                    <option value="derecho">Derecho y Ciencias Políticas</option>
+                                    <option value="educacion">Educación y Pedagogía</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Disciplina Específica</label>
+                                <input type="text" id="disciplina" placeholder="Ej: Ciencias de la Computación Aplicada">
+                            </div>
+                            <div class="form-group">
+                                <label>Línea de Investigación</label>
+                                <input type="text" id="lineaInvestigacion" placeholder="Ej: Tecnologías Emergentes en Educación">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Archivos de Referencia (Opcional)</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 0.9rem;">Suba artículos, guías, formatos institucionales o cualquier documento que el sistema deba considerar:</p>
+                        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                            <div class="upload-icon">📁</div>
+                            <div class="upload-text">Arrastre archivos aquí o haga clic para seleccionar</div>
+                            <div class="upload-hint">PDF, DOCX, TXT (Máx. 20MB por archivo)</div>
+                        </div>
+                        <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt" style="display: none;" onchange="handleFiles(this.files)">
+                        <div class="file-list" id="fileList"></div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Instrucciones Especiales</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Requisitos o Indicaciones Adicionales</label>
+                                <textarea id="instrucciones" placeholder="Escriba cualquier requisito especial, formato específico de su institución, secciones adicionales, restricciones o cualquier otra indicación que considere importante para la generación de su tesis."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div class="step-content" id="step4">
+                    <div class="form-section">
+                        <h3 class="form-section-title">Resumen de Configuración</h3>
+                        <div id="reviewSummary" style="background: var(--bg-input); border-radius: 16px; padding: 30px; line-height: 2;"></div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Opciones de Generación</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Tono del Texto</label>
+                                <select id="tonoTexto">
+                                    <option value="academico" selected>Académico Formal</option>
+                                    <option value="accesible">Académico Accesible</option>
+                                    <option value="tecnico">Técnico Especializado</option>
+                                    <option value="narrativo">Narrativo Descriptivo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nivel de Profundidad</label>
+                                <select id="profundidad">
+                                    <option value="basico">Básico (Introductorio)</option>
+                                    <option value="intermedio" selected>Intermedio (Estándar)</option>
+                                    <option value="avanzado">Avanzado (Especializado)</option>
+                                    <option value="experto">Experto (Doctoral)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Estilo de Redacción</label>
+                                <select id="estiloRedaccion">
+                                    <option value="tercera" selected>Tercera Persona (Él/Ella/Se)</option>
+                                    <option value="primera">Primera Persona (Nosotros)</option>
+                                    <option value="pasiva">Voz Pasiva</option>
+                                    <option value="mixta">Mixta (Recomendado)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Incluir Tablas y Figuras</label>
+                                <select id="incluirTablas">
+                                    <option value="si" selected>Sí, generar automáticamente</option>
+                                    <option value="no">No, solo texto</option>
+                                    <option value="marcadores">Incluir marcadores de posición</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; padding: 30px;">
+                        <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                            ⚠️ Revise cuidadosamente toda la información antes de generar. El proceso puede tardar varios minutos.
+                        </p>
+                        <button class="btn-generate" onclick="generateThesis()">✨ Generar Mi Tesis</button>
+                    </div>
+                </div>
+
+                <div class="step-nav">
+                    <button class="btn-nav btn-prev" id="btnPrev" onclick="prevStep()" style="visibility: hidden;">← Anterior</button>
+                    <button class="btn-nav btn-next" id="btnNext" onclick="nextStep()">Siguiente →</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <svg class="footer-logo" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="footerGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#F4D03F"/>
+                            <stop offset="100%" style="stop-color:#9A7D0A"/>
+                        </linearGradient>
+                    </defs>
+                    <polygon points="150,280 250,280 220,80 180,80" fill="url(#footerGold)"/>
+                    <polygon points="180,80 220,80 200,40" fill="#F4D03F"/>
+                    <polygon points="130,310 270,310 250,280 150,280" fill="url(#footerGold)"/>
+                </svg>
+                <p class="footer-text">Diseñado por <strong>OBELISCO</strong></p>
+                <p class="footer-copyright">© 2024 OBELISCO Thesis System. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ===== GENERATING SCREEN ===== -->
+    <div class="generating-screen" id="generatingScreen">
+        <svg class="generating-logo" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="genGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#F4D03F"/>
+                    <stop offset="100%" style="stop-color:#9A7D0A"/>
+                </linearGradient>
+            </defs>
+            <circle cx="200" cy="200" r="190" fill="none" stroke="url(#genGold)" stroke-width="4"/>
+            <polygon points="150,280 250,280 220,80 180,80" fill="url(#genGold)"/>
+            <polygon points="180,80 220,80 200,40" fill="#F4D03F"/>
+            <polygon points="130,310 270,310 250,280 150,280" fill="url(#genGold)"/>
+        </svg>
+        <h2 class="generating-title">Generando su Tesis</h2>
+        <p class="generating-status" id="generatingStatus">Analizando requisitos y estructura...</p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-text" id="progressText">0%</p>
+    </div>
+
+    <!-- ===== RESULT SCREEN ===== -->
+    <div class="result-screen" id="resultScreen">
+        <div class="result-header">
+            <h2>🎉 ¡Su Tesis ha sido Generada!</h2>
+            <p>Revise el documento generado. Puede descargarlo o realizar ajustes.</p>
+        </div>
+        <div class="thesis-document" id="thesisDocument"></div>
+        <div class="result-actions">
+            <button class="btn-action btn-download" onclick="downloadThesis()">📥 Descargar Documento</button>
+            <button class="btn-action btn-new" onclick="newThesis()">🔄 Nueva Tesis</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        let selectedCitation = '';
+        let uploadedFiles = [];
+        let thesisData = {};
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorMsg = document.getElementById('loginError');
+            if (email && password) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appContainer').classList.add('active');
+                const userInitial = email.charAt(0).toUpperCase();
+                document.getElementById('userAvatar').textContent = userInitial;
+                document.getElementById('userName').textContent = email.split('@')[0];
+                errorMsg.classList.remove('show');
+            } else {
+                errorMsg.textContent = 'Por favor complete todos los campos.';
+                errorMsg.classList.add('show');
+            }
+        }
+
+        function handleLogout() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('appContainer').classList.remove('active');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function updateSteps() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const indicator = document.getElementById('step' + i + 'Indicator');
+                const content = document.getElementById('step' + i);
+                if (i < currentStep) {
+                    indicator.classList.add('completed');
+                    indicator.classList.remove('active');
+                    content.classList.remove('active');
+                } else if (i === currentStep) {
+                    indicator.classList.add('active');
+                    indicator.classList.remove('completed');
+                    content.classList.add('active');
+                } else {
+                    indicator.classList.remove('active', 'completed');
+                    content.classList.remove('active');
+                }
+            }
+            document.getElementById('btnPrev').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+            document.getElementById('btnNext').textContent = currentStep === totalSteps ? 'Finalizar' : 'Siguiente →';
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateSteps();
+                if (currentStep === 4) generateReview();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateSteps();
+            }
+        }
+
+        function selectCitation(element) {
+            document.querySelectorAll('.template-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedCitation = element.dataset.citation;
+        }
+
+        function handleFiles(files) {
+            const fileList = document.getElementById('fileList');
+            Array.from(files).forEach(file => {
+                uploadedFiles.push(file);
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-item-info">
+                        <span class="file-icon">📄</span>
+                        <div>
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                        </div>
+                    </div>
+                    <button class="file-remove" onclick="removeFile(this, '${file.name}')">✕</button>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(button, fileName) {
+            uploadedFiles = uploadedFiles.filter(f => f.name !== fileName);
+            button.parentElement.remove();
+        }
+
+        const uploadZone = document.getElementById('uploadZone');
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+        uploadZone.addEventListener('drop', (e) => { e.preventDefault(); uploadZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+
+        function generateReview() {
+            const summary = document.getElementById('reviewSummary');
+            const data = {
+                institucion: document.getElementById('institucion').value || 'No especificado',
+                facultad: document.getElementById('facultad').value || 'No especificado',
+                carrera: document.getElementById('carrera').value || 'No especificado',
+                nivel: document.getElementById('nivel').value || 'No especificado',
+                autor: document.getElementById('autorNombre').value || 'No especificado',
+                director: document.getElementById('director').value || 'No especificado',
+                titulo: document.getElementById('tituloTesis').value || 'No especificado',
+                citacion: selectedCitation || 'No seleccionado',
+                capitulos: Array.from(document.querySelectorAll('.chapter-checkbox:checked')).map(cb => cb.closest('.chapter-item').querySelector('.chapter-title').textContent).join(', '),
+                extension: document.getElementById('extension').value,
+                idioma: document.getElementById('idioma').value,
+                tipoInvestigacion: document.getElementById('tipoInvestigacion').value || 'No especificado',
+                palabrasClave: document.getElementById('palabrasClave').value || 'No especificado',
+                area: document.getElementById('areaConocimiento').value || 'No especificado',
+                archivos: uploadedFiles.length > 0 ? `${uploadedFiles.length} archivo(s) subido(s)` : 'Ninguno'
+            };
+            thesisData = data;
+            summary.innerHTML = `
+                <strong style="color: var(--gold-light);">📋 Información Institucional:</strong><br>
+                • Universidad: ${data.institucion}<br>
+                • Facultad: ${data.facultad}<br>
+                • Carrera: ${data.carrera}<br>
+                • Nivel: ${data.nivel}<br><br>
+                <strong style="color: var(--gold-light);">👤 Autor y Director:</strong><br>
+                • Autor: ${data.autor}<br>
+                • Director: ${data.director}<br><br>
+                <strong style="color: var(--gold-light);">📚 Tesis:</strong><br>
+                • Título: ${data.titulo}<br>
+                • Estilo de Citación: ${data.citacion}<br>
+                • Capítulos: ${data.capitulos}<br>
+                • Extensión: ${data.extension}<br>
+                • Idioma: ${data.idioma}<br>
+                • Tipo de Investigación: ${data.tipoInvestigacion}<br><br>
+                <strong style="color: var(--gold-light);">🔍 Metadatos:</strong><br>
+                • Palabras Clave: ${data.palabrasClave}<br>
+                • Área de Conocimiento: ${data.area}<br>
+                • Archivos de Referencia: ${data.archivos}<br>
+            `;
+        }
+
+        function generateThesis() {
+            document.getElementById('generatingScreen').classList.add('active');
+            const statuses = [
+                'Analizando requisitos y estructura...',
+                'Investigando fuentes académicas relevantes...',
+                'Generando marco teórico y fundamentos...',
+                'Desarrollando metodología de investigación...',
+                'Redactando capítulos principales...',
+                'Creando tablas, figuras y referencias...',
+                'Revisando coherencia y estilo académico...',
+                'Formateando documento final...',
+                '¡Tesis completada con éxito!'
+            ];
+            let progress = 0;
+            let statusIndex = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15 + 5;
+                if (progress > 100) progress = 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = Math.round(progress) + '%';
+                if (statusIndex < statuses.length && progress > (statusIndex / statuses.length) * 100) {
+                    document.getElementById('generatingStatus').textContent = statuses[statusIndex];
+                    statusIndex++;
+                }
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('generatingScreen').classList.remove('active');
+                        showResult();
+                    }, 1000);
+                }
+            }, 800);
+        }
+
+        function showResult() {
+            const resultScreen = document.getElementById('resultScreen');
+            const thesisDoc = document.getElementById('thesisDocument');
+            const titulo = document.getElementById('tituloTesis').value || 'Título de la Tesis';
+            const autor = document.getElementById('autorNombre').value || 'Nombre del Autor';
+            const institucion = document.getElementById('institucion').value || 'Universidad';
+            const facultad = document.getElementById('facultad').value || 'Facultad';
+            const director = document.getElementById('director').value || 'Director de Tesis';
+            const palabrasClave = document.getElementById('palabrasClave').value || 'palabras, clave, investigación';
+
+            thesisDoc.innerHTML = generateThesisContent(titulo, autor, institucion, facultad, director, palabrasClave);
+            resultScreen.classList.add('active');
+            resultScreen.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateThesisContent(titulo, autor, institucion, facultad, director, palabrasClave) {
+            const descripcion = document.getElementById('descripcionTema').value || 'la temática propuesta';
+            const nivel = document.getElementById('nivel').value || 'Licenciatura';
+            const carrera = document.getElementById('carrera').value || 'Carrera';
+            const tipoInvestigacion = document.getElementById('tipoInvestigacion').value || 'mixta';
+            const disciplina = document.getElementById('disciplina').value || 'la disciplina';
+            const linea = document.getElementById('lineaInvestigacion').value || 'la línea de investigación';
+            const hipotesis = document.getElementById('hipotesis').value || 'Analizar y comprender los fenómenos relevantes en el contexto de estudio, estableciendo relaciones significativas entre las variables identificadas.';
+            const area = document.getElementById('areaConocimiento').value || 'el ámbito profesional';
+
+            return `
+                <h1>${titulo}</h1>
+                <div style="text-align: center; margin: 40px 0;">
+                    <p><strong>Tesis presentada como requisito parcial para obtener el grado de</strong></p>
+                    <p style="font-size: 1.2rem; margin: 15px 0;"><strong>${nivel.charAt(0).toUpperCase() + nivel.slice(1)}</strong></p>
+                    <p>en</p>
+                    <p style="font-size: 1.1rem; margin: 15px 0;"><strong>${carrera}</strong></p>
+                </div>
+                <div style="text-align: center; margin: 50px 0;">
+                    <p><strong>Presenta:</strong></p>
+                    <p style="font-size: 1.1rem; margin: 10px 0;">${autor}</p>
+                    <p style="margin-top: 30px;"><strong>Director de Tesis:</strong></p>
+                    <p style="font-size: 1.1rem; margin: 10px 0;">${director}</p>
+                </div>
+                <div style="text-align: center; margin: 50px 0;">
+                    <p><strong>${institucion}</strong></p>
+                    <p>${facultad}</p>
+                    <p style="margin-top: 20px;">${new Date().getFullYear()}</p>
+                </div>
+                <hr style="margin: 40px 0; border: none; border-top: 2px solid #D4AC0D;">
+                <h2>Resumen / Abstract</h2>
+                <div class="abstract">
+                    <p>El presente trabajo de investigación titulado "${titulo}" aborda de manera integral el estudio de ${descripcion}, mediante un enfoque ${tipoInvestigacion} que permite obtener resultados robustos y significativos. La investigación se fundamenta en un exhaustivo marco teórico que integra las principales perspectivas y hallazgos de la literatura especializada, estableciendo las bases conceptuales y empíricas necesarias para el desarrollo del estudio.</p>
+                    <p>La metodología empleada sigue los estándares internacionales de rigor científico, incorporando técnicas de recolección y análisis de datos que garantizan la validez y confiabilidad de los resultados obtenidos. Los hallazgos principales revelan patrones significativos que contribuyen al conocimiento existente en el campo de estudio, ofreciendo nuevas perspectivas teóricas y prácticas.</p>
+                    <p>Entre las conclusiones más relevantes se destacan las implicaciones para la práctica profesional, las recomendaciones para futuras investigaciones y las limitaciones identificadas en el estudio. Este trabajo constituye una contribución original al campo del conocimiento, proporcionando herramientas y conocimientos aplicables en contextos reales.</p>
+                </div>
+                <div class="keywords"><strong>Palabras clave:</strong> ${palabrasClave}</div>
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
+                <h2>Capítulo I. Introducción</h2>
+                <h3>1.1 Planteamiento del Problema</h3>
+                <p>En el contexto actual de ${area}, se ha observado una creciente necesidad de abordar ${descripcion} desde una perspectiva integral y sistemática. La problemática que motiva esta investigación surge de la identificación de vacíos significativos en la literatura existente, así como de la observación de fenómenos que requieren mayor comprensión y análisis detallado.</p>
+                <p>La presente investigación se justifica por la relevancia académica y práctica del tema, considerando su impacto potencial en ${area} y su contribución al avance del conocimiento especializado. El estudio propone abordar esta problemática mediante un diseño metodológico riguroso que permite obtener resultados válidos y confiables.</p>
+                <h3>1.2 Justificación</h3>
+                <p>La importancia de esta investigación radica en su capacidad para generar conocimiento aplicable y transferible a diversos contextos. Desde una perspectiva teórica, el estudio contribuye a la consolidación de un marco conceptual más robusto en el campo de ${disciplina}. Prácticamente, los resultados obtenidos ofrecen orientaciones claras para la toma de decisiones informadas y el desarrollo de estrategias efectivas.</p>
+                <p>La investigación se alinea con las prioridades actuales del campo disciplinario, respondiendo a las demandas de la comunidad académica y profesional por estudios que integren múltiples perspectivas y metodologías. Además, considera las implicaciones éticas y sociales inherentes al tema de estudio, promoviendo un enfoque responsable y sostenible.</p>
+                <h3>1.3 Objetivos de la Investigación</h3>
+                <p><strong>Objetivo General:</strong></p>
+                <p>${hipotesis}</p>
+                <p><strong>Objetivos Específicos:</strong></p>
+                <p>1. Revisar y sistematizar la literatura especializada relacionada con el tema de investigación, identificando las principales teorías, modelos y hallazgos previos.</p>
+                <p>2. Diseñar e implementar una metodología de investigación que garantice la validez, confiabilidad y ética del estudio.</p>
+                <p>3. Recolectar y analizar datos siguiendo los procedimientos establecidos, utilizando técnicas estadísticas y cualitativas según corresponda.</p>
+                <p>4. Interpretar los resultados obtenidos en función del marco teórico y los objetivos planteados, estableciendo comparaciones con estudios previos.</p>
+                <p>5. Formular conclusiones y recomendaciones basadas en la evidencia generada, orientadas al avance del conocimiento y la práctica profesional.</p>
+                <h3>1.4 Preguntas de Investigación</h3>
+                <p>1. ¿Cuáles son las principales variables y factores que influyen en el fenómeno estudiado?</p>
+                <p>2. ¿Qué relaciones significativas existen entre las variables identificadas en el contexto de investigación?</p>
+                <p>3. ¿Cómo se manifiestan los efectos del fenómeno estudiado en diferentes contextos y poblaciones?</p>
+                <p>4. ¿Qué estrategias y recomendaciones pueden derivarse de los hallazgos obtenidos?</p>
+                <h3>1.5 Delimitación del Estudio</h3>
+                <p>La presente investigación se delimita en términos de tiempo, espacio y contenido. Temporalmente, el estudio se centra en el período contemporáneo, considerando desarrollos recientes y tendencias actuales en el campo. Espacialmente, el alcance geográfico se define según las características del objeto de estudio y la disponibilidad de datos. En cuanto al contenido, la investigación se enfoca específicamente en los aspectos identificados en los objetivos, sin pretender abarcar todas las dimensiones posibles del tema.</p>
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
+                <h2>Capítulo II. Marco Teórico</h2>
+                <h3>2.1 Antecedentes de la Investigación</h3>
+                <p>Los estudios previos en el campo de ${disciplina} han establecido las bases fundamentales para comprender ${descripcion}. Investigaciones seminales han demostrado la complejidad multidimensional del tema, identificando variables clave y relaciones causales que informan el diseño de la presente investigación.</p>
+                <p>La revisión de la literatura revela una evolución significativa en el enfoque metodológico y conceptual del tema. Estudios recientes han incorporado perspectivas interdisciplinarias y técnicas analíticas avanzadas, ampliando la comprensión del fenómeno y abriendo nuevas líneas de investigación. Sin embargo, persisten vacíos significativos que la presente investigación pretende abordar.</p>
+                <h3>2.2 Bases Teóricas</h3>
+                <p>El marco teórico de esta investigación se sustenta en las principales corrientes y teorías relevantes para el tema de estudio. Se analizan los fundamentos conceptuales que permiten comprender la naturaleza del fenómeno investigado, así como las relaciones entre sus componentes principales.</p>
+                <p>La integración de múltiples perspectivas teóricas proporciona una base sólida para la interpretación de los resultados y la formulación de conclusiones fundamentadas. Se consideran tanto las aportaciones clásicas como los desarrollos más recientes en el campo, estableciendo un diálogo constructivo entre diferentes tradiciones de pensamiento.</p>
+                <h3>2.3 Definición de Términos</h3>
+                <p>A efectos de esta investigación, se definen los siguientes términos clave:</p>
+                <p><strong>Variable Principal:</strong> Se refiere al constructo central del estudio, operacionalizado según los criterios establecidos en la literatura especializada.</p>
+                <p><strong>Contexto de Estudio:</strong> El entorno específico donde se desarrolla la investigación, caracterizado por sus particularidades socioculturales, económicas y políticas.</p>
+                <p><strong>Muestra:</strong> El subconjunto de la población seleccionado para participar en el estudio, definido según criterios de representatividad y viabilidad.</p>
+                <h3>2.4 Estado del Arte</h3>
+                <p>El análisis del estado del arte revela las principales tendencias, debates y avances en el campo de estudio. Se identifican las contribuciones más significativas de los últimos años, así como las áreas que requieren mayor atención investigativa.</p>
+                <p>La síntesis de la literatura existente permite identificar patrones recurrentes, contradicciones metodológicas y oportunidades para la innovación conceptual. Esta información orienta el diseño de la investigación y la formulación de hipótesis o preguntas de investigación.</p>
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
+                <h2>Capítulo III. Metodología</h2>
+                <h3>3.1 Diseño de Investigación</h3>
+                <p>La presente investigación adopta un diseño ${tipoInvestigacion} que integra elementos cuantitativos y cualitativos según la naturaleza de los objetivos y preguntas de investigación. Este enfoque permite obtener una comprensión más completa y matizada del fenómeno estudiado, superando las limitaciones inherentes a los diseños puramente cuantitativos o cualitativos.</p>
+                <p>El diseño se estructura en fases secuenciales que permiten la triangulación de métodos y fuentes de datos. La fase inicial se centra en la exploración y caracterización del fenómeno, mientras que las fases posteriores profundizan en el análisis de relaciones específicas y la validación de hallazgos preliminares.</p>
+                <h3>3.2 Enfoque y Alcance</h3>
+                <p>El enfoque metodológico se alinea con los estándares internacionales de calidad en investigación científica, considerando criterios de validez interna y externa, confiabilidad, objetividad y ética. El alcance del estudio se define en función de los recursos disponibles, el tiempo de investigación y las delimitaciones establecidas.</p>
+                <h3>3.3 Población y Muestra</h3>
+                <p>La población de estudio se define como el conjunto de elementos que cumplen con las características relevantes para la investigación. La selección de la muestra sigue criterios de representatividad, accesibilidad y viabilidad, utilizando técnicas de muestreo probabilístico o no probabilístico según corresponda.</p>
+                <p>El tamaño de la muestra se determina considerando el nivel de confianza deseado, el margen de error aceptable y la variabilidad esperada en los datos. Se documentan los procedimientos de selección y los criterios de inclusión y exclusión aplicados.</p>
+                <h3>3.4 Instrumentos de Recolección de Datos</h3>
+                <p>La recolección de datos se realiza mediante instrumentos validados y adaptados al contexto de estudio. Se emplean técnicas diversas que incluyen encuestas estructuradas, entrevistas semiestructuradas, observación sistemática y análisis documental, según la naturaleza de la información requerida.</p>
+                <p>Los instrumentos se someten a procesos de validación por juicio de expertos y pruebas piloto, garantizando su adecuación para los fines de la investigación. Se documentan las propiedades psicométricas de los instrumentos cuando corresponda.</p>
+                <h3>3.5 Procedimiento</h3>
+                <p>La ejecución de la investigación sigue un protocolo detallado que especifica las actividades, responsabilidades y cronograma de trabajo. Se establecen procedimientos para la obtención de consentimientos informados, la protección de datos personales y el cumplimiento de normas éticas.</p>
+                <p>La recolección de datos se realiza siguiendo estándares de calidad que minimizan errores de medición y sesgos. Se documentan las condiciones específicas de cada sesión de recolección y las eventualidades que puedan afectar la calidad de los datos.</p>
+                <h3>3.6 Análisis de Datos</h3>
+                <p>El análisis de datos se realiza mediante técnicas estadísticas y cualitativas según la naturaleza de las variables y los objetivos de investigación. Para el análisis cuantitativo se emplean pruebas de estadística descriptiva e inferencial, mientras que para el análisis cualitativo se utilizan técnicas de codificación, categorización y triangulación.</p>
+                <p>Se utilizan software especializados para el procesamiento de datos, garantizando la precisión y reproducibilidad de los análisis. Los resultados se presentan de manera clara y organizada, facilitando su interpretación y comparación con estudios previos.</p>
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
+                <h2>Capítulo IV. Resultados</h2>
+                <h3>4.1 Presentación de Hallazgos</h3>
+                <p>Los resultados de la investigación se presentan de manera organizada, siguiendo la estructura de los objetivos y preguntas de investigación. Se incluyen tablas, figuras y gráficos que facilitan la comprensión de los patrones identificados en los datos.</p>
+                <p>El análisis descriptivo revela las características principales de la muestra y las distribuciones de las variables de interés. Los análisis inferenciales permiten establecer relaciones significativas y probar las hipótesis planteadas, utilizando niveles de significancia convencionales.</p>
+                <h3>4.2 Análisis por Objetivos</h3>
+                <p><strong>Objetivo 1:</strong> Los resultados correspondientes al primer objetivo muestran patrones consistentes con la literatura previa, confirmando la relevancia de las variables identificadas en el marco teórico. Se observan diferencias significativas entre grupos y condiciones de estudio.</p>
+                <p><strong>Objetivo 2:</strong> El análisis de la metodología empleada demuestra su adecuación para los fines de la investigación. Los indicadores de validez y confiabilidad superan los umbrales mínimos establecidos en la literatura especializada.</p>
+                <p><strong>Objetivo 3:</strong> Los datos recolectados permiten identificar tendencias claras y relaciones significativas entre variables. Los análisis estadísticos confirman la presencia de efectos relevantes para la comprensión del fenómeno estudiado.</p>
+                <p><strong>Objetivo 4:</strong> La interpretación de resultados en función del marco teórico permite establecer comparaciones productivas con estudios previos. Se identifican similitudes y diferencias que enriquecen la comprensión del tema.</p>
+                <p><strong>Objetivo 5:</strong> Las conclusiones derivadas de los hallazgos ofrecen orientaciones claras para la práctica y la investigación futura. Las recomendaciones formuladas se fundamentan en la evidencia empírica generada.</p>
+                <h3>4.3 Tablas y Figuras Representativas</h3>
+                <p>[Espacio reservado para tablas y figuras generadas automáticamente]</p>
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
+                <h2>Capítulo V. Discusión</h2>
+                <h3>5.1 Interpretación de Resultados</h3>
+                <p>La discusión de los resultados se fundamenta en la integración de los hallazgos empíricos con el marco teórico y la literatura especializada. Se analizan las implicaciones de los patrones identificados, considerando tanto las confirmaciones como las divergencias respecto a estudios previos.</p>
+                <p>La interpretación adopta un enfoque crítico que reconoce las limitaciones del estudio y las posibles fuentes de sesgo. Se discuten las implicaciones teóricas de los hallazgos, proponiendo ajustes o extensiones a los modelos existentes según corresponda.</p>
+                <h3>5.2 Comparación con la Literatura</h3>
+                <p>Los resultados obtenidos se comparan sistemáticamente con los hallazgos de investigaciones previas en el campo. Se identifican puntos de convergencia que fortalecen la validez de los resultados, así como discrepancias que sugieren la necesidad de nuevas aproximaciones teóricas o metodológicas.</p>
+                <p>La comparación considera las diferencias en diseños, poblaciones y contextos que pueden explicar las variaciones observadas. Se evita la generalización indebida de resultados, reconociendo las particularidades del estudio actual.</p>
+                <h3>5.3 Implicaciones Teóricas y Prácticas</h3>
+                <p>Los hallazgos de la investigación tienen implicaciones significativas tanto para la teoría como para la práctica. Desde una perspectiva teórica, los resultados contribuyen a la consolidación o reformulación de constructos y modelos existentes. Prácticamente, ofrecen orientaciones para la toma de decisiones y el desarrollo de intervenciones efectivas.</p>
+                <p>Se discuten las aplicaciones potenciales de los resultados en contextos diversos, considerando las condiciones necesarias para su transferibilidad. Se identifican áreas de oportunidad para la implementación de recomendaciones basadas en evidencia.</p>
+                <h3>5.4 Limitaciones del Estudio</h3>
+                <p>Se reconocen de manera explícita las limitaciones metodológicas, conceptuales y contextuales del estudio. Entre las principales limitaciones se encuentran el tamaño de la muestra, el diseño de investigación empleado, las técnicas de recolección de datos y las restricciones temporales y presupuestarias.</p>
+                <p>El reconocimiento de limitaciones no disminuye el valor de la investigación, sino que permite una interpretación más matizada de los resultados y orienta el diseño de estudios futuros que puedan superar estas restricciones.</p>
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid #ddd;">
+                <h2>Capítulo VI. Conclusiones y Recomendaciones</h2>
+                <h3>6.1 Conclusiones Generales</h3>
+                <p>La presente investigación ha permitido alcanzar los objetivos planteados, generando conocimiento original y aplicable en el campo de ${disciplina}. Los principales hallazgos confirman la relevancia del tema y la pertinencia del enfoque metodológico empleado.</p>
+                <p>Entre las conclusiones principales se destacan: (1) la confirmación de relaciones significativas entre las variables de estudio, (2) la identificación de patrones consistentes con la literatura previa, (3) el reconocimiento de factores contextuales que modulan los efectos observados, y (4) la viabilidad de las recomendaciones formuladas para la práctica profesional.</p>
+                <h3>6.2 Conclusiones por Objetivo</h3>
+                <p><strong>Objetivo 1:</strong> Se logró sistematizar la literatura especializada, identificando las principales teorías y hallazgos que fundamentan el estudio. El marco teórico desarrollado proporciona una base sólida para la interpretación de resultados.</p>
+                <p><strong>Objetivo 2:</strong> La metodología implementada demostró su adecuación y rigor, generando datos de calidad que respondieron a las preguntas de investigación. Los procedimientos establecidos pueden replicarse en contextos similares.</p>
+                <p><strong>Objetivo 3:</strong> Los datos analizados revelaron patrones significativos que contribuyen a la comprensión del fenómeno estudiado. Las técnicas estadísticas y cualitativas empleadas fueron apropiadas para los fines de la investigación.</p>
+                <p><strong>Objetivo 4:</strong> La interpretación de resultados en diálogo con la literatura permitió establecer conclusiones fundamentadas y contextualizadas. Se identificaron contribuciones originales al conocimiento existente.</p>
+                <p><strong>Objetivo 5:</strong> Las recomendaciones formuladas se sustentan en la evidencia generada y ofrecen orientaciones claras para la práctica y la investigación futura.</p>
+                <h3>6.3 Recomendaciones</h3>
+                <p><strong>Recomendaciones para la Práctica:</strong></p>
+                <p>1. Implementar las estrategias identificadas como efectivas en los contextos donde sea pertinente.</p>
+                <p>2. Desarrollar programas de capacitación basados en los hallazgos de la investigación.</p>
+                <p>3. Establecer mecanismos de seguimiento y evaluación para monitorear la aplicación de recomendaciones.</p>
+                <p><strong>Recomendaciones para la Investigación Futura:</strong></p>
+                <p>1. Replicar el estudio en contextos diversos para evaluar la generalizabilidad de los resultados.</p>
+                <p>2. Ampliar la muestra y el período de estudio para obtener conclusiones más robustas.</p>
+                <p>3. Explorar variables adicionales que puedan enriquecer la comprensión del fenómeno.</p>
+                <p>4. Desarrollar diseños longitudinales que permitan analizar evoluciones temporales.</p>
+                <p>5. Integrar perspectivas interdisciplinarias que amplíen el alcance analítico del tema.</p>
+                <h3>6.4 Reflexiones Finales</h3>
+                <p>La realización de esta investigación ha representado un proceso de aprendizaje significativo, tanto en términos académicos como personales. El rigor metodológico y la dedicación al estudio del tema han permitido generar aportaciones valiosas al campo del conocimiento, consolidando las competencias investigativas desarrolladas durante la formación académica.</p>
+                <p>Se reconoce el apoyo invaluable del director de tesis, así como de las instituciones y personas que contribuyeron al desarrollo de esta investigación. El compromiso con la excelencia académica y la generación de conocimiento útil permanece como motivación continua para el desarrollo profesional futuro.</p>
+                <hr style="margin: 40px 0; border: none; border-top: 2px solid #D4AC0D;">
+                <div style="text-align: center; margin-top: 60px;">
+                    <p style="font-style: italic; color: #666;">Fin del documento</p>
+                </div>
+            `;
+        }
+
+        function downloadThesis() {
+            const content = document.getElementById('thesisDocument').innerHTML;
+            const titulo = document.getElementById('tituloTesis').value || 'Tesis';
+            const htmlContent = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${titulo}</title>
+                <style>body{font-family:'Times New Roman',serif;line-height:1.8;font-size:12pt;color:#333;max-width:800px;margin:0 auto;padding:40px;}
+                h1{font-size:18pt;text-align:center;margin-bottom:30px;}h2{font-size:14pt;margin-top:30px;margin-bottom:15px;}
+                h3{font-size:12pt;margin-top:20px;margin-bottom:10px;}p{text-align:justify;margin-bottom:12px;text-indent:30px;}
+                .abstract{font-style:italic;margin:20px 40px;padding:20px;border-left:3px solid #D4AC0D;background:#fafafa;}
+                .keywords{margin:15px 40px;}hr{margin:30px 0;border:none;border-top:1px solid #ddd;}</style></head>
+                <body>${content}</body></html>`;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Tesis_${titulo.replace(/[^a-zA-Z0-9]/g, '_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function newThesis() {
+            document.getElementById('resultScreen').classList.remove('active');
+            currentStep = 1;
+            updateSteps();
+            document.querySelectorAll('input, textarea').forEach(el => { if (el.type !== 'file') el.value = ''; });
+            document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+            document.querySelectorAll('.chapter-checkbox').forEach(cb => cb.checked = true);
+            document.querySelectorAll('.template-card').forEach(card => card.classList.remove('selected'));
+            document.getElementById('fileList').innerHTML = '';
+            uploadedFiles = [];
+            selectedCitation = '';
+        }
+
+        document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+    </script>
+</body>
+</html>

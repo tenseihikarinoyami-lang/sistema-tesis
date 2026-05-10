@@ -1,0 +1,193 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-accent: #10B981;
+  --color-card: #0A0A0A;
+  --color-background: #050505;
+  --color-foreground: #F8FAFC;
+}
+
+@layer base {
+  body {
+    color: var(--color-foreground);
+    background: var(--color-background);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .academic-text {
+    font-family: 'Merriweather', serif;
+  }
+}
+
+@layer components {
+  /* Premium Glassmorphism */
+  .glass {
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-hover:hover {
+    background: rgba(15, 15, 15, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.2);
+  }
+
+  /* Buttons */
+  .btn-premium {
+    position: relative;
+    padding: 1rem 2rem;
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 700;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .btn-premium:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.3);
+  }
+
+  /* Inputs */
+  .input-premium {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background-color: rgba(5, 5, 5, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    color: #FFFFFF !important;
+    caret-color: var(--color-accent) !important;
+    font-weight: 500 !important;
+  }
+
+  .input-premium:focus {
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.25);
+    background-color: #000000 !important;
+    border-width: 2px;
+  }
+
+  /* Browser Autofill Overrides */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #A78BFA 0%, #4F46E5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-mesh {
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(79, 70, 229, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+  }
+
+  .page-wrapper {
+    min-height: 100vh;
+    position: relative;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(79, 70, 229, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+  }
+
+  .bg-dot-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .academic-input {
+    @apply w-full px-6 py-4 rounded-2xl border transition-all outline-none;
+    background: rgba(5, 5, 5, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #FFFFFF !important;
+    font-weight: 500 !important;
+    caret-color: var(--color-accent) !important;
+  }
+
+  .academic-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .academic-input:focus {
+    @apply border-accent;
+    background: #000000 !important;
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.25);
+    border-width: 2px;
+  }
+
+  /* Specific styles for select and options to fix visibility on Windows/various browsers */
+  select.academic-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center;
+    background-size: 1.25rem;
+    padding-right: 3.5rem;
+  }
+
+  select.academic-input option {
+    background-color: #0f172a !important;
+    color: #FFFFFF !important;
+    padding: 1rem;
+  }
+
+  .academic-card {
+    @apply p-12 rounded-[3rem] border border-white/5 shadow-2xl;
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(32px);
+  }
+
+  /* Academic Typography Enhancements */
+  .prose-academic {
+    font-family: 'Merriweather', serif;
+    line-height: 1.8;
+  }
+
+  .prose h1, .prose h2, .prose h3 {
+    font-family: 'Merriweather', serif !important;
+    letter-spacing: -0.02em;
+    color: white !important;
+  }
+
+  .prose p {
+    margin-bottom: 2rem;
+    text-align: justify;
+  }
+
+  .thesis-content-area {
+    font-family: 'Merriweather', serif;
+    font-size: 1.125rem;
+    line-height: 2;
+    color: #cbd5e1;
+  }
+}

@@ -1,0 +1,54 @@
+CAPÍTULO IV
+
+RESULTADOS DE LA INVESTIGACIÓN
+
+Este capítulo presenta el análisis y la interpretación de los datos recolectados tras la aplicación del instrumento de investigación a la muestra seleccionada en ITECEN. Los resultados se presentan en cuadros y gráficos estadísticos que permiten visualizar la realidad operativa del departamento de atención al cliente.
+
+Técnicas de Análisis e Interpretación de los Datos
+
+De acuerdo con Balestrini (2006), el análisis de datos es "el proceso que consiste en someter los datos a operaciones lógicas y estadísticas para obtener conclusiones" (p. 169). Por su parte, Arias (2012) indica que se refiere a "la organización, clasificación y procesamiento de la información obtenida para facilitar su interpretación" (p. 111).
+
+Para este estudio, se utilizó la estadística descriptiva para procesar las respuestas del cuestionario dicotómico. A continuación se presentan los resultados de los ítems más relevantes:
+
+Ítem 1: ¿Considera usted que el tiempo actual de respuesta a las consultas de los clientes es excesivo?
+Cuadro 3
+DISTRIBUCIÓN DE FRECUENCIAS ÍTEM 1
+
+Opción | Frecuencia Absoluta (f) | Frecuencia Relativa (%)
+--- | --- | ---
+Si | 10 | 83%
+No | 2 | 17%
+**Total** | **12** | **100%**
+
+Gráfico 1: Tiempo de Respuesta Excesivo
+(Gráfico de torta que muestra que el 83% de los trabajadores considera que los tiempos son excesivos).
+
+Análisis: La mayoría del personal (83%) coincide en que el tiempo de respuesta es excesivo. Esto confirma el síntoma identificado en el Capítulo I y justifica la necesidad de una herramienta de automatización que agilice los procesos.
+
+Ítem 5: ¿Se presentan con frecuencia consultas repetitivas que podrían ser respondidas automáticamente?
+Cuadro 4
+DISTRIBUCIÓN DE FRECUENCIAS ÍTEM 5
+
+Opción | Frecuencia Absoluta (f) | Frecuencia Relativa (%)
+--- | --- | ---
+Si | 11 | 92%
+No | 1 | 8%
+**Total** | **12** | **100%**
+
+Gráfico 2: Consultas Repetitivas
+(Gráfico de torta que muestra que el 92% identifica consultas repetitivas).
+
+Análisis: El 92% de los encuestados afirma que existen tareas repetitivas. Según la teoría de Russell y Norvig (2020), este es el escenario ideal para la aplicación de agentes inteligentes (Chatbots), ya que libera al personal de tareas de bajo valor añadido.
+
+Conclusiones
+
+Tras el análisis de los resultados, se desprenden las siguientes conclusiones:
+1. Existe una saturación crítica en el departamento de atención al cliente de ITECEN debido al manejo manual de consultas.
+2. El personal reconoce la viabilidad y necesidad de un sistema inteligente que filtre las solicitudes iniciales.
+3. La empresa posee la infraestructura básica de datos, pero carece de la lógica de procesamiento automático necesaria para optimizar el servicio.
+
+Recomendaciones
+
+1. Implementar la propuesta técnica desarrollada en el siguiente capítulo para automatizar las respuestas de nivel 1.
+2. Capacitar al personal en la gestión y supervisión de sistemas de Inteligencia Artificial.
+3. Establecer un protocolo de mantenimiento y actualización de la base de conocimientos del sistema de IA para asegurar su precisión a largo plazo.

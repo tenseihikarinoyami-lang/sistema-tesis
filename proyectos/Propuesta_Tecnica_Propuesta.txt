@@ -1,0 +1,44 @@
+LA PROPUESTA
+
+SISTEMA BASADO EN INTELIGENCIA ARTIFICIAL PARA LA OPTIMIZACIÓN DE LOS PROCESOS DE ATENCIÓN AL CLIENTE EN LA EMPRESA ITECEN
+
+Presentación de la Propuesta
+
+La presente propuesta consiste en el diseño de un sistema inteligente de atención al cliente integrado con modelos de Procesamiento de Lenguaje Natural (PLN). El sistema funcionará como una interfaz de primera línea que recibirá, clasificará y responderá de manera autónoma las consultas frecuentes de los usuarios de ITECEN, escalando únicamente los casos complejos al personal técnico humano.
+
+Justificación de la Propuesta
+
+Desde el punto de vista operativo, la propuesta permitirá a ITECEN reducir los tiempos de respuesta de minutos a segundos, mejorando la percepción de calidad del servicio. Económicamente, se traduce en una mayor eficiencia del talento humano, permitiendo que los técnicos se enfoquen en reparaciones y configuraciones de alto nivel que generan mayores ingresos a la empresa.
+
+Objetivos de la Propuesta
+
+Objetivo General
+Diseñar un sistema de Inteligencia Artificial para la automatización de la atención al cliente y soporte técnico en ITECEN, Maracay.
+
+Objetivos Específicos
+1. Configurar la base de conocimientos basada en el histórico de consultas de la empresa.
+2. Desarrollar el motor de inferencia basado en algoritmos de aprendizaje automático.
+3. Crear la interfaz de usuario para la interacción entre los clientes y el agente inteligente.
+4. Validar el funcionamiento del sistema mediante pruebas de estrés y precisión de respuesta.
+
+Estructura de la Propuesta (Arquitectura Técnica)
+
+El sistema se compone de tres capas fundamentales:
+
+1. Capa de Interfaz (Frontend): Desarrollada en tecnologías web modernas para permitir el acceso multiplataforma (Web/Móvil).
+2. Capa de Procesamiento (IA): Utiliza el modelo BERT o similar para la clasificación de intenciones (Intent Classification).
+3. Capa de Datos: Una base de datos relacional que almacena el conocimiento base y el historial de interacciones para el re-entrenamiento del modelo.
+
+Factibilidad de la Propuesta
+
+Factibilidad Técnica: La empresa cuenta con los servidores y la conexión a internet necesarios. Las herramientas de desarrollo propuestas (Python/FastAPI) son de código abierto, lo que elimina costos de licenciamiento.
+
+Factibilidad Operativa: El personal de ITECEN posee conocimientos básicos de informática, lo que facilitará la adopción del sistema tras una breve capacitación de 8 horas.
+
+Factibilidad Económica: La inversión inicial es baja, ya que se aprovecha el hardware existente. Los beneficios por ahorro de tiempo y retención de clientes superan ampliamente los costos de desarrollo.
+
+Análisis Costo – Beneficio
+
+Costo Estimado: Desarrollo y despliegue inicial: 1,500 USD (Horas hombre y nube).
+Beneficio Estimado: Reducción del 40% en costos de atención directa y 25% de aumento en la retención de clientes en el primer año, valorado en aproximadamente 5,000 USD.
+Relación: El proyecto se paga a sí mismo en menos de 6 meses (ROI positivo).

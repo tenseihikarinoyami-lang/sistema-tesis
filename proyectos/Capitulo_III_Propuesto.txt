@@ -1,0 +1,69 @@
+CAPÍTULO III
+
+MARCO METODOLÓGICO
+
+Según Balestrini (2006), el marco metodológico es "el conjunto de procedimientos lógicos, teóricos y operacionales implícitos en todo proceso de investigación, con el fin de alcanzar los objetivos propuestos" (p. 125). Por su parte, Arias (2012) lo define como "la instancia referida a los métodos, diversas reglas, registros, técnicas y protocolos con los cuales una teoría y su método calculan las magnitudes de lo real" (p. 110).
+
+En este capítulo se detallan el diseño, tipo, nivel y modalidad de la investigación, así como la población, muestra y las técnicas utilizadas para recolectar la información necesaria para el desarrollo del sistema de IA en ITECEN.
+
+Diseño, Tipo, Nivel y Modalidad de la Investigación
+
+En correspondencia con la naturaleza del estudio, el mismo se enmarca en las siguientes categorías metodológicas:
+
+Diseño de la Investigación: No Experimental
+Arias (2012) define la investigación no experimental como "aquella que se realiza sin manipular deliberadamente las variables" (p. 31). Según Hernández, Fernández y Baptista (2014), en este diseño "lo que se hace es observar los fenómenos tal como se dan en su contexto natural para después analizarlos" (p. 152). Para este estudio, no se manipularán los procesos de ITECEN, sino que se observarán para proponer la solución tecnológica.
+
+Tipo de Investigación: De Campo y Documental
+La investigación de campo, según la UPEL (2012), es "el análisis sistemático de problemas en la realidad, con el propósito de describirlos, interpretarlos, entender su naturaleza y factores constituyentes" (p. 18). Sabino (2002) indica que es "aquella en que el mismo investigador es quien recolecta los datos primarios" (p. 67). Es de campo porque los datos se obtendrán directamente en la empresa ITECEN.
+Asimismo, es documental porque, según Arias (2012), "se basa en la obtención y análisis de datos provenientes de materiales impresos u otros tipos de documentos" (p. 27). Tamayo y Tamayo (2009) la definen como "el estudio de un problema con el propósito de ampliar y profundizar el conocimiento basándose en fuentes bibliográficas" (p. 35).
+
+Nivel de Investigación: Descriptivo
+De acuerdo con Arias (2012), la investigación descriptiva consiste en "la caracterización de un hecho, fenómeno, individuo o grupo, con el fin de establecer su estructura o comportamiento" (p. 24). Tamayo y Tamayo (2009) señalan que este nivel "comprende la descripción, registro, análisis e interpretación de la naturaleza actual y la composición o procesos de los fenómenos" (p. 35). Este estudio describe la situación actual de los procesos de atención al cliente en ITECEN para fundamentar la propuesta.
+
+Modalidad de la Investigación: Proyecto Factible
+La UPEL (2012) define el Proyecto Factible como "la investigación, elaboración y desarrollo de una propuesta de un modelo operativo funcional para solucionar problemas, requerimientos o necesidades de organizaciones o grupos sociales" (p. 21). Balestrini (2006) indica que se refiere a "la elaboración de una propuesta o un modelo operativo, el cual debe estar sustentado en una investigación de campo o documental" (p. 185). Esta investigación culmina con la propuesta técnica de un sistema de IA, lo que la clasifica en esta modalidad.
+
+Unidad de Análisis
+
+Arias (2012) define la unidad de análisis como "el elemento mínimo de una población, que posee las características objeto de estudio" (p. 81). Tamayo y Tamayo (2009) indican que es "el fenómeno u objeto que se estudia y que permite obtener información para la investigación" (p. 114).
+
+La unidad de análisis de la presente investigación corresponde al Departamento de Atención al Cliente de la empresa Inversiones Tecnológicas del Centro, C.A. (ITECEN), ubicada en Maracay, Estado Aragua.
+
+Población
+
+Tamayo y Tamayo (2009) definen la población como "la totalidad del fenómeno a estudiar, en donde las unidades de población poseen una característica común la cual se estudia y da origen a los datos de la investigación" (p. 176). Arias (2012) la describe como "un conjunto finito o infinito de elementos con características comunes para los cuales serán extensivas las conclusiones de la investigación" (p. 81).
+
+La población de este estudio está conformada por el personal que labora directamente en el área de atención y soporte de ITECEN, distribuida de la siguiente manera:
+
+Cuadro 2
+DISTRIBUCIÓN DE LA POBLACIÓN
+
+TRABAJADORES | CANTIDAD
+--- | ---
+Gerente de Atención al Cliente | 1
+Coordinadores de Soporte | 2
+Agentes de Atención Nivel 1 | 5
+Analistas Técnicos | 4
+**Total** | **12**
+
+Fuente: Departamento de Recursos Humanos de ITECEN (2025).
+
+Muestra
+
+Según Arias (2012), la muestra es "un subconjunto representativo y finito que se extrae de la población accesible" (p. 83). Balestrini (2006) señala que es "una parte de la población, o sea, un número de individuos u objetos seleccionados científicamente, cada uno de los cuales es un elemento del universo" (p. 141).
+
+En vista de que la población es pequeña y finita (12 personas), se tomó la totalidad de la misma como muestra. Según Castro (2003), cuando la población es inferior a 50 unidades, la población es igual a la muestra (p. 68), denominándose en este caso como muestra censal.
+
+Técnicas e Instrumentos de Recolección de Datos
+
+Arias (2012) define las técnicas de recolección de datos como "el procedimiento o forma particular de obtener datos o información" (p. 67). Los instrumentos son "los medios materiales que se emplean para recoger y almacenar la información" (p. 68).
+
+Técnica: Encuesta
+De acuerdo con Arias (2012), la encuesta es "una técnica que pretende obtener información que suministra un grupo o muestra de sujetos acerca de sí mismos, o en relación con un tema en particular" (p. 72). Tamayo y Tamayo (2009) la definen como "el cuestionamiento que se le hace a una población para conocer su opinión sobre un tema" (p. 124).
+
+Instrumento: Cuestionario
+Según Balestrini (2006), el cuestionario es "un instrumento de recolección de datos, constituido por una serie de preguntas, que permiten medir una o más variables" (p. 155). Para esta investigación, se diseñó un cuestionario dicotómico (Si/No) de 15 ítems, validado por expertos, el cual será aplicado a la muestra seleccionada.
+
+Validación del Instrumento
+
+Arias (2012) define la validez como "el grado en que un instrumento mide realmente la variable que pretende medir" (p. 79). Hernández et al. (2014) señalan que se refiere a "la evidencia de validez de contenido, que se obtiene mediante el juicio de expertos" (p. 201). El instrumento de este estudio será sometido a la validación de tres (3) expertos en las áreas de metodología e informática para asegurar su pertinencia y claridad.

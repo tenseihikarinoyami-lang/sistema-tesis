@@ -1,0 +1,57 @@
+CAPÍTULO I
+
+EL PROBLEMA
+
+Planteamiento del Problema
+
+En la actualidad, la Inteligencia Artificial (IA) ha dejado de ser un concepto de ciencia ficción para convertirse en el motor de la transformación digital a nivel global. Según Russell y Norvig (2020), la capacidad de los sistemas para aprender y razonar de manera autónoma permite optimizar procesos que antes dependían exclusivamente de la intervención humana. En Venezuela, la adopción de estas tecnologías ha sido progresiva, viéndose acelerada por la necesidad de las organizaciones de mejorar su eficiencia operativa ante un entorno económico dinámico y competitivo.
+
+Específicamente en el estado Aragua, un importante polo industrial y comercial del país, las empresas se enfrentan al reto de gestionar grandes volúmenes de información y ofrecer respuestas rápidas a sus clientes. Tal es el caso de la empresa Inversiones Tecnológicas del Centro, C.A. (ITECEN), dedicada a la prestación de servicios tecnológicos en Maracay. 
+
+A través de una observación directa realizada en el Departamento de Atención al Cliente de ITECEN, se han identificado una serie de debilidades que afectan la calidad del servicio. Se observa un tiempo de espera prolongado para que los usuarios reciban respuestas a consultas básicas, así como una saturación del personal encargado debido a la repetitividad de las solicitudes (Síntomas). 
+
+Esta situación se deriva principalmente de la falta de un sistema automatizado de respuesta inmediata y la dependencia de procesos manuales para la clasificación de tickets de soporte (Causas). De no abordarse esta problemática, la empresa podría experimentar una pérdida significativa de clientes potenciales, una disminución en la satisfacción del usuario y un aumento en los costos operativos por la necesidad de contratar más personal para tareas que podrían ser automatizadas (Consecuencias).
+
+Como alternativa de solución, se plantea el diseño de un Sistema basado en Inteligencia Artificial (Chatbot/IA Predictiva) que permita gestionar de manera autónoma las consultas de primer nivel, liberando al personal humano para tareas de mayor complejidad técnica (Alternativa).
+
+Interrogantes de la Investigación:
+1. ¿Cuál es la situación actual de los procesos de atención al cliente en ITECEN?
+2. ¿Qué requerimientos técnicos y funcionales son necesarios para la implementación de un sistema de IA en la empresa?
+3. ¿Cuál es la factibilidad técnica, operativa y económica de la propuesta?
+
+Objetivos de la Investigación
+
+Objetivo General
+Proponer un Sistema basado en Inteligencia Artificial para la optimización de los procesos de atención al cliente en la empresa Inversiones Tecnológicas del Centro, C.A. (ITECEN), ubicada en Maracay, Estado Aragua.
+
+Objetivos Específicos
+1. Diagnosticar la situación actual de los procesos de atención al cliente y gestión de soporte en ITECEN.
+2. Determinar los requerimientos tecnológicos y de datos necesarios para el desarrollo de un módulo de IA adaptado a las necesidades de la empresa.
+3. Establecer la factibilidad técnica, operativa y económica para la implementación del sistema propuesto.
+4. Diseñar la arquitectura del sistema de Inteligencia Artificial como solución a la problemática identificada.
+
+Justificación de la Investigación
+
+Desde el punto de vista práctico, esta investigación aportará una herramienta tangible que reducirá los tiempos de respuesta y mejorará la productividad del departamento. Teóricamente, el estudio contribuye al campo de las Ciencias Tecnológicas en Venezuela, aplicando modelos modernos de Procesamiento de Lenguaje Natural (PLN) en un entorno empresarial real. Metodológicamente, se propone un modelo de desarrollo factible que puede servir de referencia para otras organizaciones del sector en el estado Aragua que busquen dar el salto hacia la automatización inteligente.
+
+Operacionalización de Variables
+
+Según Arias (2012), una variable es "una característica o cualidad; magnitud o cantidad, que puede sufrir cambios, y que es objeto de análisis, medición, manipulación o control en una investigación" (p. 57). Por su parte, Balestrini (2006) define la variable como "un aspecto o dimensión de un objeto, o una propiedad de estos que puede variar y cuya variación es susceptible de medirse" (p. 113).
+
+La operacionalización, de acuerdo con Tamayo y Tamayo (2009), consiste en "el paso de una variable teórica a indicadores empíricos que permitan su medición" (p. 164). Para efectos de esta investigación, la operacionalización permite desglosar los objetivos específicos en dimensiones e indicadores que guiarán la construcción de los instrumentos de recolección de datos.
+
+En el Cuadro 1 se presenta la operacionalización de las variables de este estudio.
+
+Cuadro 1
+OPERACIONALIZACIÓN DE VARIABLES
+
+Objetivo General: Proponer un Sistema basado en Inteligencia Artificial para la optimización de los procesos de atención al cliente en la empresa Inversiones Tecnológicas del Centro, C.A. (ITECEN), ubicada en Maracay, Estado Aragua.
+
+Objetivos Específicos | Variable | Dimensión | Indicadores | Instrumento | Ítem | Fuente
+--- | --- | --- | --- | --- | --- | ---
+Diagnosticar la situación actual de los procesos de atención al cliente y gestión de soporte en ITECEN. | Situación actual de los procesos | Gestión de Atención | - Tiempos de respuesta. - Flujo de información. - Nivel de automatización. | Cuestionario | 1, 2, 3 | Personal de ITECEN
+Determinar los requerimientos tecnológicos y de datos necesarios para el desarrollo de un módulo de IA. | Requerimientos tecnológicos | Infraestructura Técnica | - Hardware disponible. - Software base. - Bases de datos. | Guía de Observación | 4, 5, 6 | Departamento de IT
+Establecer la factibilidad técnica, operativa y económica para la implementación del sistema. | Factibilidad | Viabilidad del Proyecto | - Disponibilidad técnica. - Aceptación operativa. - Presupuesto. | Entrevista | 7, 8, 9 | Gerencia General
+Diseñar la arquitectura del sistema de Inteligencia Artificial como solución a la problemática. | Arquitectura del sistema | Propuesta Técnica | - Modelos de PLN. - Interfaz de usuario. - Lógica de integración. | Análisis Documental | 10, 11 | Documentación Técnica
+
+Fuente: El Autor (2025).

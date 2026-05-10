@@ -1,0 +1,13 @@
+@echo off
+echo Iniciando Servidor Backend OBELISCO...
+cd backend
+if not exist venv (
+    echo Creando entorno virtual...
+    python -m venv venv
+)
+call venv\Scripts\activate
+echo Instalando dependencias...
+pip install -r requirements.txt
+echo Lanzando FastAPI en http://localhost:8000...
+python main.py
+pause

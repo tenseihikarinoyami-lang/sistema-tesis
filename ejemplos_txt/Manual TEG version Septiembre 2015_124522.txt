@@ -1,0 +1,5086 @@
+
+--- Page 1 ---
+REPÚBLICA BOLIVARIANA DE VENEZUELA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+EXTENSIÓN MARACAY  
+Resolución Nº 167 de Fecha 28/01/94  
+RIF: J -30333945 -0 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Excelencia Académica  
+ 
+ 
+ 
+ 
+ 
+ 
+Maracay , Versi ón Rev isada  Septiembre  de 2015 
+ 
+ 
+--- Page 2 ---
+ 
+2 
+  
+  Revisado y Aprobado por el Jefe de Extensión , La Coordinadora 
+Académica  y el Coordinador de  Trabajo Especial de Grado  del Instituto 
+Universitario de Tecnologí a de Administración Industrial Extensión Maracay.  
+Ing. Lizmarbeh t Rojas.  
+Ing. Joel Delgado . 
+Responsables de la Elaboración de este Manual para la realización del 
+Trabajo Especial de Grado.  
+Ing. MSc Genny Adzic . (Docente UPEL Maracay)  
+Ing. Joel Delgado  
+Contribuyeron  con la Revisión para las observaciones y sugerencias, 
+miembros del Personal Administrativo y Docente s IUTA Extensión Maracay.  
+Derechos Reservados por el  IUTA  Extensión Maracay. (2012 ). 
+ 
+--- Page 3 ---
+ 
+3 
+  
+ 
+ 
+ 
+ÍNDICE GENERAL  
+ 
+pp. 
+   
+Índice de Cuadros  ................................ ................................ .......................   4 
+Índice de Gráficos  ................................ ................................ .......................    5 
+Índice de Figuras  ................................ ................................ ........................   6 
+Introducción  ................................ ................................ ................................ .  7 
+ 
+PARTE  
+I.- Obje tivos del  Manual   ................................ ................................ ..............   10 
+ 
+II.- Roles asociados al Trabajo Especial de Grado  ................................ .....  12 
+ 
+III.- Recomendaciones  para la construcción de capítulos y 
+redacción general   ................................ ................................ ...............   14 
+ 
+IV.- Estructura para la presentación de l Trabajo especial de 
+Grado  ................................ ................................ ................................ ..  18 
+ 
+V.- Líneas de Investig ación y área temática  ................................ ................   72 
+ 
+VI.- Recomendaciones Generales para la presentación Oral 
+ ................................ ................................ ................................ .............   79 
+ 
+VII.- Normas para la elaboración, inscripción y presentación 
+del Proyecto  del trabajo especial de grado  ................................ .........   85 
+ 
+VIII.- Lineamientos para la versión escrita  ................................ ..................   87 
+ 
+IX.- Esquema de presentación del trabajo  especial de grado 
+ ................................ ................................ ................................ .............     94 
+ 
+Anexos  ................................ ................................ ................................ .........  110 
+--- Page 4 ---
+ 
+4 
+  
+ 
+ 
+ 
+ÍNDICE DE CUADROS  
+ 
+Cuadro              pp. 
+   
+1. Herramientas de ayuda para la redacción  ................................ ..........   17 
+2. Verbos para los objetivos generales  ................................ ....................   34 
+3. Lista de verbos para la redacción de objetivos es pecíficos  ................   35 
+4. Oper acionalización de variables  ................................ .........................   38 
+5. Parámetros  para la muestra  ................................ ...............................   49 
+6. Tipos de muestreo  ................................ ................................ ..............   50 
+7. Técnicas e instrumen tos de recolección de datos  ..............................   52 
+8. Tipos de gráficos  ................................ ................................ .................   56 
+9. Distribución porcentu al de la muestra según edad  .............................   58 
+10. Gastos de personal  ................................ ................................ .............   64 
+11. Gastos por concepto de materiales y s uministros ...............................   65 
+12. Fondos para el des arrollo de la investigación  ................................ .....  65 
+ 
+--- Page 5 ---
+ 
+5 
+  
+ 
+ 
+ 
+ÍNDICE DE GRÁFICOS  
+ 
+Gráfico              pp. 
+   
+1.  Distribución porcentual de la muestra según edad  ...............................   58 
+ 
+--- Page 6 ---
+ 
+6 
+  
+ 
+ 
+ 
+ÍNDICE  DE FIGURA  
+ 
+ 
+Figura               pp. 
+   
+1. Diseño tipo modalidad de la investigación  ................................ ...........   45  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 7 ---
+  
+7 
+  
+INTRODUCCIÓN  
+ 
+ 
+El Manual para la Elaboración, Pr esentación y Evaluación del proyecto,  del 
+Trabajo Especial de Grado e Informe de Pasantías, establece, organiz ación, 
+forma  y estilo, exigido por el Instituto Universitario de Tecnología de 
+Administración Industrial (IUTA) Extensión Maracay, para la entrega de l trabajo  
+de investigación que debe realizar el estudiante  cursante del sexto semestre 
+como requisito final  para optar por el título de Técnico Superior Universitario en 
+las especialidades de Administración de Empresas, Administración de Personal, 
+Administración Tributaria, Logística Industrial, Higiene y Seg uridad Industrial e 
+Informática, e l cual se concibe c omo aplicación de los conocimientos adquiridos 
+a lo largo de la carrera  y consiste en un estudio sistematizado de un tema de 
+libre selección directamente relacionado con  la formación profesional.  
+En el contexto científico nacional e internacional no existe  un cuerpo de 
+normas únicas para la organización del texto, la elaboración de citas y 
+anotación de las fuentes referenciales, de aceptación universal en todos los 
+campos del conocimiento y para todos los propósitos. Las universidades, 
+organizaciones y editoriales que publican revistas especializadas han tenido 
+que establecer modelos de obligatorio seguimiento por los autores, para 
+preservar la coherencia del material que editan y facilitar el estudio e 
+investigaciones posteriores con base en las fuentes cit adas.  
+Por similares motivos, el Instituto Universitario de Tecnología de 
+Administraci ón Industrial (IUTA) Extensión  Maracay se ha visto en la necesidad 
+de fijar normas para la elaboración del  Trabajo Especial de Grado de los 
+estudiantes. Además, la experi encia en las asesorías y evaluación han 
+demostrado la necesidad de lograr una unificación de criterios en relación a los 
+aspectos antes mencionados, para evitar desacuerdos y puntos de vista 
+disímiles entre Tutores  y Jurados, que puedan confundir al estudi ante o influir 
+en la evaluación.  
+--- Page 8 ---
+  
+8 
+  
+Tomando como base  los lineamientos más conocidos en América como lo 
+es el editado por la American Psychological Associatión (APA). Titulado 
+Publication Manual Of the American Psychological, y sustentado en las 
+normativas m etodológicas del Manual del Trabajo de Grado de Especialización 
+y Maestría y Tesis Doctórales elaborado por la Universidad Pedagógica 
+Experimental Libertador (UPEL, 200 6) donde se recogen los sistemas y criterios 
+de mayor uso en el campo de las ciencias so ciales, el Consejo Académico del 
+Instituto Universitario de Tecnología de Admin istración Industrial Extensión  
+Maracay ha decidido adoptar el esquema básico de estas normas para la 
+publicación de los Trabajos Especiales de Grado y los informes de Pasantías de 
+los estudiantes.  
+Las once  partes que integran estas Normas  para la Elaboración, 
+Presentación y Evaluación del Proyecto , Trabajo Especial de Grado e Informes 
+de Pasantías  contienen las explicaciones de las mismas relativas al registro de 
+fuentes de refer encia, la elaboración de citas y la organización general del texto, 
+el mismo contribuirá al desarrollo de la investigación en el IUTA Extensión 
+Maracay, mediante los procesos de estudios e innovación permanente dando 
+respuestas oportunas al entorno. Es pre ciso aclarar que no toda la normativa 
+APA es directamente aplicable a los propósitos de esta Normativa, sino que ha 
+sido adaptada a las necesidades institucionales y se aparta y enriquece con 
+aspectos más apropiados a l contexto.  
+En esta edición de  las Nor mas se ha hecho un esfuerzo por presentar el 
+material más relevante con el mayor nivel de explicación posible y de manera 
+más ilustrativa. También los requerimientos contemplados en la presente 
+obedecen por parte de los Tutores,  Docentes y Jurados y la Coo rdinación  de 
+Traba jo Especial de Grado . Quienes además  de considerar las pautas 
+establecidas para este tipo de trabajos, lo hicieron bajo la forma de herramienta 
+útil, de fácil manejo y claridad en cuanto los criterios establecidos. Estas  normas 
+han sido  estructuradas en once  partes . A continuación se detalla cada una  de 
+ellas: 
+--- Page 9 ---
+  
+9 
+  
+Primera parte , especifica los objetivos  del manual . 
+Segunda parte , presenta los roles asociados al Trabajo Especial de Grado.  
+Tercera parte, trata las recomendaciones para la constru cción de capítulos 
+y redacción general del Trabajo Especial de Grado.  
+Cuarta p arte, muestra la estructura para la presentación del Trabajo 
+especial de Grado . 
+Quinta  parte, esquematiza gráficamente las líneas de investigación y área 
+temática . 
+Sexta  parte , señala las recomendaciones generales para la presentación  
+oral. 
+Séptima  parte, explica las normas para la elaboración, inscripción y 
+presentación  del Proyecto  del Trabajo Especial de Grado.  
+Octava  parte,  presenta los lineamientos para la versión  escrita.  
+Novena  parte,  detalla el esquema de presentación  de los Trabajos 
+Especiales de Grado.  
+Por último  están los anexos en é sta sección se muestran todos los 
+formatos que se han hecho referencia en el cuerpo del trabajo . 
+ 
+--- Page 10 ---
+  
+10 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+I PARTE  
+OBJETIVOS DEL MANUAL   
+--- Page 11 ---
+  
+11 
+  
+ 
+ 
+ 
+OBJETIVOS DEL MANUAL  
+ 
+1. Establecer los requisitos mínimos que contemplen los aspectos necesarios 
+para la coherencia y uniformidad en la elaboración del Proyecto , Trabajo 
+Especial de Grado e Informes de Pasantías.  
+2. Presentar a los Estudiantes, Profesores, Tutores, Jurados y  Público en 
+General, un manual que contenga la normativa  que se debe aplicar para 
+lograr la  calidad en la  elaboración, presentación y evaluación del Proyecto , 
+los Informes de Pasantías y Trabajo Especial de Grado.  
+3. Determinar parámetro de  aceptación en las etapas o proceso de la 
+investigación.  
+4. Orientar los procesos  del Proyecto , Informes de Pasantías y Trabajo 
+Especial de Grado en el IUTA, facultando con ello la labor de l jurado  
+examinador respectivo.  
+--- Page 12 ---
+  
+12 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+II PARTE  
+ROLES ASOCIADO S  
+AL TRABAJO ESPECIAL DE GRADO  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 13 ---
+  
+13 
+  
+Perfil del Tutor  
+ 
+De acuerdo con Garritz y López (1989) la tutoría:  
+“Es un tipo de enseñanza personalizada que tiene por objetivo que el 
+tutor y el estudiante  participen en un proceso de creación en el cual  el 
+segundo aprenda a realizar investigaciones. En este sentido, el tutor 
+debe ser un guía que oriente el proceso de aprendizaje del 
+estudiante, alentándolo y estimulándolo a fin de que desarrolle todas 
+sus potencialidades” (p.01)  
+ 
+Características de un T utor 
+• Dominio del tema específico a investigar  
+• Disponer del tiempo suficiente para la tutoría  
+• Poseer cierta experiencia en trabajos de investigación,  
+• Dominio de la(s) metodología(s)  
+• Supervisar la organización y ejecución del trabajo de grado,  
+• Ser respons able para que el trabajo de grado identifique claramente el 
+problema a investigar.  
+ 
+Rol del A sesorado (Estudiante)  
+ 
+• Presentar de manera seria, responsable y consciente, el proyecto de 
+investigación.  
+• Presentar de forma oportuna y adecuada los avances al pro yecto de 
+investigación, cuando así le sea requerido por el asesor y el profesor de 
+investigación o la materia afín.  
+• Cumplir con el cronograma y calendario de actividades programados al 
+inicio del proceso de asesoría.  
+ 
+--- Page 14 ---
+  
+14 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+III. PARTE  
+RECOMENDAC IONES PARA LA CONSTRUCCIÓN  DE 
+CAPÍTULOS  Y REDACCIÓN  GENERAL  
+ 
+--- Page 15 ---
+  
+15 
+  
+RECOMENDACIONES PARA LA CONSTRUCCIÓN  DE CAPÍTULOS  Y 
+REDACCIÓN  GENERAL  
+ 
+En la elaboración de cualquier tarea o trabajo de investigación , redactar el 
+texto, es quizás, el aspecto mas engorroso, so bre todo si no se tiene un plan 
+establecido de ideas que permitan ordenar los argumentos de manera lógica y 
+secuencial. Para ello se recomienda tomar nota de los siguientes detalles que 
+pueden ayudar en el proceso de construir la paráfrasis del cuerpo de l os 
+trabajos.  
+ Al principio de cualquier investigación plantee un esquema base que 
+luego pueda modificar en la medida en que aparezcan nuevos elementos 
+durante la revisión bibliográfica.  
+1. Al revisar cada fuente bibliográfica, prepare las fichas con las not as que le 
+servirán de citas textuales o los comentarios a las interpretaciones que 
+obtenga de la lectura. Se debe hacer inmediatamente, si se deja para 
+luego se puede olvidar.  
+2. Cada vez que consulte una fuente y extraiga alguna información de una 
+vez inclú yala en la lista de la bibliografía .  
+3. De cada ficha extraiga las palabras claves, vocabulario nuevo, sinónimos 
+o términos que le ayuden a construir el texto con el lenguaje propio del 
+tema. Con estas palabras puede realizar una secuencia de ideas que 
+luego  puede unir en párrafos. También le servirán para un glo sario o lista 
+de términos básicos, que podrá ser incluido en sus anexos.  
+4. Construya los párrafos siguiendo las normas de la idea principal y 
+secundaria, así como las reglas gramaticales y los signos d e puntuación 
+de nuestro idioma.  
+5. Relacione los párrafos utilizando los conectivos.  
+6. Aproveche la información que ha obtenido al máximo, evitando agregar 
+materia de relleno innecesaria que solo desviara la idea del tema.  
+--- Page 16 ---
+  
+16 
+  
+7. Una vez redactado algú n capítulo , es recomendable leerlo en voz alta a fin 
+de que detectar errores que se pasaron por alto.  
+8. Finalmente, darle el trabajo a otra persona que esta lo lea y detecte 
+aquellos errores que se han pasado por alto.  
+9. Todos los subtítulos de 4to nivel deben ir alineados  a la izquierda.  
+A continuación se muestra el cuadro  1 de herramientas de ayuda para la 
+redacción de párrafos , se dan algunos Correctivos y Relacionantes para enlazar 
+párrafos para agregar ideas o parafrasear. (Contraste, oposición, semejanza, 
+comparación,  explicación, condición) .  
+ 
+--- Page 17 ---
+  
+17 
+  
+Cuadro 1 
+Herramientas de ayuda para la redacción  
+  
+Indicar  Conclusión o 
+consecuencia  Presentar 
+ilustraciones  Orden o relación temporal  
+- A menudo  
+- Al contrario  
+- Aunque  
+- Brevemente  
+- Con todo  
+- En lugar de  
+- En vez de  
+- Lo cierto es que  
+- Mientras que  
+- Pero  
+- A saber  
+- A veces  
+-  Puesto que  
+- Resulta claro  
+- Se explica  
+- En cambio  
+- Con tal que  
+- De ahí que  
+- Esto es  
+- Es evidente  
+- Mas bien  
+- Ni siquiera  
+- Porque  
+- Se entiende  
+- Se tiene que  
+- Sin embargo  
+- Sucede pues  
+- A pesar de  
+- Además  
+- Al revés  
+- Asim ismo   - Se observa que  
+- Sobre la base de 
+también  
+- Al mismo tiempo  
+- Antes que  
+- Así se ha verificado  
+- Aun cuando  
+- Casi siempre  
+- De allí pues, que  
+- Dentro de este marco  
+- Dicho de otro modo  
+- En adelante  
+- En la medida que  
+- Por un lado por otra 
+parte  
+- En otra perspe ctiva  
+- A pesar de que  
+- Cabe considerar por 
+otra parte   
+- De la misma manera  
+- En ese orden de 
+ideas  
+- En resumidas 
+cuentas  
+- De manera tal que  
+- Por el contrario  
+- Visto de otra forma  
+- Por lo demás  
+- Por el contrario  
+- Se quiere  
+- En consecuencia  - Así que  
+- Dado que  
+- De nuevo  
+- De este modo  
+- Desde luego  
+- E incluso  
+- En realidad  
+- En todo caso  
+- En fin  
+- En resumen  
+- Es decir  
+- Excepto  
+- Se precisara 
+antes que nada  
+- Después de todo  
+- Por regla general  
+- Evidentemente  
+- Generalmente  
+- Efectivamente  
+- En contraste   
+- De otro modo  
+- De modo que   
+- En lo esencial  
+- En relación a ello  
+- Es por ello que  
+- La mayoría de  
+- Es decir  
+- Excepto  
+- Igualmente  
+- Mas aun  
+- Otra vez  - Así,  
+- Así pues  
+- Al final  
+- De acuerdo con  
+- De esta manera  
+- De este modo  
+- En consecuencia  
+- En conclusión  
+- De ahí que  
+- Es por ello que  
+- En este sentido  
+- Finalmente  
+- Para concluir  
+- Para terminar  
+- Por lo tanto  
+- Por esta razón  
+- Por consiguiente  
+- Se podría 
+resumir  
+ - A continuación  
+- A Titulo 
+ilustrativo  
+- Como sigue  
+- Como puede 
+verse  
+- En seguida  
+- Ilustrativamente  
+- La (el) siguiente  
+- Para ilustrar  
+- Para dem ostrar  
+- Seguidamente  - Al principio  
+- Antes  
+- Actualmente  
+- Ahora tiempo  
+- Al comienzo  
+- Al mismo tiempo  
+- Anteriormente  
+- Con anterioridad  
+- Después  
+- Después de  
+- Entonces  
+- En una primera 
+etapa  
+- En la actualidad  
+- En estos 
+momentos  
+- En otros tiempos  
+- En el pasado  
+- En el presente  
+- En el futuro  
+- En primer términos  
+- En primer lugar  
+- En conclusión  
+- En resumen  
+- En este orden   - En este momento  
+- Finalmente  
+- Inmediatamente  
+- Luego  
+- Mas tarde  
+- Mientras tanto  
+- Posteriormente  
+- Primero  
+- Primeramente  
+- Por ultimo  
+- Para empezar  
+- Para co menzar  
+- Seguidamente  
+- Siguiendo la idea  
+- Siguiendo este 
+orden  
+ 
+--- Page 18 ---
+  
+18 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+IV.- PARTE  
+ESTRUCTURA PARA LA PRESENTACIÓN  DEL 
+TRABAJO ESPECIAL DE GRADO  
+ 
+ 
+ 
+--- Page 19 ---
+  
+19 
+  
+MODELO PARA LA DIAGRAMACIÓN DE LAS PÁGINAS PRELIMINARES  
+ 
+Páginas Preliminares  
+ 
+Son todas aquellas ubica das entre la Carátula y la introducción. ( Portada,  
+Aceptación de Tutor,  Dedicatoria, Agradecimiento,  Índice s y el Resumen).  
+ 
+Carátula  (Cartón Externo)  
+ 
+  Es una página que tiene características especiales en ella se indican los 
+siguientes aspectos.  
+ Repúbli ca Bolivariana de Venezuela  
+ Ministerio del Poder Popular para la Educación  Universitaria , Ciencia y 
+Tecnología.  
+ Institución: El encabezado de la institución se centrara en la parte superior de la 
+página.  
+ Título: Identificación del título del trabajo este debe ser en letra mayúscula, 
+centrada , negrilla , en forma de pirámide invertida  y con un m áximo de 30  
+palabras.  
+ Se debe colocar el requisito por el cual se presenta el Trabajo Especial de 
+Grado. (Trabajo especial de grado para optar al titulo de técnico su perior 
+Universitario en la especialidad de Administración de empresas)  
+ Identificación del Autor: Se comienza por el nombre y luego el Apellido  y en la 
+línea siguiente la Cedula de Identidad.  
+ Nivel de formación Académica del Tutor abreviado (Lic., Ing., Msc ) Nombre y 
+Apellido del Tutor (en caso que requiera 2 tutores se debe colocar los dos).  
+ Ciudad, Mes y Año en la Parte Inferior Centrada.  
+ Todos los interlineados en la portada serán sencillos, tanto en el Encabezado, 
+Titulo y datos de identificación.  
+ El en cabezado y el titulo van en negrita.  
+A continuación el modelo de cómo presentar la carátula  
+ 
+--- Page 20 ---
+  
+20 
+  
+REPÚBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER PO PULAR PARA LA EDUCACIÓN   
+UNIVERSITARIA , CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADM INISTRACIÓN INDUSTRIAL  
+EXTENSIÓN MARACAY  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+TITULO DEL TRABAJO ESPECIAL DE GRADO TITULO DEL TRABAJO 
+ESPECIAL DE GRADO TITULO DEL TRABAJO ESPECIAL DE  
+GRADO TITULO DEL TRABAJO ESPECIAL DE GRADO  
+TITULO DEL TRABAJO ESPECIAL  
+ 
+(Trabajo Especial de G rado para Optar al Título de Técnico Superior Universitario en la 
+Especialidad de XXXXXXXXXXXXXXXXXXXXXX)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Maracay, (Mes)  de (Año)  Autor (a): XXXXXXXXX XXXXXXXX  
+C.I.:          XX.XXX.XXX  
+Tutor (a): XXXXXXXXXXXXXXXX X 
+--- Page 21 ---
+  
+21 
+  
+Portada  (Igual a la Carátula)  
+ 
+  Es una página que tiene características especiales en ella se indican l os 
+siguientes aspectos.  
+o Republica Bolivariana de Venezuela . 
+o Ministerio Del Poder Popular para l a Educación Universitaria, Ciencia y 
+Tecnología.   
+o Institución: El encabezado de la institución se centrara en la parte superior de 
+la página.   
+o Título: Identific ación del título del trabajo este debe ser en letra mayúscula, 
+centrada , negrilla, en forma de pirámide  invertida y con un máximo de 30  
+palabras.  
+o Se debe colocar el requisito por el cual se presenta el Trabajo Especial de 
+Grado. (Trabajo especial de grado  para optar al titulo de técnico superior 
+Universitario en la especialidad de Administración de empresas).  
+o Identificación del Autor: Se comienza por el nombre y luego el Apellido  y en la 
+línea siguiente la Cedula de Identidad.  
+o Nivel de formación Académica del Tutor abreviado (Lic., Ing., Msc) Nombre y 
+Apellido del Tutor (en caso que requiera 2 tutores se debe colocar los dos).  
+o Ciudad, Mes y Año en la Parte Inferior Centrada.  
+o Todos los interlineados en la portada serán sencillos, tanto en el Encabezado, 
+Titulo y datos de identificación.  
+o El encabezado y el titulo van en negrita.  
+A continuación el modelo de cómo presentar la carátula  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 22 ---
+  
+22 
+  
+REPÚBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN   
+UNIVERSITARIA, CIENCIA Y TECNOLOGÍ A 
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+EXTENSIÓN MARACAY  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+TITULO DEL TRABAJO ESPECIAL DE GRADO TITULO DEL TRABAJO 
+ESPECIAL DE GRADO TITULO DEL TRABAJO ESPECIAL DE  
+GRADO TITULO DEL TRABAJO ESPECIAL DE GRADO  
+TITULO  DEL TRABAJO ESPECIAL  
+ 
+(Trabajo Especial de Grado para Optar al Título de Técnico Superior Universitario en la 
+Especialidad de XXXXXXXXXXXXXXXXXXXXXX)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Maracay, (Mes) de (Año)  Autor (a): XXXXXXXXXXXXXXXXX  
+C.I.:          XX.XXX.XXX  
+Tutor (a): XXXXXXXXXXXXXXXX X 
+--- Page 23 ---
+  
+23 
+  
+Acta de A ceptación  del Tutor  
+ 
+Consiste en la aprobación de l tutor (en caso requiera 2 tutores deben ser 
+firmadas por ambos) que el Trabajo Especial de Grado cumple con los requisitos y 
+méritos suficientes para la presentación pública y evaluación por parte del jurado 
+examinador que se le designe . A cont inuación u n modelo de carta de Aceptación del 
+Tutor.  
+ 
+ 
+ACEPTACIÓN  DEL TUTOR  
+ 
+ 
+ 
+ En mi carácter de Tutor del Trabajo Especial de Grado titulado A q u í  V a  E l  
+T i t u l o  D e l  T r a b a j o  E s p e c i a l  D e  G r a d o  E n t r e g a d o  E n  L a  
+C o o r d i n a c i ó n  presentado(a)  por el(la) ciudadano(a) 
+_______ __________________, para optar al Título de Técnico Superior Universitario 
+en la Especialidad de Especialidad Que Se Curso En La Institución  considero que 
+dicho Trabajo reúne los requisitos y méritos suficientes para ser sometidos(a) a la 
+presentación públ ica y evaluación por parte del jurado examinador que se designe.  
+En la Ciudad de Maracay a los __  días del mes de _________  de _____.  
+ 
+ 
+(Firma)  
+ 
+ 
+ 
+_____________________  
+(Nombre y Apellido)  
+CI: xxxxxxx  
+(Tutor)  
+ 
+ 
+ 
+ 
+--- Page 24 ---
+  
+24 
+  
+Páginas de Dedicatoria y Agradecimiento  
+ 
+Son páginas opcionales y se incluyen al juicio del autor, se redacta en lenguaje 
+sencillo, de manera objetiva, breve y cada una en página aparte.  
+ 
+Dedicatoria  (Opcional)  
+ 
+Se mencionan las personas e institución a quienes se desea honrar con el 
+trabajo.  
+ 
+Agra decimiento  (Opcional)  
+ 
+Se utiliza para mencionar la colaboración, asesorías, orientaciones, asistencia 
+técnica o financiera, apoyo de los profesores, personas e instituciones.  
+ 
+Índice General  
+ 
+Consiste en una relación de los títulos de los índices compleme ntarios, los 
+capítulos, y las secciones principales dentro de cada uno de ellos, las referencias los 
+anexos expuestos en el mismo orden y escritos tal como aparecen en el trabajo . A 
+continuación un esquema referencial para el índice  general  
+ 
+ 
+ 
+ 
+--- Page 25 ---
+  
+25 
+  
+ 
+ÍNDICE G ENERAL  
+ 
+ 
+ACEPTACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO (OPCIONAL)  
+LISTA DE CUADROS O TABLAS (SI AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LISTA DE FIGURAS (SI AMERITA)  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO S 
+ 
+I. EL PROBLEMA  
+Planteamiento del Problema  
+Objetivos de la Investigación  
+Objetivo General  
+Objetivos Específicos  
+Justificación de la Investigación  
+Alcance de Investigación   
+ 
+II. MARCO REFERENCIAL  
+Antecedentes de la Empresa  
+Reseña Histórica de la Organización  
+Misión  
+ Visión  
+Organigrama Estructural  
+Antecedentes de la Investigación  
+Bases Teóricas (Se mencionan las Teorías o Modelos, que dan sustento Teórico al 
+estudio)  
+Bases Legales  (En caso de que existan, se transcribirán los artículos de las leyes y 
+normas que constituyen el Marco Legal)  
+ 
+III. ABORDAJE METODOLÓGICO  
+Diseño, Tipo, Nivel de la Investigación  
+Población  y Muestra  
+Población  
+Muestra  
+ 
+ 
+ 
+--- Page 26 ---
+  
+26 
+  
+Técnicas e Instrumento de Recolección de Datos  
+Fases de  la Investigación ( Procedimiento Metodológico (Describir las actividades 
+realizadas en cada una de las fase s de la Investigación)  
+Técnicas de Análisis e interpretación de los Resultados (Se describen las técnicas 
+estadísticas o de tipo cualitativa utilizadas para el procesamiento de los datos y 
+la información recabada en la investigación) . 
+Operacionalización de  Variables  
+ 
+IV. ANÁLISIS E INTERPRETACIÓN DE LOS RESULTADOS.  
+Presentación de los R esultados . 
+Diagnostico que Sustenta la Propuesta . 
+ 
+V. CONCLUSIONES Y RECOMENDACIONES  
+ Conclusiones  
+Recomendaciones  
+ 
+VI. PROPUESTA (Opcional. Depende del tipo de Investigaci ón) 
+Presentación.  
+Justificación  
+Objetivos de la Propuesta  
+Objetivo General  
+Objetivos Específicos  
+Estructura de la Propuesta  
+Factibilidad  de la Propuesta  
+ Factibilidad Técnica  
+ Factibilidad Operativa  
+ Factibilidad Económica  
+ Factibilidad Humana l, Otras.  
+Análisis Costos  de la Propuesta  
+Análisis de los fondos necesarios para el desarrollo de la Propuesta  
+Representación Gráfica del Análisis de Costo. (Interpretación)  
+ 
+ 
+REFERENCIAS  
+ 
+ANEXOS  
+A.- Xxxxxxxxxxxxxxxxxx  
+B.- Xxxxxxxxxxxxxxxxxx  
+C.- Xxxxxxxxxxxxxxxxxx 
+ 
+ 
+ 
+ 
+                                                 
+ 
+--- Page 27 ---
+  
+27 
+  
+ 
+Listas de Cuadros, Gráficos y Figuras  
+ 
+Se incluirán cuando el trabajo lo amerite, consiste en la relación del número, 
+título y el número de la página donde aparecen cada lista en una hoja por separado . 
+A continuación modelo  de la lista de cuadros, gr áficos y figuras.   
+ 
+LISTA DE CUADROS  
+ 
+Cuadro              pp. 
+1 Titulo del cuadro tal cual se nombró en el proyecto  ........................   00 
+2 Titulo del cuadro tal cual se nombró en el proyecto  .........................  00 
+3 Titulo del cuadro tal cual se nombró en el proyecto  .........................  00 
+4 Titulo del cuadro ta l cual se nombró en el proyecto  .........................  00 
+5 Titulo del cuadro tal cual se nombró en el proyecto  .........................  00 
+ 
+ 
+LISTA DE GRÁFICOS  
+ 
+Gráfico              pp. 
+ 
+1 Titulo del gráfico  tal cual se nombró en el proyecto  .........................  00 
+2 Titulo del gráfico  tal cual se nombró en el proyecto  .........................  00 
+3 Titulo del gráfico  tal cual se nombró en el proyecto  .........................  00 
+4 Titulo del gráfico  tal cual se nombró en el proyecto  .........................  00 
+5 Titulo del gráfico  tal cual se nombró en el proyecto  .........................  00 
+ 
+ 
+LISTA DE FIGURAS  
+ 
+Figura               pp. 
+ 
+1 Titulo de la figura tal cual se nomb ró en el proyecto  ........................  00 
+2 Titulo de la figura tal cual se nombró en el proyecto  ........................  00 
+3 Titulo de la figura tal cual se nombró en el proyecto  ........................  00 
+4 Titulo de la figura tal cual se nombró en el proyecto  ........................  00 
+5 Titulo de la figura tal cual se nombró en el proyecto  ........................  00 
+6 Titulo de la figura tal cual se nombró en el proyecto  ........................  00 
+--- Page 28 ---
+  
+28 
+  
+Resumen  
+ 
+La página del resumen tiene un encabezado igual al de la portada y luego el 
+título (ambos elementos centrados) y el nombre del autor, tutores y año de 
+presentación. Luego se ubica el tex to del resumen, que debe incluir en un solo 
+párrafo escrito a simple espaciado una descripción corta del tema desarrollado, del 
+problema que se solucionó, el nombre de la metodología que se utilizó, los 
+resultados obtenidos y las conclusiones que se alcanz aron. No debe exceder de 
+trescientas (300) palabras.  
+En la parte inferior de está página debe incluirse una línea de palabras claves o 
+descriptores que servirán para orientar la búsqueda de investigadores posteriores 
+que puedan interesarse en este trabajo , además deberá incluir la línea de 
+investigación y el área temática en el cual se esta realizando el estudio . 
+Seguidamente se muestra un modelo del resumen.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 29 ---
+  
+29 
+  
+REPÚBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN   
+UNIVERSITARIA , CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+EXTENSIÓN MARACAY  
+ 
+TITULO DEL TRABAJO ESPECIAL DE GRADO TITULO DEL TRABAJO 
+ESPECIAL DE GRADO TITULO DEL TRABAJO ESPECIAL DE  
+GRADO TITULO DEL TRABAJO E SPECIAL DE GRADO  
+TITULO DEL TRABAJO ESPECIAL  
+ 
+ Autor (a): XXXXXXXXXX  
+ Tutor (a): XXXXXXXXXX  
+       Año: 2015  
+ 
+RESUMEN  
+La página del resumen tiene un encabezado igual al de la portada y luego el título 
+(ambos elementos centrados) y el nombre del autor, tut ores y año de presentación. Luego se 
+ubica el texto del resumen, que debe incluir en un solo párrafo escrito a simple espaciado una 
+descripción corta del tema desarrollado, del problema que se solucionó, el nombre de la 
+metodología que se utilizó, los resu ltados obtenidos y las conclusiones que se alcanzaron. No 
+debe exceder de T rescientas (300) palabras . En la parte inferior de está página debe 
+incluirse una línea de palabras claves o descriptores que servirán para orientar la búsqueda de 
+investigadores po steriores que puedan interesarse en este trabajo, además deberá incluir la 
+línea de investigación y el área temática en el cual se esta realizando el estudio. La página del 
+resumen tiene un encabezado igual al de la portada y luego el título (ambos element os 
+centrados) y el nombre del autor, tutores y año de presentación. Luego se ubica el texto del 
+resumen, que debe incluir en un solo párrafo escrito a simple espaciado una descripción corta 
+del tema desarrollado, del problema que se solucionó, el nombre de  la metodología que se 
+utilizó, los resultados obtenidos y las conclusiones que se alcanzaron. No debe exceder de 
+trescientas (300) palabras. En la parte inferior de está página debe incluirse una línea de 
+palabras claves o descriptores que servirán para o rientar la búsqueda de investigadores 
+posteriores que puedan interesarse en este trabajo, además deberá incluir la línea de 
+investigación y el área temática en el cual se esta realizando el estudio  
+ 
+Descriptores o Palabras Clave: XXX, XXXXX, XXXXX.  
+Línea  De Investigación : xxxxxxxx  
+Área Temática : xxxxxxxxxxx  
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 30 ---
+  
+30 
+  
+INTRODUCCIÓN   
+  
+Consiste en la descripción de manera clara y sencilla del tema objeto de la 
+investigación, así como explicaciones complementarias que permitan una mejor 
+comprensión del trabajo. Breve exposición de la manera como fue planteado el tema 
+en los subsiguientes capítulos que conforman el trabajo, sin adelantar las 
+conclusiones a los que se llegan en el trabajo.  
+Todo proyecto de investigación, debe tener como una parte constitutiva y 
+fundamental del mismo, un introducción. En esta es necesario presentar de manera 
+clara y de forma resumida una visión general de lo que se trata en el estudio, es decir 
+su contenido, a fin de facilitar su comprensión. Esta es una parte importante del 
+proyecto  de investigación, deberá elaborarse con cuidado especial.  
+ La introducción, se debe considerar como un cuerpo aparte de  las partes, 
+secciones o capítulos constitutivos del proyecto de investigación. Según Balestrini 
+(2002), señala que:  
+ 
+Esta es un sumar io de los propósitos, organización y metodología que 
+orientarán el sentido de la investigación propuesta. Por consiguiente, a 
+partir de ésta, el lector, puede formarse una visión general de la 
+importancia del tema objeto de investigación, alcance del área temática  y 
+estructura del proyecto. (p. 36)   
+ 
+ La introducción debe contener los siguientes aspectos:  
+- De que se trata el tema.  
+- La importancia  
+- La justificación (el por qué hay que estudiarlo).  
+- Alcances y limitaciones (hasta donde llega la investigación y l as dificultades 
+para obtener la información).  
+- Finalidad de la investigación (el o  los objetivos).  
+- La caracterización de la investigación y la estructura del trabajo (las 
+secciones o capítulos en que esta dividido).  
+--- Page 31 ---
+  
+31 
+  
+ 
+ 
+CAPÍTULO  I 
+ 
+EL PROBLEMA  
+ 
+Planteamient o del Problema  
+ 
+¿Qué  se entiende por plantear un problema? Partiendo  del siguiente criterio: 
+Plantear un problema es caracterizarlo, definirlo, enmarcarlo teóricamente, sugerir 
+propuestas de solución para ser demostradas, establecer unas fuentes de 
+informa ción y unos métodos para recoger y procesar dicha información. La 
+caracterización o definición del problema conduce a otorgarle un título, en el cual de 
+la manera más clara y denotativa se indiquen los elementos que le son esenciales.  
+El planteamiento del problema, es la estructuración de toda la investigación, de 
+tal forma  que uno de los componentes resulte parte de un todo y que ese todo forme 
+un cuerpo que tenga lógica en la  indagación . Se debe por lo tanto, sintetizar la 
+cuestión proyectada para investi gar, generalmente a través de una interrogante.  Se 
+va de lo general a lo particular.  
+En primer lugar, deberá revisarse si el problema es susceptible de resolverse 
+mediante una investigación. Puede averiguarse sobre la significación del problema, 
+es decir, si la solución representa un aporte importante al campo de estudio y si 
+puede abrir nuevos caminos. Se aconseja además preguntarse en relación a la 
+formulación de la investigación: ¿Es un problema nuevo o ya existen trabajos sobre 
+él? En este caso, ¿Las so luciones son pertinentes?, ¿Está adecuadamente 
+planteado el problema?, ¿Los términos están suficientemente definidos?, ¿Vale la 
+pena emplear tiempo y esfuerzo en la solución, aunque ésta sea provisional?  
+El planteamiento del problema, parte de la identific ación del problema objeto de 
+la investigación, en términos concretos y explícitos con la descripción de los 
+síntomas (variables dependientes) que se observan y son relevantes, 
+relacionándolos con las causas que los producen (Variables independientes). Para  
+lograrlo se debe precisar el fenómeno a investigar, el ámbito espacial donde se 
+--- Page 32 ---
+  
+32 
+  
+produce, el ámbito temporal donde se ubica y los sujetos concretos involucrados en 
+el fenómeno a estudiar, posibles consecuencias y alternativas a implementar para 
+resolver la  situación.  
+Una vez realizado el planteamiento es necesario concretar el problema 
+mediante la elaboración de una pregunta que define exactamente cuál es el 
+problema a resolver por el investigador. Esta pregunta debe ser clara y concreta de 
+un solo problem a de investigación y no debe llevar al observador  a responderla con 
+una simple respuesta afirmativa o negativa. En tal sentido se recomienda redactarla 
+en términos de efecto, consecuencia, incidencia  entre otros.  
+Como ayuda para definir el problema se plan tean las siguientes preguntas que 
+el estudiante investigador debe responder:  
+- ¿Cuál es el tema?  
+- ¿Qué situación me preocupa? ( Esto permite identificar el problema).  
+- ¿Qué te propones hacer?  (Conduce hacia la formulación del problema)  
+- ¿Por qué lo plantea?  (La respuesta relaciona el planteamiento con la 
+realidad de las observaciones y con los antecedentes de la investigación).  
+- ¿Cómo?  (Define las estrategias de investigación que se aplicará)  
+- ¿Dónde ? (Define el lugar)  
+- ¿Cuando? (Precisa el lapso en que se define el problema)  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 33 ---
+  
+33 
+  
+Objetivos de la investigación  
+ 
+Es el propósito de la investigación. Responde a la pregunta: ¿ Para qué?, ¿Qué 
+se busca con la investigación? ¿Qué quiero hacer?, Lo que se quiere lograr; por lo 
+tanto deben ser posibles de lograr o c onseguir. Para la formulación se debe tener en 
+cuenta: el tiempo disponible para realizar la investigación, los recursos financieros 
+necesarios, los recursos materiales indispensables, los recursos humanos, la 
+accesibilidad a la información requerida y el dominio de los recursos técnicos 
+adecuados y pertinentes para lograr la investigación.  
+Los objetivos deben redactarse con verbos en infinitivo que se puedan evaluar, 
+verificar, refutar en un momento dado. Estos varían de acuerdo a la investigación y 
+orient an los aspectos contemplados en el estudio. La redacción debe ser clara y 
+precisa, ¿ Son coherentes entre sí y con el tema a tratar? ¿Están operacionalizados? 
+¿Son alcanzables en la realidad?  
+Existen muchos criterios para la creación de los objetivos. Para su redacción, 
+Mathieny y Rahmlow (1983), recomiendan  emplear una oración simple y directa, que 
+especifique la acciona realizar, ya que según los actores citados las frases largas 
+tienden a generar confusión respecto al objetivo general. Pudiendo contener más de 
+uno, implícitos en la redacción. También recomiendan evitar las inclusiones  o 
+aclaratorias, paréntesis  o anexos que quedan indeterminados:  
+Modelo  de redacción de un objetivo en forma incorrecta:  
+- Realizar un estudio de las enfermedades ( parasitarias , respiratorias, virales, 
+etc.) de los niños del barrio 23 de enero.  
+Modelo  de redacción de un objetivo en forma  correcta:  
+- Realizar un estudio de las enfermedades parasitarias, respiratorias y virales 
+de los niños del Barrio 23 de enero de Caracas.  
+ 
+ 
+ 
+ 
+ 
+--- Page 34 ---
+  
+34 
+  
+Objetivo General  
+ 
+ El objetivo general debe estar en plena coherencia con las interrogantes y con 
+el título de la investigación, porque representa la finalidad máxima que se persigue a 
+través del estudio , el verbo debe  ir en infinitivo . Debe centrar la con cepción de la 
+investigación como un fin, mientras que los objetivos específicos señalan los 
+aspectos o etapas que deben cubrirse para alcanzar el objetivo general.  
+ 
+Cuadro 2 
+Verbos  para los objetivos generales  
+ 
+Verbos para los objetivos generales  
+Analizar  
+Calcular  
+Categorizar  
+Comparar  
+Enumerar  
+Establecer  
+Evaluar  
+Explicar 
+Examinar  Compilar  
+Concretar  
+Contrastar  
+Crear  
+Inferir  
+Mostrar  
+Orientar  
+Oponer 
+Reconstruir  Definir  
+Demostrar  
+Desarrollar  
+Describir  
+Relatar  
+Replicar  
+Reproducir  
+Revelar  
+Planear  Diagnosticar  
+Discriminar  
+Diseñar  
+Efectuar  
+Presentar  
+Probar  
+Producir  
+Proponer  
+Situar  Formular  
+Fundamentar  
+Generar  
+Identificar  
+Tasar  
+Trazar  
+Valuar  
+ 
+ 
+ 
+Objetivos Específicos  
+ 
+Los objetivos específicos establecen en términos mucho más operativos el logro 
+de aquellos aspect os concretos, conducen a  la obtención del objetivo general. Deben 
+redactarse en orden metodológico y consecutivamente. Marcan pautas para el 
+desarrollo del Marco Teórico y orientan en la selección del tipo y diseño 
+metodológico. No existe un número limitad o para formular objetivos específicos, sin 
+embargo, se sugiere como mínimo se deben formular al menos tres (03) para los 
+trabajos tipo análisis y (04) para las propuestas siendo el cuarto objetivo el desarrollo 
+de la misma , ya que son los que van a delimit ar, guiar y precisar los alcances de la 
+investigación. En caso que el planteamiento de problema tenga varias interrogantes 
+los objetivos específicos deben estar alineados con las mismas.  La redacción del 
+verbo debe  ir en infinitivo  y solo debe aparecer uno  por objetivo. Tal como:  
+a. Redactar los objetivos en infinitivo en la investigación  
+--- Page 35 ---
+  
+35 
+  
+b. Levantar la información de acuerdo al problema.  
+c. Brindar las propuestas de la investigación.   
+ 
+Cuadro 3 
+Lista de verbos para la redacción de objetivos específicos  
+ 
+NIVEL I  NIVEL II  NIVEL III  NIVEL IV  NIVEL V  NIVEL VI  
+Conocimiento  Comprensión  Aplicación  Análisis  Síntesis  Evaluación  
+Adquirir  
+Combinar  
+Completar  
+Computar  
+Describir  
+Escoger  
+Enunciar  
+Enumerar  
+Formular  
+Identificar  
+Indicar  
+Informar  
+Multiplicar  
+Nombrar  
+Narrar  
+Nominar  
+Pronunciar  
+Preparar  
+Rotular  
+Recopilar  
+Recalcar  
+Retener  
+Registrar  
+Señalar  
+Reunir  Combinar  
+Convertir  
+Colocar  
+Dar 
+Diagramar  
+Especificar  
+Comentar  
+Expresar  
+Exponer  
+Explicar  
+Extrapolar  
+Interpolar  
+Modificar  
+Organizar  
+Parear  
+Relacionar  
+Revisar  
+Reafirmar  
+Reproduci r 
+Sustituir  
+Traducir  
+Trasladar  
+ Aplicar  
+Adaptar  
+Apoyar  
+Caracterizar  
+Confeccionar  
+Calcular  
+Demostrar  
+Ejecutar  
+Ensayar  
+Ejercitar  
+Experimentar  
+Hacer  
+Localizar  
+Mostrar  
+Operar  
+Obtener  
+Probar  
+Practicar  
+Presentar  
+Realizar  
+Transformar  
+Reducir  
+Replantear  
+Tabular  
+Ubicar 
+Utilizar  
+Verificar  Analizar  
+Asociar  
+Categorizar  
+Clasificar  
+Catalogar  
+Distinguir  
+Discriminar  
+Detectar  
+Desarmar  
+Descifrar  
+Descomponer  
+Descubrir  
+Desmenuzar  
+Desglosar  
+Diferenciar  
+Dividir  
+Examinar  
+Estudiar  
+Establecer  
+Extraer  
+Hallar  
+Jerarquizar  
+Ordenar  
+Razo nar 
+Operar  
+Seleccionar  
+ Armar  
+Bosquejar  
+Concebir  
+Condensar  
+Citar  
+Construir  
+Concluir  
+Combinar  
+Derivar  
+Deducir  
+Definir  
+Diseñar  
+Dibujar  
+Elaborar  
+Fabricar  
+Formular  
+Generalizar  
+Inferir  
+Inducir  
+Integrar  
+Preparar  
+Precisar  
+Proponer  
+Reconstruir  
+Resumir  
+Reestructura r 
+Sintetizar  
+Ilustrar  Adoptar  
+Completar  
+Confirmar  
+Comprobar  
+Calcular  
+Calificar  
+Comparar  
+Criticar  
+Constatar  
+Cambiar  
+Chequear  
+Decidir  
+Defender  
+Determinar  
+Escoger  
+Elegir  
+Evaluar  
+Juzgar  
+Medir  
+Opinar  
+Sancionar  
+Fuente: APA (2005 ) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 36 ---
+  
+36 
+  
+Justificación de la In vestigación  
+ 
+Una vez que se ha seleccionado el tema de investigación, definido por el 
+planteamiento del problema, se debe indicar las motivaciones que llevan al 
+investigador a desarrollar el proyecto. Para ello se debe responder a la pregunta de: 
+¿Por qué se Investiga ?  
+ Debe exponerse las razones que conllevan a la investigación causas, aportes y 
+beneficiarios. Estas se sustentan señalando los siguientes aspectos:  
+- La conveniencia : aportes que genera.  
+- La relevancia : trascendencia  social y proyección en el tiempo y en el 
+espacio.  
+- Las implicaciones practicas  ¿ayudaran a resolver algún problema practico 
+o tiene implicaciones trascendentales para una amplia gama de problemas ?  
+- Valor teórico : si la investigación  aportará información complementaria al 
+conocimient o existente del tema.  
+- Utilidad metodológica : si contribuirá a crear un nuevo  instrumento para 
+recolectar o analizar datos o a la definición de nuevos conceptos.  
+- La pertinencia social , institucional u otro ente sobre el cual tenga incidencia 
+directa e ind irecta .  
+ 
+Alcance  
+ 
+El alcance o delimitación de la investigación tiene características de evaluar la 
+investigación: lo que se hará en la misma y hasta donde se realizará. Representa la 
+proyección de la investigación. Es por ello que es importante determina r aquí que es 
+lo que se va a investigar (objetivo general) , población y resultados. Lugar o espacio 
+donde se llevará a cabo la investigación. Se define la aplicabilidad de las 
+derivaciones o consecuencia de la investigación.  
+ 
+ 
+ 
+--- Page 37 ---
+  
+37 
+  
+Limitaciones  
+ 
+En este de d escriben los posibles impedimentos, barreras, obstáculos y 
+restricciones  que pudieran obstruir la investigación en cualquier momento o espacio. 
+No se consideran limitaciones el tiempo, las condiciones económicas y las fuentes de 
+información.  
+ 
+Operacionali zación de Variables  
+ 
+Luego de identificadas y definidas conceptualmente las variables se proceden a 
+operacionalizarlas. Se trata de descomponer o desglosar cada una de las variables 
+en los aspectos que la componen, a fin de facilitar la recolección de los datos 
+necesarios. La primera tarea consiste en descomponer la variable en las 
+dimensiones o sea los aspectos o elementos que constituyen los rasgos 
+característicos de la variable.  
+Estas dimensiones se descomponen en indicadores y en subindicadores, de ser  
+necesario. Un indicador es un referente concreto, tangible, cuya presencia en la 
+realidad que se estudia revela la presencia de la dimensión de la cual se desprende y 
+por ende de la variable en estudio. Son los aspectos más concretos que definen una 
+dimen sión.  
+Los indicadores se pueden extraer del objetivo general o de los objetivos 
+específicos y pueden medirse mediante índices o investigarse por ítems o preguntas 
+que se incluyen en los instrumentos que se diseñan para la recopilación de la 
+información.  
+Nota: “El cuadro de Operacionalización de Variables aun cuando se 
+elabora en el Capítulo  I se ubica al Final del Capítulo III ”. 
+ 
+ 
+ 
+--- Page 38 ---
+  
+38 
+  
+Cuadro 4 
+Cuadro Nº X: Operacionalización de las Variables   
+Objetivo General: Diagnosticar las necesidades de capacitación de  los Docentes de Educación Básica de acuerdo  
+                               con las competencias exigidos por el currículo básico nacional .  
+ 
+Objetivos 
+Específicos  Variables  Dimensiones  Indicadores  Ítems  Instrumento s 
+Recolección de 
+Datos  
+Diagnosticar las  
+necesidades de 
+capacitación de 
+los docentes que 
+desempeñan sus 
+funciones en las 
+escuelas básicas 
+en el proceso de 
+enseñanza  Necesidades de 
+capacitación  Nivel de formación  - Título académico  
+- Estudios profesionales que realiza 
+actualmente  
+- Experiencia actual iza  1, 2 
+3 
+ 
+4  
+C 
+ 
+U 
+ 
+E 
+ 
+S 
+ 
+T 
+ 
+I 
+ 
+O 
+ 
+N 
+ 
+A 
+ 
+R 
+ 
+I 
+ 
+O   
+ Actualización  - Participación en eventos académicos y 
+científicos  
+- Realización de cursos talleres  
+- cursos realizados actualmente  5 
+ 
+6 
+7 
+Capacitación docente  - aspectos en los cuales se requiere 
+capa citación docente   
+8 
+Analizar el 
+desempeño del 
+docente en 
+cuanto a las 
+funciones y tareas 
+que cumple de 
+acuerdo con lo 
+establecido como 
+competencia en el 
+currículo básico  Desempeño del 
+docente en cuanto 
+a las funciones y 
+tareas  Competencias en la 
+función  del orientador  - ayuda a los estudiante s en el 
+conocimiento de si mismo  
+- motiva en un ambiente de libertad  9 
+ 
+10 
+Competencias en la 
+función de administrador  - asiste a reuniones  
+- entrega recaudos a tiempo  11 
+12 
+Competencias en función 
+de planificado r  - propone actividades con base a las 
+necesidades  
+- participan los estudiante s en el plan de 
+evaluación  13 y  
+14  
+15 y 16  
+Competencias en función 
+de evaluador  - acepta opinión de los estudiante s en el 
+plan de evaluación  17 y 18  
+Competencias en funci ón 
+de facilitador  - utiliza estrategias actualizadas  19 y 20  
+ 
+Nota: el cuadro de Operacionalización de Variables va en forma Horizontal y en una sola Hoja y se ubica al 
+Final del Capítulo III ”.
+--- Page 39 ---
+  
+39 
+  
+CAPÍTULO  II 
+ 
+MARCO REFERENCIAL  
+ 
+Constituye las bases sobre las cuales se sustenta la investigación. Allí se 
+exponen los conceptos, constructos, categorías, interrogantes, resultados y 
+conclusiones, producto de otras investigaciones empíricas  y teóricas . De allí que, los 
+profesores de metodología de la investigació n, siempre resalta la siguiente 
+afirmación: una de las formas  más sencillas de economizar  esfuerzos en una 
+investigación es el repaso y reconstrucción del trabajo ya realizado por otros. La 
+tarea consiste en revisar todo el material disponible, es decir la  llamada revisión de la 
+literatura como procedimiento para la formulación de estudios exploratorios de de 
+otros tipos.  
+Es importante señalar en el trabajo de investigación la estrecha relación entre la 
+teoría, el proceso de investigación, la realidad y el  entorno. La investigación sirve 
+para iniciar una teoría nueva, reformar una existente o simplemente definir con más 
+claridad, conceptos o variables ya existentes.  
+El Marco Referencial  cumple las siguientes funciones:  
+1. Ayuda a prevenir errores que se han c ometido en otros estudios.  
+2. Orienta sobre cómo habrá de llevarse a cabo el estudio  
+3. Inspira nuevas Líneas y Áreas de investigación.  
+4. Provee de un Marco de Referencia para interpretar los resultados del 
+estudio.  
+Etapas para la elaboración del marco referenci al:  
+- Esquematización  
+- Detección de la información durante el arqueo bibliográfico  
+- Obtención del material contentivo de la información de interés  
+- Consulta de cada fuente  
+- Construcción del texto con la información obtenida más los aportes 
+propios derivados  del análisis.  
+ 
+--- Page 40 ---
+  
+40 
+  
+Antecedentes de la E mpresa  
+ 
+Se realiza una breve reseña histórica de la empresa, institución u organización, 
+donde se va a realizar la investigación, abarcando misión, visión, valores 
+organizacionales, estructura organizativa, fecha de inic io, haciendo hincapiés en la 
+evolución o desarrollo (Trayectoria de la organización), entre otros.  
+ 
+Antecedentes  de la I nvestigación  
+ 
+Representan a los estudios previos vinculados con el tema a través de alguno 
+de sus elementos teóricos, técnicos, metodoló gicos o de otra naturaleza que 
+constituya una contribución o complemento para la investigación.  
+Se deben referir todos los posibles autores, trabajos, estudios, tesis, 
+monografías, publicaciones impresas en los distintos medios existentes, parecidos  o 
+a fin al tema que se quiere desarrollar o en el que se puede apoyar en virtud de su 
+fundamentación, resultados y metodología.   
+Es oportuno recordar que la citación de los antecedentes se puede elaborar con 
+base en fechas y/o cronogramas de otros trabajos real izados, pero es indispensable 
+citar la fuente de consulta. De cada una de las investigaciones deberá seleccionar un 
+mínimo de cinco (5)  indicando, el apellido del autor, el año de la presentación, el 
+título del Trabajo Especial de Grado que debe ir en negr ita, institución a la cual 
+pertenece la investigación,  propósito de la realización, contenido o en que consiste la 
+investigación, metodología utilizada,  que concluyó el autor. El investigador debe 
+adicionar los comentarios al respecto en función del tema i nvestigado y de los 
+aportes de ese trabajo a la investigación.  
+Es importante que los antecedentes citados tengan una fecha reciente ( mínimo  
+de 4 años) de publicación con respecto a la fecha de preparación del trabajo, 
+deberán ser  ordenados desde la fecha más reciente a la más antigua, de  coincidir la 
+misma fecha se realizará por orden alfabético.  
+Modelo  de cómo debe presentarse un antecedente  
+--- Page 41 ---
+  
+41 
+  
+Andrades (2006 ). El cuento como estrategia didáctica para la adquisición de 
+la lectura y la escritura en el niño d e edad inicial del preescolar abierto “año 
+internacional del niño” del sector 6 de caña de azúcar, de Maracay  estado 
+Aragua . UPEL . Trabajo Especial de Grado para optar al título de TSU en XXXXXXX . 
+El presente estudio tuvo como objetivo xxxxxxxxxxxxxxxxx.  Se encuentra enmarcado 
+dentro de la modalidad de proyecto factible apoyada en una investigación de campo 
+de tipo descriptiva, con basamento  documental y un nivel descriptivo, con un enfoque 
+cuantitativo y un diseño no experimental. Se utilizo como técnica XXXXXXXXX  y 
+como Instrumento  el XXXXXXXXXX , el cual ha sido estructurado por XXXXXXXXXX 
+preguntas.  Los resultados obtenidos a través del análisis permitieron  como 
+conclusión XXXXXXXXXXXXXXXXXXXXXXXX.  
+Se considero pertinente la manera como fue estructurada l a investigación y al 
+mismo tiempo representa un aporte  xxxxxxxxx xxxxxxxxxxx xxxxxxxxxxxxxxxx . 
+ 
+Bases Teóricas  
+ 
+En este punto se condensará todo lo pertinente a la literatura que se tiene sobre 
+el tema a investigar. Debe ser una búsqueda detallada y concre ta donde el tema y la 
+temática del objeto a investigar tengan un soporte teórico, que se pueda debatir, 
+ampliar, conceptualizar y concluir. Ningún trabajo de investigación debe privarse de 
+un fundamento,  marco teórico o de referencia, ya que permite precis ar y organizar 
+los elementos contenidos en la descripción del problema, de tal forma que puedan 
+ser manejados y convertidos en acciones concretas.  
+Estos fundamentos teóricos permiten presentar una serie de enfoques o 
+criterios desarrollados por autores, q ue forman un cuerpo unitario y no simplemente 
+un conjunto arbitrario de definiciones. Es necesario, se perciba con gran claridad el 
+enfoque, análisis y posición del investigador.  
+En este aspecto se debe hacer énfasis en que la estructura principal para 
+desarrollar estas bases debe ser la tabla de variables, prestando  mayor atención en 
+los indicadores ya que así se podrá tener sustento teórico relacionado con le 
+problemática a investigar.  
+--- Page 42 ---
+  
+42 
+  
+En este punto el investigador debe redactar un breve concepto o consid eración 
+particular con respecto al indicador, luego procederá a sustentarlo teóricamente con 
+al menos dos autores ( enfocados o relacionados con el tema a investigar ). Es válido 
+que el investigador incorpore mas elementos si con ello contribuye a la ampliac ión 
+del concepto (esquemas, tipos tendencias, entre otros).  
+Modelo  para presentar las bases Teóricas :  
+Gerencia: Considerar el uso eficiente de los recursos será la base para que todo 
+proceso planificado se cumpla de manera tal que los objetivos sean alcan zados  con 
+el menor esfuerzo posible.  
+Gerencia Robbins (2009) este autor define gerencia como “ el proceso por el 
+cual los subordinados  comparten un grado significativo del poder de tomar 
+decisiones con sus superiores inmediatos”.  
+Gerencia Smith (2002) afirm a que la gerencia es “el uso eficiente de los 
+recursos considerando la capacidad de los elementos involucrados para el 
+cumplimiento de los objetivos trazados en la planificación”.  
+Después de colocar la base teórica  el investigador podrá incorporar elemento s 
+adicionales relacionados con la misma de manera de ampliar dicho concepto.  
+ 
+Bases Legales  
+ 
+Aquí se hace referencia a toda aquella normativa legal vigente sobre la cual se 
+apoya la investigación, que va desde la constitución nacional, leyes orgánicas y su s 
+reglamentos, decretos presidenciales, normas, acuerdos y convenios nacionales e 
+internacionales, resoluciones y normas internas de la institución o empresa para la 
+que se realiza la investigación.  
+Algunos trabajos de in vestigación ameritan apoyarse en  instrumentos legales, 
+para el cual se bebe seguir el siguiente orden (según la categoría de importancia o 
+pirámide de kelsen):  La Constitución, Convenios Internacionales, Leyes, 
+reglamentos, Códigos, Normas, entre otros, para el cabal desarrollo; es bajo es te 
+subtítulo que se incluirán los mismos, para  la redacción se señalará el documento de 
+donde se extrae el basamento legal, se cita textualmente el artículo o numeral 
+--- Page 43 ---
+  
+43 
+  
+extraído. Para el caso de Normas Covenin, puede utilizarse el parafraseo. Al 
+presentarse bases legales  el investigador debe indicar brevemente la relación del 
+basamento legal indicando con la investigación que se lleva a cabo, lo cual debe 
+hacerse, al término de cada uno de los  basamentos expresados.  
+Modelo  para presentar las bases legales :  
+La presente investigación se sustenta legalmente en la Ley Orgánica para la 
+Protección del Niño y del Adolescente (2000), en el Artículo 1°,  establece: Esta Ley 
+tiene por objeto garantizar a todos los niños y adolescentes, que se encuentren en el 
+territorio  nacional, el ejercicio y el disfrute pleno y efectivo de sus derechos y 
+garantías, a través de la protección integral que el Estado, la sociedad y la familia 
+deben brindarles desde el momento de su concepción.  
+Lo anterior indica que el Estado debe garant izar una atención integral de los 
+niños, niñas y adolescentes desde que han sido concebidos, ya que estos son el 
+recurso humano que garantizará el desarrollo del país.  
+El Artículo 5 , sobre Obligaciones Generales de la Familia. La familia es 
+responsable, d e forma prioritaria, inmediata e indecl inable, de asegurar a los niños, 
+adolescentes el ejercicio , disfrute pleno , efectivo de los derechos , garantías. El padre 
+y la madre tienen responsabilidades y obligaciones comunes e iguales en lo que 
+respecta al cuid ado; desarrollo y educación integral de los hijos.  
+El Estado debe asegurar políticas, programas y asistencia para que la familia 
+pueda asumir adecuadamente esta responsabilidad, para que los padres y las 
+madres asuman, en igualdad de condiciones las respon sabilidades y obligaciones.  
+--- Page 44 ---
+  
+44 
+  
+CAPÍTULO III  
+ 
+ABORDAJE  METODOLÓGICO  
+ 
+En el abordaje  metodológico se deberán presentar el conjunto de métodos, 
+técnicas e instrumentos de recolección de datos que permitirán obtener la 
+información requerida en la investigación propuesta. El fin esencial del mismo es el 
+de situar en el lenguaje del estudio los métodos e instrumentos que se emplearan, 
+desde la ubicación acerca del tipo de investigación, diseño, población, muestra, los 
+instrumentos y técnicas de recolección de datos , hasta la codificación, análisis y 
+presentación de los resultados. De esta manera se proporcionara al lector una 
+información detallada acerca de cómo se realizará  la investigación , cabe resaltar que 
+los aspectos mencionados anteriormente deben ir sustenta dos bibliográficamente.  
+ 
+Diseño, Tipo, Nivel y Modalidad de la Investigación  
+ 
+En este punto se debe indicar primero el tipo de investigación seleccionada, la 
+cual debe ser definida y justificada por el investigador; luego se debe indicar el nivel 
+de estudi o considerado para el desarrollo, que también debe rá definirse y justificarse. 
+El estudio puede estar orientad o hacia un tipo de investigación  de campo, proyecto 
+factible o proyecto especial.   
+A continuación se presenta un esquema resumen donde se clasific an el diseño, 
+tipo y modalidad de la investigación.  
+--- Page 45 ---
+  
+45 
+  
+ ¿Qué se propone?  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Figura 1 . Diseño tipo modalidad de la investigación . (Fuente: Rodríguez (2001). 
+Estrategias para realizar proyectos de Investigación ). Diseño No 
+Exper imental  
+Diseño 
+Experimental  
+Diseño 
+Bibliográfico  Tipo  
+Campo  Nivel:  
+ 
+Exploratorio  
+Descriptivo  
+Explicativo  
+Evaluativo  
+Proyectivo  
+Correla cional  
+Longitudinal  
+Transversal o 
+Transeccional  
+ 
+ Modalidad:  
+Proyecto 
+Factible  
+Modalidad:  
+Proyecto 
+Especial  - Modelo Operativo  
+- Formulación de 
+lineamientos o 
+políticas  
+- Libros de texto  
+- Materiales de 
+apoyo 
+educativo  
+- Desarrollo de 
+software  
+- Desarrollo de 
+prototipos  
+- Productos 
+tecnológicos  
+- Creación 
+literaria  
+- Creación 
+artística  
+ 
+ 
+ 
+ 
+ Tipo  
+Preexperimental  
+Tipo  
+Cuasiexperimenta
+l Nivel:  
+- Estudio de caso con 
+una sola medición  
+- Pretest y postest con un 
+solo grupo.  
+- Postest únicamente con dos grupos  
+- Pretest y postest con dos grupos  
+- Series cronológicas  
+- Tratamientos múltiples  
+ 
+ 
+ 
+ 
+ Tipo  
+Documental  Nivel:  
+- Histórico  
+ 
+ 
+ 
+ 
+--- Page 46 ---
+  
+46 
+  
+Clasificación de la Investigación  
+  
+Al plantearse la realización de un trabajo de investigación en cualquiera de sus 
+modalidades, se debe tener claro las características de dicho trabajo de acuerdo al 
+propósito y a los parámetros que lo  delimitaran. De acuerdo con esto, la identificación 
+del estudio consistirá en caracterizar la investigación utilizando los criterios de los 
+cuales se tomaran los más generalizados  referidos por diferentes autores como:  
+Arias (1999), UPEL (2007), Sierra (1 992), Salinas (1985), entre otros, según los 
+cuales se puede clasificar  la investigación dentro de los siguientes términos   
+Según propósito o razón : Se refiere al tipo de ciencia a que corresponde la 
+investigación pudiendo estar dentro de dos modalidades.   
+- Pura o básica : de planteamientos abstractos y teóricos generales que no 
+resuelve problemas inmediatos pero que sirven de base para otras ciencias.  
+- Aplicada o utilitaria : con planteamientos concretos orientados a resolver 
+problemas reales inmediatos.   
+ Según nivel de conocimiento : esta relacionado con la profundidad del estudio:   
+- Exploratorio : busca obtener conocimiento en un tema poco estudiado o 
+que no ha sido abordado antes, permite familiarizarse con fenómenos 
+relativamente desconocidos - 
+- Descriptiva : analiza en detalle las características de un hecho, fenómeno, 
+objeto o técnica. Busca especificar las propiedades importantes de 
+personas, grupos, comunidades o fenómenos, los cuales son estudiados 
+de manera independiente para luego integrar el conocimiento  obtenido 
+en una interpretación general.  
+- Correlacional : mide el grado o relación que existente entre dos o más 
+variables estudiadas en un mismo concepto. La correlación  puede ser 
+positiva o negativa dependiendo de la tendencia de las variables. Tiene 
+un valor explicativo, aunque parcial (las correlaciones son generalmente 
+planteamientos estadísticos ) 
+--- Page 47 ---
+  
+47 
+  
+- Explicativa : va mas allá de la descripción de conceptos o fenómenos o 
+del establecimiento de relaciones entre estos. Esta dirigido a responder 
+las causas de l os eventos físicos o sociales (causa -efecto).  
+Según la estrategia empleada por el investigador : tiene que ver con el 
+modelo de diseño metodológico para la obtención de los datos, el cual puede ser:  
+- Documental : se basa en la obtención de análisis de datos  proveniente de 
+material impreso y es realizada en nivel de cuarto y quinto nivel de 
+educación.  
+- De Campo : Es el análisis sistemático de problemas en la realidad donde 
+se suceden con el propósito de describirlo, interpretarlo, entender la 
+naturaleza y fact ores que lo componen, explicar las causas y 
+consecuencias, o predecir la ocurrencia, haciendo uso de métodos 
+característicos de cualquier paradigma o enfoque de investigación 
+conocido. Los datos fundamentales son recogidos directamente de la 
+realidad es de cir a partir de datos originales o primarios. Aunque  se 
+pueden utilizar datos censales que sean tomados directamente de la 
+realidad.  
+ Según los objetivos que persiga una investigación de campo 
+puede ser de carácter  Exploratorio, Descriptivo, Interpretativo , 
+Reflexivo crítico, Explicativo o Evaluativo, dependiendo de la 
+profundidad del mismo.  
+ Pueden ser de Tipo : Experimental, Cuasi -experimental o 
+Expostfacto; Estudio etnográfico, Investigación -Acción, 
+Investigación participante, Estudios de costo -beneficio y de costo -
+efectividad; entre muchos otros tipos de estudios de campo 
+existentes.  
+ 
+Según su alcance:  
+ Temporal  
+ Transversal o Seccional  
+ Longitudinal  
+--- Page 48 ---
+  
+48 
+  
+Proyecto Factible  
+ 
+Es la investigación, elaboración y desarrollo de la propuesta de un modelo 
+operativo v iable para solucionar problemas, requerimientos o necesidades de 
+organizaciones o grupos sociales. Puede relacionarse con la formulación de políticas, 
+programas, tecnologías, métodos o procesos. El Trabajo debe tener apoyo en una 
+investigación de tipo docu mental, de campo o ambos tipos.  
+ 
+Proyectos Especiales   
+ 
+Los Proyectos Especiales son trabajos de investigación que lleven a la 
+realización de creaciones tangibles, susceptibles de ser utilizadas como solución a 
+problemas demostrados o que correspondan a ne cesidades e intereses de tipo 
+cultural. Se incluye en esta categoría el desarrollo de Software, prototipos y de 
+productos tecnológicos en general, como también las creaciones literarias y 
+artísticas.  
+ 
+Población y Muestra  
+ 
+Población  
+ 
+Es parte del universo a estudiar. Es la Totalidad del fenómeno en estudio. Se 
+refiere al conjunto de elementos que va  a ser objeto de estudio o grupo de personas, 
+entidades, instituciones, sobre quienes tendrán efecto los resultados y las 
+conclusiones.  
+Población censal:  
+Es la t otalidad de los elementos a ser estudiados estadísticamente, su 
+consideración dependerá del volumen de los mismos y de la posibilidad de estudio 
+por parte del investigador.  
+ 
+ 
+--- Page 49 ---
+  
+49 
+  
+Muestra  
+ 
+Es la parte representativa de la población que se estudia. También puede  
+definirse como una parte reducida del todo , la cual sirve para describir l as principales 
+características.  Las muestras son unidades  representativas del universo o población 
+a estudiar , para ello deben considerarse los siguientes parámetros contemplados en  
+el cuadro 5:  
+ 
+Cuadro  5 
+Parámetros para la Muestra  
+ 
+Población  Muestra  
+Mínimo 5 - 15 Censal  
+16 – 40 Se toman 10 Personas  
+Mayor o igual a 41  25 % de la Población  
+ 
+ 
+Tipos de muestreo : 
+ 
+Aleatorio:  
+Consiste en asignar  un numero a todos y cada uno de los el ementos en estudio, 
+puede ser aplicado a poblaciones con un número significativo de elementos.  
+   
+Sistemático:  
+Consiste en la selección de la unidades de muestreo  de acurdo a un número fijo 
+k, es decir se elige una unidad cada k veces.  
+ 
+Estratificado:  
+Cons iste en la proporcionalidad de elementos muéstrales en la población.  
+ 
+Conglomerado:  
+Consiste en la división de manera natural de la población.  
+ 
+El muestreo puede definirse tomando los criterios de la estadística descriptiva 
+tales como se puede apreciar en el cuadro 6, que se presenta en la página siguiente:  
+ 
+ 
+ 
+--- Page 50 ---
+  
+50 
+  
+Cuadro  6 
+Tipos de Muestreo  
+ 
+Muestreo Probabilístico  
+Aleatorio  Sistemático  Estratificado  Conglomerado  Proporcional  No proporcional  
+Procedimiento  Procedimiento  Procedimiento  Procedimiento  Procedimiento  
+1. Lista completa 
+del universo.  
+2. Asignar un 
+numero a cada 
+individuo  
+3. Seleccionar la 
+muestra a 
+través de una 
+tabla de 
+números 
+aleatorios.  
+  1. Lista completa 
+del universo.  
+2. Selección del 
+primer individuo a 
+través de una 
+tabla de números 
+aleatorios  
+3. Selección de 
+cada décimo  
+individuo a partir 
+del primer 
+seleccionado. (p. 
+ej. Cada 10 
+individuos)  
+ 1. División del 
+universo en 
+estratos 
+homogéneos  
+2. Selección 
+aleatoria de los 
+individuos 
+dentro de cada 
+estrato  
+3. Los tamaños 
+de la muestra 
+dentro de cada 
+estrato son 
+proporcionales.  1. División del 
+universo en 
+estratos 
+homogéneos.  
+2. Selección 
+aleatoria de los 
+individuos dentro 
+de cada estrato.  
+3. Los tamaños 
+de la muestra 
+dentro de cada 
+estrato 
+dependen de las 
+necesidades.  
+ 1. División del 
+universo en 
+distintos grupo o 
+por 
+conglomerados.  
+2. Selección del 
+conglomerado que 
+constituirá la 
+muestra.  
+3. Selección 
+aleatoria de los 
+individuos dentro 
+de cada 
+conglomerado.  
+Muestreo no probabilístico  
+Casual  Intencional  Cuotas  
+Procedimiento  Procedimiento  Procedimiento  
+Entrevista de indiv iduos en 
+forma casual  (p. ej. Los que 
+pasan por cierta calle)  Selección del individuo a 
+entrevistar según criterio  (p. ej. 
+Los dueños de determinado 
+automóvil ) Cada entrevistador debe 
+encuestar un cierto número  de 
+individuos dentro de cada 
+categoría. (p. Ej. Hombres y 
+mujeres)   
+Fuente: Rodríguez (2001). Estrategias para realizar proyectos de Investigación.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 51 ---
+  
+51 
+  
+Técnicas e Instrumentos de  Recolección de D atos 
+ 
+Es la parte operativa del diseño de investigación. Hace relación al 
+procedimiento, condic iones y lugar de la recolección de datos. Una vez seleccionado 
+el tipo de investigación y la muestra de acuerdo con el problema de estudio, la 
+siguiente etapa consiste en recolectar los datos pertinentes de las variables. En toda 
+investigación se aplica po r lo menos un instrumento para medir las variables 
+contenidas en el problema. La recolección de los datos implica tres (3) actividades 
+estrechamente relacionadas entre sí:  
+1. La selección de un instrumento de medición, éste debe ser válido y confiable.  
+2. La a plicación de l instrumento , se refiere a la observación y medición  de las 
+variables qué son de interés para el estudio.  
+3. La preparación de las mediciones obtenidas para que puedan analizarse 
+correctamente (denominada codificación de datos).  
+Para la elaborac ión del instrumento es imprescindible haber realizado la 
+operacionalización de las variables. El instrumento debe estar directamente 
+relacionado con los indicadores de cada una de las variables consideradas y 
+adecuado a las características de las mismas.  
+Los instrumentos derivan de las técnicas de medición, cada una se adapta a 
+determinadas circunstancias o características tanto de la población o muestra como 
+de las variables en estudio, por lo tanto, es necesario que el investigador recurra a 
+las fuentes d e metodología y examine las ventajas y desventajas de cada una para 
+que la selección de la técnica y del instrumento de medición sea la más adecuada 
+para el desarrollo de la investigación. A continuación se presentan algunas de las 
+técnicas e instrumentos que permiten recoger los datos (v er cuadro 6). 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 52 ---
+  
+52 
+  
+Cuadro 7 
+Técnicas e Instrumentos de Recolección de Datos  
+ 
+TÉCNICA  DEFINICIÓN   INSTRUMENTO  
+Observación  Es la capacidad del investigador de percibir, “ver” las 
+cosas, los eventos, los fenómenos y cualquie r situación 
+problemática pero de manera sistemática , es decir, con 
+método. Esta se puede clasificar en estructurada o no 
+estructurada.  (Méndez  2002) Guía de observación  
+Lista de chequeo  
+Matriz de análisis  (Dofa)  
+Análisis de Discrepancia  
+Entrevista  Es un d ialogo intencional orientado hacia unos objetivos. 
+Es una conversación entre dos o mas personas, iniciado 
+por el  interesado con el propósito especifico de obtener 
+información relevante para su investigación. Se puede 
+clasificar en cerrada, abierta o en pro fundidad 
+(estructurada, dirigida o libre) . (Bizquerra 1999 ) Guía de entrevista  
+Encuesta  Es una averiguación o pesquisa. Acopio de datos 
+obtenidos mediante consulta o interrogatorio, referentes a 
+estados de opinión, nivel económico o cualquier otro 
+aspect o de la actividad humana. Esta se puede clasificar 
+en abiertas, cerrada  y de elección múltiple.  (Pallela y 
+Martins 2006)  Cuestionario  
+Escala  
+Test 
+Prueba de conocimiento  
+Técnicas del 
+área de 
+Organización y 
+Sistemas  Estos diagramas sirven para desarrollar  el llamado 
+diccionario de datos, el cual contiene la definición de los 
+datos usados en el sistema, así como sus características 
+de tipo, tamaño, limitaciones o especificaciones 
+especiales. La documentación de la etapa de análisis 
+recoge la descripción del  sistema de información en uso, 
+los requerimientos para el nuevo sistema y un probable 
+plan de desarrollo en un reporte dirigido a la gerencia. 
+Este reporte permite tomar la decisión de proseguir o no 
+con el proyecto.  Hernández y otros (1998)  Flujograma de  procesos  
+Reingeniería de 
+procesos  
+Diagrama de análisis y 
+recorrido de formas  
+Grafica de Gantt  
+Análisis y diseño de 
+formas  
+ 
+Al presentar la técnica y el instrumento en el Trabajo Especial de Grado se 
+deben hacer las respectivas definiciones, justificar la selección,  describir las 
+características estructurales de cada instrumento elaborado e indicar la finalidad que 
+cumplen y el grupo muestral a quien va dirigido.  
+De ser utilizado como instrumento la Entrevista o Guión de Entrevista, la técnica 
+de análisi s a ser utilizada será el análisis crítico  o el análisis de contenido  sin dejar 
+de ser el Trabajo de Grado un proyecto bajo el método científico.  
+ 
+ 
+ 
+ 
+ 
+--- Page 53 ---
+  
+53 
+  
+Validación  
+ 
+Según Ander Egg, (1992) “la validez de un instrumento consiste en captar de 
+manera significa tiva y en un grado de exactitud suficiente y satisfactorio, aquello que 
+es objeto de la investigación”. (p. 273). Es decir, el instrumento es val ido si los datos 
+obtenidos con é l se ajustan a la re alidad sin modificar los hechos; esto debe ser 
+realizado po r juicio de expertos es decir, dos especialistas en el área y un 
+metodólogo. Debe  haber consenso entre los expertos  dedicados al tema en cuanto a 
+los tipos de vali dez de: constructo, contenido y  criteri o.  
+Nota:  Cabe destacar que todos los instrumentos de ben ser validados  por 
+juicio de tres (03) Expertos .  
+ 
+Fases de la Investigación  
+ 
+En este punto se deben describir las etapas y /o fases que se cumplirán 
+(Proyecto) o se cumplieron (Trabajo Especial de Grado) para la realización de la 
+investigación e identi ficar y definir los métodos y técnicas aplicadas tanto en el 
+estudio documental como en el trabajo de campo. Si el investigador se apoya en 
+metodología de autores, indicará qué aspectos tomará de cada uno.  
+En este aspecto el investigador debe señalar las d iferentes fases de la 
+investigación, describiendo todas las actividades  realizadas en orden cronológico. 
+Aquí se mencionan las técnicas, los instrumentos y demás recursos utilizados para 
+obtener la información  que permita alcanzar los objetivos propuestos.  Un modelo  de 
+cómo se presenta este procedimiento, cuando se formula el proyecto es el siguiente:  
+Primera fase: R ecopilación documental : (autor) una vez definido el campo 
+seleccionado el tema a investigar se visitar a los centros que brinden información d e 
+tipo documental sobre el área objeto de estudio.  
+ Segunda  fase: Recolección de información : (autor)  se procederá a efectuar 
+la aplicación de las técnicas e instrumentos de recolección de información en los 
+sitios donde este vinculado  el trabajo: observac ión, entrevista, encuesta, otras.  
+--- Page 54 ---
+  
+54 
+  
+Tercera fase : Presentación de los datos obtenidos : (autor)  organizada y 
+clasificada la información obtenida, se precede a la presentación sistemática y formal 
+de los resultados de acuerdo con cada objetivo formulado.  
+Cuarta fase: Análisis e interpretación de la información : (autor) se precede 
+a analizar e interpretar los datos obtenidos producto de la búsqueda de información y 
+aplicación de los instrumentos correspondiente. Los puntos clave para responder 
+esta es a través  de las siguientes preguntas: qué, cuándo, cómo, con qué, con 
+quienes  y para qué realizar cada una de las actividades. Este procedimiento 
+generalmente se representa de manera esquemática mediante el diagrama de Gantt .  
+ 
+Técnicas de Análisis e Interpretació n de Datos  
+  
+Se trata aquí, de presentar de manera general las principales técnica s 
+estadísticas, que se intentará n aplicar a la información cuantitativa, recolectada a 
+partir de los instrumentos de recogida de datos, para describirlos o resumirlos, 
+atendi endo a las características y a las posibilidades de los mismos.  
+La estadística descriptiva, incluye los métodos de recopilación, organización, 
+presentación e interpretación de un grupo de datos, bien sean éstos, derivados de 
+una muestra o cualquier inform ación completa, sin que ello implique sacar 
+conclusiones o efectuar pred icciones fundamentadas en éstos.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 55 ---
+  
+55 
+  
+CAPÍTULO  IV 
+ 
+ANÁLISIS  E INTERPRETACIÓN  DE RESULTADOS   
+ 
+Presentación de los Resultados  
+ 
+Antes que nada se debe aclarar que este Capítulo se desarrollará en los 
+proyectos de  Todas Las Especialidades con  excepción de la carrera  de Informática , 
+la cual se regirá por el esquema que se presenta de acuerdo al tipo de línea  de 
+investigación que se este trabajando. (Ver esquema para la elaboración del  trabajo 
+especial de grado Proyecto factible páginas  para la especialidad de Informática 
+desde la página 108 a la 11 8). 
+Después de haber aplicado el instrumento de recolección de información a la 
+muestra seleccionada se presenta en este capítulo el análisi s de los resultados. En 
+este sentido, Hernández, Fernández y Baptista (2003), indican que “ una vez que el 
+investigador recoge los datos que han sido codificados y transferidos, así como 
+guardados en un archivo, procede a su análisis” (p. 349).  
+Una vez reco pilados y analizados los datos, se proce de a agrupar los mismos, 
+por indicador a objeto de analizar de manera conjunta los Ítems que los componen y 
+realizar la interpretación de los resultados.  
+Independientemente de la organización del esquema se deben dar  a conocer: 
+(a) los resultados de cada ítem debidamente procesados (codificados, tabulados y/o 
+graficados), con la respectiva interpretación y análisis; (b) según sea el tipo de 
+investigación aplicar las pruebas estadísticas necesarias dando a conocer todo  el 
+proceso, los resultados y la interpretación; (c) el análisis general de los resultados en 
+función de los objetivos correspondientes; (d) evidenciar si los objetivos formulados 
+fueron alcanzados, y, si las interrogantes de la investigación se resolviero n. 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 56 ---
+  
+56 
+  
+ 
+Cuadro 8 
+Tipos de Gráficos  
+ 
+Nombre  del Grafico  Representación Grafico  
+Grafico Circular:   
+Este tipo de gráfico muestra la partición de un 
+total en sus partes componentes. Para su 
+construcción se considera que al circulo, o sea 
+a los 360° le corre sponde el 100% de los casos, 
+en consecuencia conviene considerar lo 
+siguiente:  
+ Expresar cada cantidad parcial en su 
+frecuencia relativa o porcentual.  
+ Expresar la frecuencia relativa o porcentual 
+en grados.  
+ Dibujar los ángulos correspondientes. (Martín 
+2008) 
+1er trim. 2do trim. 3er trim. 4to trim. 
+Grafico de Barra  
+Se usan para representar la distribución de 
+frecuencias de variables discretas. Cada 
+categoría se representa por una barra cuyo 
+largo indica la frecuencia  de observaciones de 
+dicha categoría. (Lang 1997)  
+020406080100
+1er trim. 2do trim. 3er trim. 4to trim.
+Este Oeste Norte
+ 
+Polígono de Frecuencia o grafico Lineal  
+ Ayudan a ver la evolución de los datos. Por lo 
+general se usan para mostrar un mismo tipo de 
+dato y su evo lución (valor de la acción y el 
+tiempo, numero de ventas y precio). (Fernández 
+2002)  
+020406080100
+1er trim. 2do trim. 3er trim. 4to trim.
+Este Oeste Norte
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 57 ---
+  
+57 
+  
+Modelo  para la presentación de los resultados :  
+ 
+Los datos a ser colocados en el grafico serán tomados según lo contemplado  en la 
+tabla de variables (Dimensión e Indicadores)  
+ 
+ 
+ 
+Cuadro #  
+Distribución porcentual de la Muestra según  
+ 
+ALTERNATIVAS  FRECUENCIA  % 
+   
+Total  Suma de Frecuencias  100 %  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Gráfico #  
+Distribución porcentual de la Muestra según  
+ 
+Análisis e Interpre tación  
+ 
+Este aspecto se deberá redactar  tomando como base la estadística descriptiva 
+(haciendo referencia a las cifras arrojadas por el instrumento y sus porcentajes) así 
+como también la estadística inferencial (Interpretación del comportamiento de los 
+resultados).  
+Ejemplo:  DIMENSIÓN  
+ 
+Indicador  
+ 
+ 
+CUALQUIER TIPO DE GRAFICO 
+DE ACUERDO A  LA 
+INFORMACIÓN  
+ 
+Indicador  
+--- Page 58 ---
+  
+58 
+  
+ 
+Características  Sociodemográficos  
+ 
+Cuadro 9 
+Distribución Porcentual de la Muestra según Edad  
+ 
+ALTERNATIVAS  FRECUENCIA  % 
+Entre 14 a - 15 a 
+Entre 16a – 18a  
+Entre 19a – y más  47 
+62 
+1 42.73  
+56.36  
+0.91 
+Total  110 100.00  
+ 
+ 
+ 
+ 
+020406080
+FRECUENCIA
+Entre 14a - 15a Entre 16a – 18a Entre 19a – y más
+ 
+ 
+Gráfico 1 . Distribución porcentual de la muestra según edad  
+ 
+Análisis e interpretación  
+ 
+Según los resultados que reporta el gráfico anterior, se tiene que el 56,36% 
+(n=62) de los adolescentes encuestados tiene entre 16 y 18 años, así mi smo, el 
+42,73% (n=47) tienen entre 14 y 15 años y el 0,91% (n=1), tiene 19 años y más. De 
+acuerdo a los resultados se infiere que los adolescentes objeto de estudio en la 
+mayoría tienen entre 16 y 18 años.  
+Los datos se presentan en forma ordenada y cohere nte (por variables, 
+dimensiones e indicadores, según el caso).  
+--- Page 59 ---
+  
+59 
+  
+Se deben utilizar cuadros y gráficos relacionados con las interrogantes de la 
+investigación.  
+Se debe reflejar la contribución del autor al realizar el análisis e interpretación de 
+la informació n. 
+Se deben discutir e interpretar los resultados y se deben establecer relaciones 
+con la fundamentación teórica.  
+ 
+Diagnostico que Sustenta la Propuesta  
+ 
+Este diagnostico recogerá todos aquellos elementos demostrativos de la 
+problemática y que sustentarán  la viabilidad de la propuesta.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 60 ---
+  
+60 
+  
+CAPÍTULO  V 
+ 
+CONCLUSIONES Y RECOMENDACIONES  
+ 
+Conclusiones  
+ 
+La elaboración de las conclusiones es la última fase de la ejecución del proyecto 
+de investigación. En una investigación cuantitativa se debería co ncluir con la 
+validación o rechazo de lo planteado a partir del análisis estadístico de los datos, es 
+decir se deberá realizar tomando como base los objetivos específicos de la 
+investigación.  
+Se presentan en forma clara y ordenada, según la secuencia de l os objetivos ,. 
+las mismas deben guardar correspondencia con el numero de objetivos específicos 
+propuestos.  
+Por otro lado, en una investigación cualitativa, las respuestas a las interrogantes 
+planteadas al final del planteamiento del problema en el capítulo  I del Trabajo de 
+investigación y la interpretación de los datos deben conducir a una construcción 
+teórica, la cual constituye sus conclusiones.  
+ 
+Recomendaciones  
+ 
+Normalmente todos los ámbitos de estudio tienen una influencia en la sociedad 
+en cualquiera de las esferas, por lo tanto, se espera que la relevancia que dé el 
+investigador a la labor investigativa se refleje a través de recomendaciones, aportes y 
+proyecciones que pudieran de alguna manera indicar una situación favorable e ideal  
+para la mejora de  la organización o institución objeto de estudio , desde la perspectiva 
+al tema tratado. Las recomendaciones surgen de las restricciones y limitaciones no 
+resueltas en la investigación. También se derivan de la experiencia obtenida por el 
+investigador, así como, de las preguntas y dificultades percibidas durante el proceso.  
+ 
+ 
+--- Page 61 ---
+  
+61 
+  
+CAPÍTULO V I 
+ 
+LA PROPUESTA  
+ 
+Cabe destacar  que este Capítulo se desarrollará en los trabajos de investigación 
+de todas Las Especialidades que se presentan como proyecto Factible, proyect o 
+especial (propuesta), con excepción de la carrera de  Informática , la cual se regirá por 
+el esquema que se presenta de acuerdo al tipo de línea  de investigación que se este 
+trabajando. (Ver esquema para la elaboración del trabajo especial de grado Proyect o 
+factible páginas  94 a la 1 08) 
+El esquema de este capítulo debe ser propuesto por el investigador y 
+dependerá hasta cierto punto del tipo de investigación. De manera general, toda 
+propuesta debe contener los siguientes puntos: presentación, objetivos, jus tificación, 
+fundamentación, estructura de la propuesta (estrategia, plan de acción, duración, 
+responsables, recursos) y estudio de factibilidad (que dependiendo del tema deberá 
+referirse a los aspectos: legal, sociocultural, académico, socioeconómico, técn ico y 
+financiero); entre otros que el investigador considere convenientes.  
+ 
+Justificación  
+ 
+Al igual que en el Capítulo I la justificación  debe exponer las razones que 
+conllevan a la propuesta  aportes y beneficiarios.  Debe contener una introducción 
+acerca d e lo que se persigue con la propuesta.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 62 ---
+  
+62 
+  
+Objetivos  de la Propuesta  
+ 
+Objetivo  General  
+ 
+Debe contener  el propósito de la propuesta  y redactado en infinitivo.  Se puede 
+utilizar para la redacción del objetivo General  de la propuesta las tablas de ver bos 
+presentadas en el Capítulo I.  Se debe destacar en este punto que los objetivos de la 
+investigación son completamente diferentes a los objetivos de la propuesta.  
+ 
+Objetivos  Específicos  
+ 
+Se plantea en relación  a la solució n del propósito de la propuesta , debe ir en 
+infinitivo , y con los lineamientos metodológicos  explicados en el Capítulo I .  
+ 
+Estructura de la Propuesta  
+ 
+Se debe detallar el contenido, estrategias, acciones, actividades e indicadores 
+entre otros para lograr el objetivo establecido , detall ando cada una de las fases o 
+etapas necesarias para el desarrollo de las actividades y debe indicarse el tiempo a 
+cumplir en cada una de ellas.  
+Debe contener una introducción o presentación, los objetivos que persigue la 
+propuesta, la justificación  (acorde  con los resultados del estudio) en una matriz del 
+ámbito situacional, que refleje las causas claves del diagnostico, los recursos 
+necesarios para su ejecución, el presupuesto, especialistas o responsables, duración 
+y el diseño del proyecto, programa, plan  o libro (según el caso).  
+Ha de estar sustentada en un enfoque teórico de planificación que permita 
+establecer sus elementos: objetivos, contenidos, estrategias, acciones, actividades, 
+indicadores, entre otros. Además, debe presentar el estudio de factibil idad.  
+ 
+ 
+ 
+ 
+--- Page 63 ---
+  
+63 
+  
+Factibilidad  de la Propuesta  
+ 
+Toda actividad consume recursos humanos, económicos, materiales y técnicos. 
+Por eso es muy importante tomarlos en cuenta de la manera mas objetiva posible.  
+ 
+Factibilidad Humana  
+ 
+Se trata de la participación directa de las personas que desarrollarán la 
+Propuesta , desde la planificación y recopilación de antecedentes, hasta el análisis, 
+conclusiones y presenta ción del informe de resultados.  
+ 
+Factibilidad Técnica  
+  
+ Son instrumentos de apoyo técnico – científico que se rán utiliza dos en el 
+desarrollo de la Propuesta . Van desde el uso de técnicas y herramientas de calculo y 
+escritura hasta la aplicación de métodos de investigación probados y experimentales, 
+así como una creciente utilizaron de las computadoras con sus corr espondientes 
+programas adecuados a cada actividad, impresoras, otros.  
+ 
+Factibilidad Financiera  
+ 
+Es la asignación de recurso económico hacia el desarrollo de la Propuesta  por 
+realizarse. Contempla el costo de tod os los recursos que se utilizará n en el desa rrollo 
+de la Propuesta : papel, libros, copias, sueldos, transporte, gasto de imprenta y todos 
+los demás gastos  directos e indirectos asociados . 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 64 ---
+  
+64 
+  
+Análisis  de Recursos Económicos  para la Implementación de la Propuesta  
+ 
+Se menciona el presupuesto e inver sión necesaria para la ejecución, desde una 
+perspectiva administrativa, debe presentar de manera precisa y pormenorizada, el 
+conjunto de aspectos que lo constituyen, en relación: al recurso y suministro que se 
+demandan para realizar el trabajo, a objeto  de dar cuenta de la magnitud de gastos  y 
+costos que se necesitan para ejecutarlo. En tal sentido, en la formulación de  
+presupuesto presentado en el proyecto de investigación, se deben considerar 
+administrativamente en lo relativo al uso de los fondos, los si guientes elementos: los 
+gasto de personal, los recursos y suministros, los viajes, los servicio s posibles de 
+contratar . En caso de no incurrir en costo indicar el porqué.  
+Gasto de Personal : en cuanto al personal involucrado para la implementación 
+de la pro puesta , es necesario señalar en el presupuesto, quienes lo conformarán: el 
+equipo de dirección, auxiliar, técnico, asistente, asesor , personal administrativo. En 
+este aspecto del presupuesto, se indica, en cuanto al uso de los fondos necesarios , 
+la natura leza de los gastos der ivados del personal involucrado,  tales como: el cargo a 
+desempeñar, las funciones qu e deberán cumplir en el proceso , su tiempo 
+contrataci ón, el nú mero de horas semanales ; la remuneración mens ual de cada 
+individuo; otros aportes instit ucionales con relació n al pago del personal ; y el monto 
+total por este concepto.   
+ 
+A continuación un Modelo  de la representación de gasto de personal .  
+ 
+Cuadro  10 
+Gastos de Personal  
+ 
+Nombre Y 
+apellidos  Funciones  Cargo  Hora s 
+dedicación  Remuneración 
+diaria  Bs. Total 
+Bs. 
+Nombres y 
+apellidos  TSU Informática  Técnico 
+Informática  05 24.00  120,00  
+Nombres y 
+apellidos  TSU Administrativo  Asistente 
+administrativo  10 150.00  1.500,00  
+Nombres y 
+apellidos  Bachiller  Secretaria  15 23.00  345.00  
+Total  Bs.  1.965,00 
+--- Page 65 ---
+  
+65 
+  
+Recur sos y suministros : En relación con este aspecto, se debe indicar en el 
+presupuesto, los materiales , equipos  y suministros necesarios para la 
+implementación  de la propuesta . Se deberán destacar: la cantidad de materiales, las 
+descripción de los mismos, su p recio unitario, la forma de adquisición, como se 
+realizará su financiamiento: a través de una sola institución o con fondos de otra 
+organización que comparte los gastos  derivados del estudio; y el monto total por este 
+concepto.  
+A continuación Modelo  de la  representación  
+ 
+Cuadro 1 1 
+Gastos por concepto de Materiales y Suministros  
+Cantidad  Descripción  Precio Unitario  Bs. Total  (Bs.) 
+4 
+1 
+4 
+1 
+4 Computadoras con Monitores  
+Servidor  
+Reguladores  
+UPS 
+Mesas para computadoras  3.310.00  
+1.500 .00 
+300.00 
+800.00 
+500.00  3.310.00  
+1.500 .00 
+300.00 
+800.00 
+500.00 
+Total  Bs. 6.410.00  
+ 
+ 
+Análisis de los fondos necesarios para el desarrollo de la Propuesta  
+ 
+Aquí se explica de manera muy general se hace un cuadro resumen donde se 
+indiquen los montos totales de los diferentes cuadr os de gastos a fin de dar un costo 
+total de lo que se va a invertir en la realización de la Propuesta . Luego se hace un 
+análisis de retorno de inversión.  
+ 
+Cuadro 1 2 
+Fondos para el desarrollo de la Propuesta  
+ 
+Conceptos  Total  Bs. 
+Gastos de Personal  
+Gastos p or concepto de Materiales y Suministros  1.965 .00 
+6.410 .00 
+Total (Bs.)  8.375.00 
+Observaciones.  
+ 
+ 
+--- Page 66 ---
+  
+66 
+  
+REFERENCIAS  
+ 
+En la bibliografía, deben presentarse en estricto orden alfabético, las fuentes 
+que han sido citadas en el desarrollo del proyecto; no se deb en incluir fuentes que no 
+estén citadas en el trabajo aunque se relacionen con la temática abordada. Para la 
+elaboración a un (1) espacio interlineal sencillo, seguir las indicaciones que a 
+continuación se señalan:  
+Primer apellido. Inicial del segundo ape llido. Inicial del primer Nombre (año). Título 
+de la obra en negrita , (número de la edición). Ciudad donde se editó: Editorial.  
+ 
+Primer apellido. Inicial del segundo apellido. Inicial del primer Nombre (año). Título 
+de la obra en negrita , (número de la edi ción). Ciudad donde se editó: Editorial.  
+ 
+1. Nótese que la segunda línea de la referencia guarda una sangría de tres (3) 
+caracteres, es decir, que estas líneas deben empezar debajo de la cuarta 
+letra de la primera palabra de la primera línea (sangría francesa ), si fuesen 
+necesarias más líneas, éstas deben mantener la misma sangría; sobresale 
+del lado izquierdo únicamente la primera línea.  
+2. Las líneas que conformen cada referencia bibliográfica deben esta 
+separadas a un (1) espacio sencillo.  
+3. Entre una referenc ia y otra deben dejarse un (01) espacio sencillos de 
+separación. A continuación se indica algunas de las formas como deben ser 
+referenciadas las fuentes consultadas según sea la naturaleza de cada una, 
+esto no significa que las mismas deban ser clasificada s al presentarlas en la 
+bibliografía.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 67 ---
+  
+67 
+  
+1. Libros:  
+Hernández  S., Fernández C. y Baptista  L. (1999). Metodología de la  Investigación . 
+México McGraw -Hill.  
+ 
+Sierra , B. (1999). Técnicas de investigación  Social . (3 a ED.). México Editorial 
+Paraninfo  
+ 
+2. Obra Compilada:  Se agrega la abreviatura comps., entre paréntesis a 
+continuación del autor o autores:   
+Naim , M. y Piñango (Comps.). (1994). El Caso Venezuela: Una ilusión de armonía . 
+Caracas: IESA.  
+ 
+3. Fuentes de Tipo Legal:  En estas fuentes se resaltan lo s datos y número de 
+identificación de la gaceta:  
+Constitución de la República Bolivariana de Venezuela. (1999) . Gaceta Oficial de la 
+República Bolivariana de Venezuela, Nº 36.860  (Extraordinaria), Diciembre 30, 
+1999.  
+ 
+Reglamentos de los Institutos y Colegi os Universitarios (Decreto Nº 865). (2006, 
+septiembre 27). Gaceta oficial de la Republica Bolivariana de Venezuela, 4.995. 
+(Extraordinario), Octubre 25, 2006.  
+ 
+Resolución Nº 26, Ministerio del Poder Popular para la Educación Superior (Comisión 
+para elabora r una política de evaluación humanista). (2008, Mayo 20). Gaceta 
+Oficial de la Republica Bolivariana de Venezuela, 25.310, Junio 29,2008   
+ 
+Decreto Nº 3.112 (Creación del Instituto  Universitario de Tecnología de  
+Administración Industrial). (1993,  Agosto  26). Gaceta Oficial de la Republica 
+Bolivariana de Venezuela, 35.289 , Septiembre 3, 1993.  
+ 
+4. De Publicación en Trabajos y Tesis de Grado:  
+Barreto, M (2006). Estudio de Mercado en la Región  Centro Occidental de 
+Venezuela . Traba jo Especial de Grado para optar  al titulo de Técnico  Superior 
+Universitario  en la especialidad de Administración de Empresas, Instituto 
+Universitario de Tecnología de Administración Industrial. Maracay  
+ 
+Linero, R. (1996). Estimulación  de la capacidad creativa en la enseñanza del 
+derech o de familia . Trabajo especial de Grado no  publicado, Universidad Santa 
+Maria. Caracas  
+ 
+ 
+ 
+--- Page 68 ---
+  
+68 
+  
+5. Trabajos de Ascenso:  
+Salcedo , N. (1990). Una evaluación de Objetivos institucionales a nivel de 
+educación superior . Trabajo de ascenso no publicado. Universidad C entral de 
+Venezuela. Caracas.  
+ 
+6. Artículos en Revista Especializada y /o Publicación Periódica:  En estas 
+referencias se adiciona el mes de publicación, el título del artículo, el número del 
+volumen, el número de la revista y los números inicial y final d e las páginas que 
+contienen el artículo (si la fuente los presenta); el mes acompaña al año, el título del 
+artículo se inserta antes del título de la revista encerrado entre comillas, el número 
+del volumen siempre se subraya y se presenta a continuación de l título de la revista, 
+inmediatamente se indica entre paréntesis el número de la revista y luego los 
+números inicial y final de las páginas correspondientes:  
+ 
+Earle , P. (1992). Teachers as instructional  Event”. Educacional Technology , 
+12(6), 36- 41. USA.  
+ 
+Portillo , G. (1995, Abril). Una propuesta empresarial para la educación y la 
+formación de los recursos humanos . Investigación y Postgrado, 10(1), 147 -
+176. Venezuela.   
+ 
+7. Resumen de Trabajos de investigación:  Estos resúmenes se conocen también 
+como Abstr act, no deben confundirse con versiones sintéticas o fracciones del 
+original:  
+Silva , L. (1999). Efectos de las estrategias de enseñanza -aprendizaje sobre el 
+aprendizaje y la participación de los  estudiante s. [Resumen]. Revista de 
+Investigación, 16(35), 15.  
+ 
+8. Artículos de Prensa, Con Autor  y Sin Autor : Cuando  estas fuentes están 
+compuestas por varios cuerpos es necesario indicar el número o la letra que 
+identifica al que contiene el artículo citado, este elemento entra a formar parte del 
+número de página ( cuerpo - página) separados por medio de un guión. Al año se 
+agrega el mes y el día de la publicación. Cuando no se da a conocer el autor del 
+artículo, al citar la fuente se escribe primero el título del artículo y luego la fecha:  
+ 
+--- Page 69 ---
+  
+69 
+  
+Rodríguez,  M. (2007, Dici embre 30). Investigación, educación y Gerencia . El 
+Universal , p. A 5  
+  
+Linares, L y Acuña, P. (2008, marzo 25). Maestros: se buscan . El Nacional , pp. C1 -
+C2 
+ 
+Anónimo,  Andrés Eloy Blanco, humorista . (1997,  Septiembre 7). El Nacional , p. C -
+I.  
+ 
+9. Consultas a través de Internet:  
+De Publicación en Libros:  
+Rodríguez,  A. (2007). Tendencias innovadoras para la educación superior [Libro 
+en Línea]. Organización de estados iberoamericanos para la educación, la 
+Ciencia y la Cultura: Editorial popular. Disponible  
+http://www.oei.org.co/oeivirt/edumat.htm [Consulta: 2008,  Octubre 10] . 
+ 
+De Trabajos Publi cados:  
+Ávila , J. (2008). Las Tecnologías de información y comunicación (Tic) 
+[Documento en línea]. Disponible: http//www.g eocities.com  [Consulta:  2009, 
+Enero 14] . 
+  
+De Pr ogramas de Computación :  
+Autor  (Año). Titulo del Programa o paquete  (tipo de material y medio). Disponible 
+en: empresa que lo distribuye o institución que lo promueve  
+--- Page 70 ---
+  
+70 
+  
+ANEXOS  
+ 
+La presentación de los anexos depende del criterio del investigador, en todo 
+caso, de incluirlos deberán estar ajustados a las siguientes indicaciones:  
+Cuando el investigador considera necesario incluir en el trabajo, información 
+presentada bajo la forma de tablas, gráficos, figuras, textos extensos como partes de 
+documentos legales,  recortes de prensa, fotografías, entre otros, que complementan 
+alguna parte del desarrollo de la temática, pero que no ameritan la incorporación 
+dentro del texto, puede hacerlo bajo la forma de Anexos, cumpliendo con los 
+siguientes requisitos:  
+1. Insertar un a hoja posterior a las referencias para presentar esta sección, con la 
+palabra Anexos escritas en mayúscula sostenida y resaltada en negrita (Anexos), 
+en la mitad de la página y con el tamaño de la letra dieciséis (16).  
+2. Todo anexo debe presentar  en la part e superior además del propio título, el título 
+ANEXO A (o la letra correspondiente), los dos (2) títulos se resaltan con negrilla, 
+en la parte inferior del anexo se debe incluir el título de la obra consultada, 
+página, autor, debe indicar Fuente: Autor . (Año), siempre y cuando la fuente no 
+sea el mismo investigador .  
+3. Si el anexo a presentar es una fotocopia, debe asegurarse que el tamaño sea 
+carta. Ahora, si  se trata de artículos de prensa  o de fotografías, estos deberán 
+pegarse a hojas tamaño carta y agrég ales la información requerida para así 
+incorporar al trabajo.  
+4. Los anexos se ordenan alfabéticamente conforme van siendo mencionados en el 
+trabajo, independientemente de que se relacionen con capítulos diferentes.  
+5. Dentro del desarrollo del tema debe estar e l llamado anexo correspondiente, 
+modelo : (Ver Anexo A). Todo anexo debe estar explícitamente relacionado con 
+alguna parte del contenido (por lo menos una vez); no puede suceder que se 
+presente anexos sin que estén  vinculado en alguna parte de l a temática 
+desarrollada, aunque el contenido  tenga relación con el mismo.  
+6. Si el anexo tiene más de una página, en la segunda y demás páginas se debe 
+colocar en la parte superior izquierda la identificación del anexo y seguidamente  
+--- Page 71 ---
+  
+71 
+  
+la abreviatura de la palabra continua ción entre paréntesis; así: Anexo A (Cont.) si 
+un anexo presenta divisiones, cada una de ellas conservará en el título la letra 
+mayúscula del que se origina acompañada de un número, así: A -1, A-2, A-3. 
+--- Page 72 ---
+  
+72 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+V PARTE  
+LÍNEAS  DE INVESTIGACIÓN  Y ÁREA TEMÁTICA  
+--- Page 73 ---
+  
+73 
+  
+ 
+REPUBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN  
+UNIVERSITARIA, CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+ 
+LÍNEAS DE INVESTIGACIÓN. ESPECIALIDAD: INFORMÁTICA  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ INFORMÁTICA  
+ 
+TELECOMUNICACIÓN  
+REDES  
+PORTALES DE 
+INFORMACIÓN  
+GPS (SISTEMA DE 
+POSICIONAMIENT
+O GLOBAL)  TELEFONÍA 
+MÓVIL  SERVICIOS 
+ELECTRÓNICOS 
+A DISTANCIA  MODELOS DE 
+SISTEMAS  
+SIMULADORES  
+JUEGOS  SISTEMAS EXPERT OS 
+SISTEMAS DE 
+CONSULTAS  
+AUDITORIAS  TUTÓRALES  INTELIGENCIA  
+ARTIFICIAL  
+BIOMETRÍA  
+SISTEMAS DE  
+SEGURIDAD  ROBÓTICA  SISTEMAS PARA LA 
+TOMA DE  DESICIONES  
+GERENCIALES  
+APLICACIONES 
+CLIENTE 
+SERVIDOR  
+PLANIFICACIÓN 
+DE RECURSOS 
+GERENCIALES  
+SIMULACIÓN EN 
+PROCESO S SEGURIDAD  
+--- Page 74 ---
+  
+74 
+  
+ 
+REPUBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN  
+UNIVERSITARIA, CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+LÍNEAS DE INVESTIGACIÓN. ESPECIALIDAD: ADMIN ISTRACIÓN DE EMPRESAS  
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ADMINISTRACIÓN 
+DE  EMPRESAS  
+ORGANIZACIÓN 
+Y MÉTODO  
+REINGENIERÍA  ANÁLISIS 
+OPERATIVO  INVENTARIOS  
+INVERSIÓN Y 
+DESARROLLO  CONTABILIDAD  
+COSTOS  
+ANÁLISIS 
+FINANCIERO  CONTABLE  RESPONSABILIDAD 
+SOCIAL  
+PLANIFICACIÓN DE LA 
+RESPONSABILIDAD 
+SOCIAL  CONTROL DE 
+GESTIÓN  
+SISTEMAS 
+COMPUTARIZADOS  FORMULARIOS  INDICADORES  GESTIÓN  
+DISTRIBUCIÓN Y 
+SERVICIOS  ÁREA VENTAS  ÁREA COMPRAS  
+COMERCIALIZACIÓN  
+ATENCIÓN AL 
+CLIENTE  
+COMUNICACIÓN 
+EMPRESARIAL  SISTEMA Y 
+PROCEDIMIENTOS 
+CONTABLES  
+PRESUPUESTO 
+EMPRESARIAL  
+AUDITORIA  
+PLANIFICACIÓN Y 
+CONTROL DEL 
+TRIBUTO  SUPERVISIÓN  
+LIDERAZGO  
+CONTROL INTERNO  CONTROL DE LA 
+RESPONSABILIDAD 
+SOCIAL  
+RESPONSABILIDAD 
+INTERNA  
+RESPONSABILIDAD 
+EXTERNA  TÉCNICAS 
+MODERNAS DE 
+GERENCIA  
+EMPODERAMIENTO  COACHING  
+--- Page 75 ---
+  
+75 
+  
+ 
+ 
+REPUBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN  
+UNIVERSITARIA, CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+ 
+LÍNEAS DE INVESTI GACIÓN. ESPECIALIDAD: ADMINISTRACIÓN DE PERSONAL  
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ADMINISTRACIÓN 
+DE  PERSONAL  
+CAPACITACIÓN 
+Y DESARROLLO  
+PLANIFICACIÓN  
+DE CARRERA  METODOLOGÍAS  
+ADIESTRAMIEN
+TO 
+ESTRATEGIA DE  
+DESARROLLO  ESTRATEGIAS  
+PROGRAMACIÓN  
+NEUROLIGUÍSTICA  RECLUTAMIENTO 
+Y SELECCIÓN  SEGURIDAD 
+SOCIAL  
+BENEFICIO 
+ECONÓMIC
+O PENSIONES  REGI STRO Y 
+CONTROL  
+IMPACTO  
+SEG. SOCIAL  SUELDOS Y 
+SALARIOS  
+VALORACIÓN 
+DE CARGO  ESCALA 
+SALARIAL  
+TÉCNICAS  E 
+INSTRUMENTOS  PSICOLOGÍA  
+INTEGRACIÓN 
+DE EQUIPOS  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ FLEXIBILIDAD 
+LABORAL  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+MEDIDAS DE 
+EJECUCIÓN  CULTURA    
+ORGANIZACIÓN  
+ESTILO DE 
+TRABAJO  
+ESTRATEGIAS   
+MOTIVACIONAL  
+AUSENTISMO  
+CLIMA DE LA 
+ORGANIZACIÓ N GESTIÓN DE 
+RRHH  
+PLANIFICACIÓN 
+ESTRATÉGICA  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ CALI DAD DE 
+SERVICIO  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+MEDIDAS DE 
+EJECUCIÓN  LA MUJER EN 
+EL TRABAJO  
+CALIDAD DE VIDA  
+COMPETITIVIDAD  
+PERFIL DE 
+DESEMPEÑO  
+MOVIMIENTO 
+DE L PERSONAL  
+EVALUACIÓN 
+DE DESEMPEÑO  
+--- Page 76 ---
+  
+76 
+  
+REPUBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN  
+UNIVERSITARIA, CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDU STRIAL  
+ 
+LÍNEAS DE INVESTIGACIÓN. ESPECIALIDAD: ADMINISTRACIÓN TRIBUTARIA  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ADMINISTRACIÓN 
+TRIBUTARIA  
+ 
+GERENCIA  
+CONTROL 
+FISCAL  CUMPL IMIENTO 
+DEBERES 
+FORMALES EN 
+LAS 
+DECLARACIONES 
+VÍA 
+ELECTRÓNICA  ADMINISTRACIÓN 
+DEL TRIBUTO  CUMPLIMIENTO 
+PAGO DE 
+IMPUESTO)  PRESUPUESTO Y 
+GASTO PÚBLICO  
+DEFENSORÍA DEL 
+CONTRIBUYENTE  INFORMACIÓN  
+TRIBUTARIA EN 
+LA ERA DIGITAL  
+ILÍCITOS 
+TRIBUTARIOS EN 
+EL COMERCIO 
+ELECTRÓNICO  
+CALIFICACIONES 
+DE LAS 
+OPERACIONES 
+EN EL COMERCIO  DESCENTRALIZACIÓN  
+IMPUESTOS 
+PARAFISCALES  
+PLANIFICACIÓN 
+FISCAL  LOS ESTADOS DENTRO 
+DEL PROCESO DE 
+DESCENTRALIZACIÓN  LEGAL  
+PRINCIPIOS 
+CONSTITUCIONA
+LES EN  
+MATERIA 
+FISCALMAT  OBLIGACIÓN 
+TRIBUTARIA  
+PROCEDIMIENTO 
+LEGALES  ADUANAS  
+SISTEMA 
+TRIBUTARIO 
+ADUANERO  
+OPERACIONES 
+ADUANERA  
+NORMATIVAS  ILÍCITOS 
+ADUANEROS  POLÍTICA 
+MONETARIA Y 
+FISCAL  
+PLANIFICACIÓN Y 
+EVALUACIÓN  CARÁCTER 
+TRIBUTARIO  
+CUMPLIMIENTO Y 
+PAGO D E 
+TRIBUTOS  MUNIC  
+PROCESO 
+TRIBUTARIO 
+MUNICIPAL  SANCIONES 
+TRIBUTARIAS 
+MUNICIPALES  
+TIPOS DE 
+TRIBUTOS 
+MUNICIPALES  MUNICIPALES  
+PROCESO DE 
+FISCALIZACIÓN  
+PRESUPUESTO 
+PRIVADO  
+LEGITIMACIÓN 
+DE CAPITALES  SUCESIONES Y 
+DONACIONES  
+--- Page 77 ---
+  
+77 
+  
+ 
+REPUBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN  
+UNIVERSITARIA, CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOL OGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+ 
+ 
+LÍNEAS DE INVESTIGACIÓN. ESPECIALIDAD: HIGIENE Y SEGURIDAD  INDUSTRIAL  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ GESTIÓN DE 
+H.S.I.  GESTIÓN 
+RIESGOS  HIGIENE 
+OCUPACIONAL  GESTIÓN DE 
+RESCATE  
+PLANES Y 
+PROGRAMAS  
+LINEAMIENTO S 
+ANÁLISIS DE 
+RIESGOS  CLASIFICACIÓN DE 
+RIESGOS  IDENTIFICACIÓN 
+DE RIESGOS  
+CONTROL DE 
+RIESGOS  
+PREVENCIÓN DE 
+RIESGOS  AUXILIO 
+MÉDICO  
+CONTINGENCIAS  INDICADORES DE 
+SALUD  
+ENFERMEDADES 
+OCUPACIONALES  
+ EVACUACIÓN  
+TÉCNICAS DE 
+PREVENCIÓN  
+TÉCNICA DE  
+RESCATE  TOXICOLOGÍA  HIGIENE Y 
+SEGURIDAD. 
+INDUSTRIAL  
+GESTIÓN 
+AMBIENTAL  
+MANEJO DE 
+DESECHOS 
+PELIGROSOS  
+MANEJO DE 
+MATERIALES  
+--- Page 78 ---
+  
+78 
+  
+REPUBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR  PARA LA  EDUCACIÓ N  
+UNIVERSITARIA , CIENCIA Y TECNOLOGÍA  
+INSTI TUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+ 
+LÍNEAS DE INVESTIGACIÓN. ESPECIALIDAD: LOGÍSTICA INDUSTRIAL  
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ LOGÍSTICA 
+INDUSTRIAL  
+PLAN  DE GESTIÓN  SISTEMAS DE 
+PRODUCCIÓN  ORGANIZACIÓN DE 
+ALMACENES  CONTROL DE 
+INVENTARIOS  
+NORMAS Y 
+PROCEDIMI ENTOS  
+MODELO DE GESTIÓN  
+PLANIFICACIÓN 
+ESTRATÉGICA  CONTROL DE COSTOS  CONTROL DE CALIDAD  ESTUDIO DE MÉTODO  
+MANEJO DE 
+MATERIALES  CODIFICACIÓN  DISTRIBUCIÓN  
+POLÍTICAS DE 
+INVENTARIOS  
+PROYECTOS 
+INDUSTRIALES  COMPRAS  
+BALANCE DE LÍNEAS  
+MEJORAMIENTO 
+CONTINUO  MODELOS DE 
+PRONÓSTICOS  
+SISTEMAS DE 
+ALMACENAMIENTO  
+CONTROL 
+ESTADÍSTICO DE 
+PROCESOS  
+--- Page 79 ---
+  
+79 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+VI PARTE  
+RECOMENDACIONES GENERALES PARA LA 
+PRESENTACIÓN  ORAL 
+--- Page 80 ---
+  
+80 
+  
+ 
+NORMAS GENERALES PARA LA PRESENTACIÓN ORAL  
+ 
+1. La presentación oral del Trabajo Especial de Grado se realizará en la institución o  
+lugar que ésta designe en acto público en el lugar, fecha y hora determinados por 
+el (la) Coordinadora Académica de Trabajo Especial de Grado, con la presencia 
+de tod os los miembros del Jurado, el cual estará integrado por  dos docentes un  
+técnico y un metodológico y el Tutor.  
+2. Si transcurridos quince (15) minutos de la hora establecida para el inicio de la 
+presentación oral no estuviese presente un miembro del jurado, se incorporará el 
+suplente y se dará inicio al acto.  
+3. Se prohíbe  expresamente llevar al recinto de la presentación oral del Trabajo 
+Especial de Grado refrigerios, adornos, regalos y cualquier otro elemento que no 
+sea indispensable para la realización de la exposición oral.  
+4. La Coordinación de Trabajo Especial de Grado y Pasantía, iniciará el acto 
+público, señalando que el estudiante ha cumplido con todos los requisitos 
+académicos y administrativos e indicará los siguientes pasos a seguir.  
+5. Exposición del estu diante tiempo máximo de Veinte  (20) minutos.  
+6. Preguntas por parte del jurado en un tiempo má ximo de Diez (10) minutos.  
+7. El Tutor  podrá intervenir solo en caso de ser necesario, al finalizar la presentación 
+oral del estudiante, para hacer aclaratorias o prof undizar en las respuestas del 
+estudiante.   
+8. Cuando algún asistente asuma una conducta que, a juicio del jurado, perturbe el 
+normal desarrollo del acto, deberá abandonar el recinto donde se realiza la 
+presentación oral. En caso de no hacerlo, el jurado podrá  suspender el mismo, 
+hasta tanto existan las condiciones adecuadas.  
+9. Una vez realizada la presentación oral, el Jurado pedirá a los presentes, 
+incluyendo al estudiante, que se retiren temporalmente del sitio, a fin de proceder 
+a la evaluación final del Tra bajo Especial de Grado.   
+--- Page 81 ---
+  
+81 
+  
+10. Los miembros del jurado calificarán individualmente los distintos aspectos, de 
+acuerdo a la ponderación  señalada en los  instrumentos, y luego promediarán las 
+notas asignadas, colocándole a la nota dos decimales.  
+11. El Trabajo Especia l de Grado será evaluado sobre una escala de l 01 a 100 
+puntos, de acuerdo con los instrumentos suministrados.  La ponderación que se 
+asigna a la evaluación escrita es del cuarenta  (40%) por parte del Tutor, treinta 
+(30%) por parte del Jurado Evaluador en la  Evaluación de la Versión Rustica y el 
+restante treinta  (30%) será para la evaluación oral  por parte del jurado evaluador . 
+12. La nota mínima aprobatoria del Trabajo Especial de Grado será de se senta ( 60) 
+puntos en la escala de l 01 a 100 puntos.  
+13. Se elaborará n dos (02) ejemplar es del acta  Veredicto  en originales y se 
+distribuirán así:  
+a. Una para el estudiante  
+b. Una para el departamento de control de estudio.  
+14. En caso de que el Trabajo Especial de Grado sea aprobado con Mención 
+Honorífica  y cumple con los requisitos p ara su obtención , se elaborará un 
+ejemplar adicional del Acta  Veredicto . 
+15. El resultado de la evaluación del jurado debe ser comunicado al interesado al 
+finalizar el acto.  
+16. Una vez aprobado el Trabajo Especial de Grado el estudiante tendrá cinco  (5) 
+días hábi les para incorporar las observaciones a que hubiere lugar y entregar a la 
+Coordinación de  Trabajo Especial de Grado , un (01) CD el cual  debe contener:  la 
+versión escrita definitiva  del T rabajo Especial de Grado en formato  .PDF , 
+debidamente identificado  y etiquetado . 
+17. El veredicto del jurado se traducirá en: Aprobado o Reprobado.  
+18. Previa solicitud del jurado ante la Coordinación  de Trabajo Especial de Grado , 
+que obtenga una calificación de 20 puntos, tenga relevancia y represente un 
+aporte científico o tecnoló gico para la comunidad  y el bachiller tenga un índice 
+académico  superior a 17 puntos  y sea aprobado por Consejo Académico, 
+entonces el trabajo  podrá ser aprobado con MENCIÓN HONORÍFICA.  
+--- Page 82 ---
+  
+82 
+  
+19. El Trabajo Especial de Grado podrá ser rechazado por el jurado, cuando  el mismo 
+viole las normas estableci das para la elaboración, presentación y evaluación del 
+Trabajo Especial de Grado para optar al título respectivo.  
+20. Se permitirá al estudiante, la elaboración y presentación de un nuevo  Trabajo 
+Especial d e Grado, cuando é ste resultare «Reprobado» de acuerdo al veredicto 
+del jurado.  
+21. El incumplimiento por parte del tutor o estudiante de algunas de las obligaciones 
+definidas en esta normativa, deberá ser informado por escrito, por la persona 
+afectada, a la Coordinación de Tra bajo Especial de Grado , la cual se dirigirá a la 
+persona en cuestión para que le informe, por escrito, las razones de l 
+incumplimiento. Las faltas reiteradas serán comunicadas por la Coordinación a 
+las instancias superiores correspondientes para que se apli quen las medidas 
+pertinentes.  
+22. Cualquier publicación, presentación en congresos y/o reuniones públicas en las 
+cuales se incluyan resultados del Trabajo Especial de Grado, deberá ser firmada 
+por el estudiante en calidad de autor y se hará referencia a la ins titución.  
+23. Queda entendido que el estudiante y el tutor del Trabajo Especial de Grado al 
+aceptar este reglamento autorizan a la institución para utilizar, difundir, publicar 
+sin limitación alguna el trabajo que resulte, ya que todo Trabajo Especial de 
+Grado  es propiedad de la institución.  
+24. El Trabajo Especial de Grado debe ser aprobado, como mínimo, noventa ( 90) 
+días hábiles  antes del Acto Público de Graduación más próximo.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 83 ---
+  
+83 
+  
+De la presentación de la versión preliminar  
+ 
+1. El estudiante deberá consignar  ante la Coordinación de Traba jo Especial de 
+Grado , un (01) ejemplar anillado, con Carátula ( portada de superficie lisa y 
+brillante ), con letras negras y en el color respectivo de cada Carrera. Carátula  (ver 
+formato de carátula  en página  20) Roja (Administ ración Empresas, Personal, 
+Tributaria y Logística Industrial). Carátula Azul (Higiene y Seguridad Industrial e 
+informática)  
+2.  La versión preliminar presentada ante la Coordinación de Trabajo Especial de 
+Grado, es para la evaluación por parte del  Jurado Técn ico y Metodológico, para  
+realizar  las correcciones pertinentes.  
+3. El estudiante debe realizar las correcciones indicadas por el jurado,  en un lapso 
+de 5 días hábiles.  
+4. El jurado verificará si el estudiante realizó dichas correcciones mediante una cita  
+previa , dentro del recinto de la institución.  
+ 
+De la presentación de la versión definitiva   
+ 
+1. Después de la presentación Oral, t odo estudiante deberá entregar un  CD, el cual 
+debe conten er la versión digital en formato PDF del Trabajo Especial de Grado  y 
+debe conte ner escaneadas : la carta de Aceptación  del Tutor Académico  y los (03) 
+juegos de validaciones . La identificación de la carátula del CD se debe realizar 
+según modelo (Ver Anexo B). 
+2. El estudiante quien haya obtenido Mención Honorífica en el Trabajo Especial d e 
+Grado, debe incorporar el Acta Veredicto con M ención Honorífica .  
+  
+--- Page 84 ---
+  
+84 
+  
+Recomendaciones generales  para el día de la presentación oral 
+ 
+ El estudiante  debe :  
+- Tener una apariencia personal de acuerdo  al Acto.  
+- Estar noventa (60) minutos antes de la exposición.  
+- Mantener una actitud de respecto para con el jurado calificador, e s 
+importante escuchar los planteamientos y mejoras que en beneficios e 
+importancia del tema haga el jurado.  
+ El que por motivos ajenos a su voluntad no pudiera presentarse a la exposición 
+oral el día pautado para la misma, deberá consignar una carta de suspensión de 
+la presentación oral del Trabajo Especial de Grado ante la Coordinación de 
+Trabajo Especial de Grado, exponiendo los motivos (Ver Anexo C). 
+ El tiempo máximo d e la exposición es de veinte  (20) minutos. Puede excederse 
+hasta cinco (5) minutos y no  debe ser menor de veinte (20) minutos.  
+ El tiempo de preguntas y respuestas por parte del jurado calificador será de Diez 
+(10) minutos, el jurado podrá formular preguntas o solicitar a la est udiante 
+aclaratoria  con respecto al trabajo presentado.  
+ El jurado calificador es autónomo y responsable de las decisiones tomadas 
+durante el desarrollo de la exposición.  
+--- Page 85 ---
+  
+85 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+VII PARTE  
+NORMAS PARA LA ELABORACIÓN , INSCRIPCIÓN Y 
+PRESENTACIÓN DEL PROY ECTO  DEL TRABAJO 
+ESPECIAL DE GRADO  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 86 ---
+  
+86 
+  
+Pasos a Seguir en la I nscripción del Proyecto  
+ 
+1. Cuando el estudiante se inscribe  en el sexto semestre , entregará el Proyecto  (con 
+las correcciones que fueron sugeridas por el docente de la cátedra y la Comis ión 
+de Trabajo de Grado, y no podrá llevar ningún tipo de enmiendas)  a la 
+coordinación del Trabajo Especial de Grado a través de la comisión de  Trabajo de 
+Grado para la evaluación y aprobación.  
+2. El Proyecto  que debe entregar el estudiante representa el trab ajo final exigido en 
+la materia de proyecto de grado  o metodología de Inve stigación del quinto 
+semestre (C apítulo s I, II y III), debe realizase por especialidad y tipo de 
+investigación, según los esquemas para la elaboración del Trabajo Especial de 
+Grado .  
+3. El Ante proyecto  debe ser el trabajo final de la asignatura  metodología de la 
+investigación , planificación de proyecto  y/o proyecto de grado del quinto semestre  
+(De acuerdo a la Especialidad) , evaluado y aprobado por el docente de la 
+institución y responsa ble de la asignatura , deberá ir avalado el tema c on la carta 
+de autorizaron del T utor, y carta  de autorización de la empresa en donde se 
+realizará  el estudio,  no se permitirá cambio de tema, y de solicitar cambio se 
+realizará  dentro de la primera semana de  clases . 
+4. La Coordinación de Trabajo Especial de Grado y Pasantías,  después de 
+conversaciones con la comisión de trabajo de grado, determinará en un lapso no 
+mayor de ocho (8) días consecutivos si el referido trabajo esta enmarcado dentro 
+de las líneas de i nvestigación establecidas por el instituto  al igual que la 
+pertinencia y relevancia con relaciones a la carrera, al nivel académico y líneas de 
+investigación.  
+5. Si el Ante proyecto es aprobado, el estudiante  solicitará a la coordinación de 
+Trabajo  Especial de  Grado , el actas de aceptación del ante proyecto y la 
+designación de los tutores.   
+6. Si el Proyecto  fuese rechazado al no cumplir con los parámetros establecidos, el 
+estudiante tendrá tres (3) días hábiles, para presentarlo  con las correcciones 
+indicadas.  
+--- Page 87 ---
+  
+87 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+VIII PARTE  
+LINEAMIENTOS PARA LA VERSIÓN ESCRITA  
+--- Page 88 ---
+  
+88 
+  
+ 
+Tipo  de Papel  
+ 
+Debe ser presentado en hojas tamaño carta, en papel bond blanco base veinte 
+(20) por una sola cara de peso y textura uniforme.  
+ 
+Tipo, Estilo, Tamaño, Color e Impresión de la L etra 
+ 
+Todo trabajo debe escribirse con el mismo tipo de letra. Para la trascripción en 
+la computadora en Word, el tipo de letra aceptada será: TIME S NEW ROMAN  12, El 
+tipo seleccionado a de mantenerse a lo largo del Trabajo Especial de Grado. La 
+impresión s e realizará en tinta negra, esta debe ser uniforme a fin de garantizar 
+nitidez en el original a fin de mostrar una estructura clara y limpia  
+ 
+Espacios  
+ 
+Se escribirá con un interlineado de un espacio y medio  (1,5 cm ): 
+  Entre el título y subtí tulo será  de 3  espacios sencillos.  
+  Entre (tí tulo o subtítulos ) y párrafos será de 1,5 el interlineado . 
+  En títulos cuya dimensión supere  una línea  el interlineado será de 1,5 . 
+  El espacio entre párrafo es de 1,5, lo que diferenciará un párrafo de otro será la 
+sangría.  
+Cuidar lenguaje y redacción, sintaxis, coherencia, redundancia y 
+ambigüedades.  
+ Hilvanar los Capítulos y los puntos o temas con enlaces y conectores.  
+ Los puntos de cada Capítulo deben ir seguidos.  
+ Comenzar cada Capítulo en páginas apartes.  
+ No dejar espacios  o vacíos en blanco en las páginas , salvo excepciones 
+justificables (títulos, subtítulos, cuadros, gráficos y figuras) . 
+ No hacer citas al comienzo de una página, hacer una nueva introducción y 
+luego la cita.  No realizar dos (2) citas seguidas.  
+--- Page 89 ---
+  
+89 
+  
+ Comentar las  citas y las bases teóricas interpretándolas como palabra propias 
+del autor del trabajo de grado.  
+ Hacer citas cada dos (2) páginas como mínimo.  
+ 
+Márgenes  
+ 
+Los márgenes a usar  serán los siguientes: Tres (3) centíme tros del lado 
+izquierdo, Dos punto cinco  (2,5) centímetros lado superior, inferior y derecho de la 
+página  incluyendo el inicio de cada capítulo . El margen superior de la primera pagina 
+de cada Capítulo debe ser de 2,5 centímetros y el título debe ir centrado se escribirá 
+la palabra capítulo en may úscula seguido del número romano correspondiente (I, II, 
+III... VI), debajo de esta centrado y en mayúscula se escribirá la denominación del 
+capítulo.  
+ 
+Títulos  
+ 
+El título debe ir centrado se escribirá la palabra capítulo en mayúscula seguido 
+del número rom ano correspondiente (I, II, III... VI), debajo de esta centrado y en 
+mayúscula se escribirá la denominación del capítulo.  
+Los títulos y sub títulos se escribirán en negrit as. En cuanto a la estructura de 
+los subtítulos se respetaran las pautas establecidas en el manual de la universidad 
+Pedagógica Experimental Libertador.  
+Los títulos deben  ir centrados, escritos en Mayúsculas  resaltados  en Negrita.  
+ 
+Tipos de subtítulos.  
+ Subtítulos de Primer Nivel Centrado Letras Mayúsculas y Minúsculas, Tipo 
+normal resaltado  en negritas.  
+ Subtítulos de Segundo Nivel  centrado, Letras Mayúsculas y  Minúsculas, 
+Itálicas , resaltadas en  negritas.  
+ Subtítulos de Tercer Nivel al Margen  Izquierdo , Letras Mayúsculas y 
+Minúsculas Itálicas resaltadas en negritas.  
+--- Page 90 ---
+  
+90 
+  
+ Subtítulos de Cuarto Nivel  con sangría a un (01) cm. , letras minúsculas en 
+itálicas resaltadas en negritas y terminando con punto y aparte. el texto de la 
+sección se  inicia a continuación, justificando a ambos márgenes.   
+El texto se redactar á en tercera persona, restringiéndose en lo posible el uso de 
+pronombres personales, haciendo uso de la expresión el autor o la autora cuando se 
+amerite. Los verbos de la introducción, justificaran, marco metodológico  y en 
+resumen deben cambiarse a pasado.  
+ 
+Sangría  y Viñetas  
+ 
+ La primera línea de  cada párrafo debe comenzar con una sangría de un (01)  
+Tabulador del margen izquierdo . 
+ En cuanto al uso de viñetas solo será permitido el uso de puntos y líneas. D ebe 
+existir uniformidad en la esquematización de los puntos a numerar. A  continuación se 
+presenta un Modelo con numeración  
+2.  Nivel 1  
+a.  Nivel 2  
+b.  Nivel 2  
+i. Nivel 3  
+1. Nivel 4  
+a. Nivel 5  
+3. Nivel 1  
+ En la siguiente parte se presenta un modelo  con viñetas  
+ Nivel 1  
+ Nivel 2  
+ Nivel 3  
+ Nivel 4  
+ Nivel 3  
+ Nivel 1  
+ 
+--- Page 91 ---
+  
+91 
+  
+Citas de  Autor  
+ 
+En las citas Menores o igual a 40  palabra s deberá incorporarse al texto entre 
+comillas, para luego indicar la fuente entre paréntesis , mediante el sistema autor - 
+fecha (autor, año), párrafo  entre comillas y entre paréntesis  el numero de la página  
+citada. Las párrafos no deben ser menores de tres  (3) líneas y un máximo hasta diez 
+(10), y su redacción debe ser en tercera persona del singular.  
+Ejemplo :  
+Rodríguez  (2009), señala que: “la ciencia nace y culmina con la observación”. 
+(p. 49).  
+En las citas mayores a cuarenta  (40) palabras se escribe en un párrafo aparte 
+con una sangría de cinco (5) espacios en cada línea de la cita, dejando igual sangría 
+en el margen derecho de estas , interlineado sencillo (un espacio), sin comillas, 
+señalando el autor y la fecha .  
+Ejemplo :  
+Por otra parte, de acuerdo a la temporalidad, es un estudio transversal, el cual 
+según Ancona (2001), señala que:  
+ 
+Los estudios transversales se caracterizan por circunscribir la recogida de 
+información a un único momento en el tiempo. La investigación puede ser 
+descriptiva, explicati va (analizar, mediante una encuesta las variables que 
+inciden en la ocurrencia de un hecho o acción determinada), o de otro 
+orden (p. 102).  
+ 
+Cuadro, Figuras y Gráficos  
+ 
+La representación grafica puede ser mediante un histograma (Grafico Barra), 
+grafico ci rcular, polígono de frecuencia o grafico lineal. A continuación se presenta 
+los tipos de gráficos  utilizados en la presentación de resultados.  
+Cada cuadro gráfico deberá tener un número de identificación y un titulo 
+descriptivo de su contenido. Los cuadro s se enumerarán en serie continua desde el 
+principio hasta el final del texto. Lo mismo se hará con los gráficos. Las referencias 
+--- Page 92 ---
+  
+92 
+  
+en el texto se realizarán así: Cuadro 2, grafico 5: También se podrá remitir a ellos 
+utilizando paréntesis: (Ver cuadro 2), (v er gráfico 5)  
+En los cuadros la identificación se coloca en la parte superior  izquierda , en los 
+gráficos y figuras en la parte inferior  izquierda . Debe colocarse en la parte inferior la 
+palabra fuente  e indicar la misma y el año respectivo esto último ent re paréntesis. En 
+caso de ser elaborado por el autor (a) se exceptúa la colocación de la fuente.   
+Si algún cuadro continúa en una segunda página de colocarse solo la 
+identificación de su número y la abreviatura cont., entre paréntesis sin repetir el titulo . 
+Ejemplo: Cuadro 8 (cont.)  
+El título de los cuadros, gráficos y figuras se escribe en negrita.  En los cuadros 
+y gráficos correspondientes al análisis y presentación de los resultados el nombre de 
+los mismos debe guardar relación con la pregunta a la cual corresponden (no se 
+debe colocar la pregunta) en estos casos se exceptúa la colocación de la fuente.  
+ 
+Referencias  
+ 
+En las referencias solo deben incorporarse las obras bibliográficas y otros 
+documentos citados o comentados en el texto. Deben presentarse de spués del 
+último capítulo del Trabajo Especial Grado, en una nueva página a espacio sencillo; 
+la primera línea se inicia en el margen izquierdo y las líneas sucesivas con una 
+sangría de tres (3) espacios. Deben estar colocadas en estricto orden alfabético.  En 
+la página  74 se especifica como debe ir la referencia de acuerdo al texto, obra o cita 
+de Internet utilizada.  
+ 
+Numeración de Páginas  
+  
+Toda la numeración será en números arábigos  comenzando con la pagina del 
+título  “la portada” sin que la cifra se col oque en la pagina, es decir, se cuenta mas no 
+se enumera. Los números de todas las páginas se colocarán centrados en la parte 
+inferior, incluyendo los primeros de cada capítulo y las que contienen cuadros y 
+gráficos horizontales o verticales.  
+--- Page 93 ---
+  
+93 
+  
+Anexos  
+ 
+Es toda información que sirve de complemento al trabajo, tales como: 
+ilustraciones, fotografías, dibujos, tablas, gráficos , textos entre otros. Estos permiten 
+ampliar la información aclarar o mejorar la comprensión de lo que esta escrito en el 
+cuerpo del texto .  
+En los anexos del trabajo especial de grado  se colocarán los formularios de las 
+encuestas, guías de observación u otros instrumentos utilizados, los glosarios de 
+términos (si lo amerita). Los anexos se identifican con letras anexo A, anexo B, y así 
+suce sivamente. Si consta de varias partes la seriación será alfanumérica: anexo A -1, 
+A-2, A-3, la palabra ANEXO y la letra de identificación se colocaran arriba y al centro 
+del anexo o en una página adicional, se podrá añadir un subtítulo descriptivo del 
+anexo  de forma centrada se debe colocar en la parte inferior, izquierda del anexo la 
+fuente y el año (esto último entre paréntesis)  
+ 
+ 
+--- Page 94 ---
+  
+94 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+IX PARTE  
+ESQUEMA DE PRESENTACIÓN  DEL  
+TRABAJO  ESPECIAL DE GRADO  
+Según la Modalidad de la Investigación  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 95 ---
+  
+95 
+  
+ESQUEMA PARA LA ELABORACIÓN  
+DEL TRABAJO ESPECIAL DE GRADO  
+ESPECIALIDADES: EMPRESA, PERSONAL, TRIBUTARIA, 
+HIGIENE Y LOGÍSTICA INDUSTRIAL.  
+PROYECTO FACTIBLE.  
+ 
+ACEPTACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO (OPCIONAL)  
+LISTA DE CUADROS (SI  AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LISTA DE FIGURAS (SI AMERITA).  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO S 
+I. EL PROBLEMA  
+Planteamiento del Problema  
+Objetivos de la Investigación  
+Objetivo General.  
+Objetivos Específicos  
+Justificación de la Investigación  
+Alcanc e de la Investigación  
+Limitación de la Investigación  
+ 
+II. MARCO REFERENCIAL  
+Antecedentes de la Empresa  
+Misión  
+Visión  
+Organigrama Estructural  
+Antecedentes de la Investigación  
+Bases Teóricas (Se mencionan las teorías o modelos, que dan sustento teórico al  
+estudio).  
+Basamento Legal y /o Normativas (En caso de que existan, se transcribirán los 
+artículos de las leyes y normas que constituyen el marco legal)  
+ 
+III. ABORDAJE METODOLÓGICO.  
+Diseño, Tipo, Nivel y Modalidad de la Investigación  
+Población  y Muestra  
+Población  
+Muestra  
+Técnicas e Instrumentos de Recolección de Datos  
+Validez (3 expertos)  
+Confiabilidad  
+Procedimiento Metodológico (Describir las actividades realizadas en cada una de 
+las fases de la investigación)  
+ 
+--- Page 96 ---
+  
+96 
+  
+Técnicas de Análisis de los Resultados (Se describen la técnicas estadísticas o de 
+tipo cualitativa utilizadas para el procesamiento de los datos)  
+Operacionalización de Variables  
+ 
+IV. ANÁLISIS E INTERPRETACIÓN DE LOS RESULTADOS.  
+Presentación de los Resultados  
+   Diagnostico que Sustenta la Propuest a 
+ 
+V. CONCLUSIONES Y RECOMENDACIONES  
+Conclusiones  
+Recomendaciones (Cuando sea Procedente, deben desarrollarse las 
+recomendaciones que el Autor Genera como Consecuencia del estudio)  
+ 
+VI. PROPUESTA  
+Presentación  de los Resultados  
+Justificación  
+Fundamentació n Teórica  
+Objetivos de la Propuesta  
+Objetivo General  
+Objetivos Específicos  
+Estudio de Factibilidad  
+ Factibilidad Humana  
+ Factibilidad Técnica  
+ Factibilidad Financiera, otras  
+Análisis Costos  de la Propuesta  
+Análisis de los Fondos para el Desarrollo. (Inter pretación)  
+ 
+REFERENCIAS  
+ 
+ANEXOS.  
+A.- Definición de Términos Básicos  
+B.- Instrumentos de Recolección de Información (Modelo)  
+C.- Validación del instrumento por los expertos  
+D.- Otros  
+ 
+ 
+--- Page 97 ---
+  
+97 
+  
+ESQUEMA PARA LA ELABORACIÓN DEL  
+TRABAJO ESPECIAL DE GRADO  
+ESPECIALI DADES:  EMPRESA, PERSONAL, TRIBUTARIA.  
+INVESTIGACIÓN DE CAMPO.  
+ 
+ACEPTACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO (OPCIONAL)  
+LISTA DE CUADROS (SI AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LISTA DE FIGURAS (SI AMERITA)  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO  
+I. EL PROBLEMA  
+Planteamiento del Problema  
+Objetivos de la Investigación  
+Objetivo General.  
+ Objetivos Específicos  
+Justificación de la Investigación  
+Alcance de la Investigación  
+Limitación de la Investigación  
+ 
+II. MARCO REFERENCIAL  
+Antecedentes de la Empres a  
+Misión  
+Visión  
+Organigrama Estructural  
+Antecedentes de la Investigación  
+Bases Teóricas (Se mencionan las teorías o modelos, que dan sustento teórico al 
+estudio).  
+Basamento Legal y /o Normativas (En caso de que existan, se transcribirán los 
+artículos de l as leyes y normas que constituyen el marco legal)  
+ 
+III. ABORDAJE METODOLÓGICO.  
+Diseño, Tipo, Nivel y Modalidad de la Investigación  
+Población  y Muestra  
+Población  
+Muestra  
+Técnicas e Instrumentos de Recolección de Datos  
+Validez (3 expertos)  
+Confiabilidad  
+Procedimiento Metodológico (Describir las actividades realizadas en cada una de 
+las fases de la investigación)  
+Técnicas de Análisis de los Resultados (Se describen la técnicas estadísticas o de 
+tipo cualitativa utilizadas para el procesamiento de los datos)  
+--- Page 98 ---
+  
+98 
+  
+Operacionalización de Variables  
+ 
+IV. ANÁLISIS E INTERPRETACIÓN DE LOS RESULTADOS.  
+Presentación de los Resultados  
+Limitaciones  
+Análisis de Discrepancia. (Ser, deber ser.)  
+ 
+V. CONCLUSIONES Y RECOMENDACIONES.  
+Conclusiones  
+Recomendaciones  
+ 
+REFERENCIAS  
+ 
+ANEXOS  
+A.- Definición de Términos Básicos  
+B.- Instrumentos de Recolección de Información (Modelo)  
+C.- Validación del Instrumento por los expertos.  
+D.- Otros   
+  
+ 
+ 
+ 
+  
+--- Page 99 ---
+  
+99 
+  
+ESQUEMA PARA LA ELABORACIÓN DEL TRABAJO 
+ESPECIAL DE GRADO,  
+ESPECIALIDAD: INFORMÁTICA  
+SISTEMA D E GESTIÓN  
+ 
+ACEPTACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO (OPCIONAL)  
+LISTA DE CUADROS (SI AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LISTA DE FIGURAS (SI AMERITA)  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO S 
+I. EL PROBLEMA  
+Planteamiento del Problema  
+Objetivos  de la Investigación  
+Objetivo General  
+Objetivos Específicos  
+Justificación de la Investigación  
+Alcance de Investigación  
+Limitaciones de la Investigación  
+ 
+II. MARCO REFERENCIAL  
+Antecedentes de la Empresa  
+Misión  
+Visión  
+Organigrama Estructural  
+Antecedentes d e la Investigación  
+Bases Teóricas (Se mencionan las Teorías o Modelos, que dan sustento Teórico al 
+estudio)  
+Basamento Legal y /o Normativas (En caso de que existan, se transcribirán los 
+artículos de las leyes y normas que constituyen el Marco Legal).  
+ 
+III. ABORDAJE METODOLÓGICO  
+Diseño, Tipo, Nivel y Modalidad de la Investigación  
+Población y Muestra  
+Población  
+Muestra  
+Técnicas e Instrumento de Recolección de Datos  
+Análisis de los Datos  
+Metodología (Fases Metodológicas James Martín, Kendall & Kendall, o Senn u otras 
+más actualizadas).  
+ 
+ 
+ 
+--- Page 100 ---
+  
+100 
+  
+Factibilidad de la Investigación  
+ Factibilidad Humana  
+ Factibilidad Técnica  
+ Factibilidad Financiera, otras  
+Operacionalización de Variables  
+ 
+IV. SISTEMA ACTUAL  
+Descripción del Sistema Actual  
+Objetivos del Sistema Actual  
+Objeti vo General  
+ Objetivos Específicos  
+Diagramas (evento, objetos y/o transición de estados) (Según Metodología MOO)  
+Análisis Situacional (Matriz DOFA)  
+Requerimientos (Entrada, Salida, Proceso, Almacenamiento)  
+ 
+V. PROPUESTA  
+Descripción de la Propuesta  
+Objetivo s de la Propuesta  
+Objetivo General  
+Objetivos Específicos  
+Diagramas del Sistema (evento, objetos y/o transición de estados) (Según 
+Metodología MOO)  
+Modelo Lógico – Físico de la Base de Datos  
+Diccionario de Archivos de Datos  
+Modelo Entidad Relación  
+Carta Es tructurada  
+Análisis Costo Beneficio (Retorno de Inversión (con gráfico))  
+Plan de Implantación  
+Estrategia de Conversión  
+Pruebas  
+Niveles de Seguridad (Física y Lógica)  
+Plan de Adiestramiento  
+Pistas de Auditoria  
+Manual de Usuario (Puede colocarse como anexo)  
+ 
+VI. CONCLUSIONES Y RECOMENDACIONES.  
+Conclusiones  
+Recomendaciones  
+ 
+REFERENCIAS  
+ 
+ANEXOS  
+A.- Definición de Términos Básicos  
+B.- Instrumentos de Recolección de Información (Modelo)  
+C.- Validación del instrumento por los expertos  
+D- Reportes.  
+E- Diseño de Pantallas  
+--- Page 101 ---
+  
+101 
+  
+ 
+ESQUEMA PARA LA ELABORACIÓN DEL TRABAJO 
+ESPECIAL DE GRADO  
+ESPECIALIDAD: INFORMÁTICA  
+WEB SITE  
+ 
+AUTORIZACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO (OPCIONAL)  
+LISTA DE CUADROS (SI AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LISTA DE FIGURAS (S I AMERITA)  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO S 
+I. DIAGNÓSTICO  
+Descripción de la Situación Actual  
+Objetivos de la Investigación  
+Objetivo General  
+Objetivos Específicos  
+Justificación de la Investigación  
+Alcance de Investigación  
+Limitaciones de la Investigación  
+Antecedentes de la Empresa  
+ Misión  
+ Visión  
+Antecedentes de la investigación  
+Bases Teóricas (Se mencionan las Teorías o Modelos, que dan sustento Teórico al 
+estudio)  
+Basamento Legal y /o Normativas (En caso de que existan, se transcribirán los 
+artículos de  las leyes y normas que constituyen el Marco Legal).  
+Diseño, Tipo, Nivel y Modalidad de la Investigación  
+Población y Muestra  
+Población  
+Muestra  
+Técnicas e Instrumento de Recolección de Datos  
+Análisis de los Datos  
+Metodología de la Investigación (RMM, Kenda ll & Kendall o Senn u otras mas 
+actualizadas)  
+Estudio de Factibilidad  
+ Factibilidad Humana  
+ Factibilidad Técnica  
+ Factibilidad Financiera, otras  
+Analisis del sistema Actual  
+Análisis Situacional (Matriz DOFA)  
+--- Page 102 ---
+  
+102 
+  
+Análisis de Necesidades y Requerimientos (Conten ido, Interfaz, hipervínculos, 
+Pantallas)  
+Operacionalización de Variables  
+ 
+II. DISEÑO  
+Descripción de la Propuesta  
+Objetivos de la Propuesta  
+Objetivo General  
+Objetivos Específicos  
+Diagramas (diagramas Según RMM, James Martín u otras más actualizadas)  
+Diseño  de Pantallas  
+Carta Estructurada  
+Modelo Lógico – Físico de la Base de Datos  
+Diccionario de Archivo de Datos  
+Modelo E -R (Entidad – Relación)   
+Análisis Costo Beneficio (Retorno de Inversión (con gráfico))  
+ 
+III. EVALUACIÓN  
+Implantación  
+Seguridad (Estrategias ) 
+Niveles de Seguridad  
+Seguridad Física  
+Seguridad Lógica  
+Pruebas Realizadas  
+Plan de Adiestramiento  
+Pistas de Auditoria  
+Manual de Usuario (Puede colocarse como anexo)  
+Manual de Ayuda Online  
+ 
+IV. CONCLUSIONES Y RECOMENDACIONES.  
+Conclusiones  
+Recomendacion es 
+ 
+REFERENCIAS  
+ 
+ANEXOS  
+A.- Definición de Términos Básicos.  
+B.- Instrumentos de Recolección de Información (Modelo) . 
+C. Validación del instrumento por los expertos . 
+D- Reportes.  
+E- Diseño de Pantallas . 
+ 
+  
+--- Page 103 ---
+  
+103 
+  
+ESQUEMA PARA LA ELABORACIÓN DEL TRABAJO 
+ESPECIAL  DE GRADO  
+ESPECIALIDAD: INFORMÁTICA  
+MATERIAL EDUCATIVO COMPUTARIZADO  
+ 
+ 
+ACEPTACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO (OPCIONAL)  
+LISTA DE CUADROS (SI AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LISTA DE FIGURAS (SI AMERITA)  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO  
+I. DIAGNÓSTICO  
+Descripción de la Situación Actual (Evaluación de los medios enseñanza -
+aprendizaje, entidades involucradas)  
+Objetivos de la Investigación  
+Objetivo General  
+Objetivos Específicos  
+Justificación de la Investigación  
+Alcance de la Investig ación  
+Limitaciones de la Investigación  
+Antecedentes de la Empresa  
+Misión  
+ Visión  
+Antecedentes de la investigación  
+Bases Teóricas  
+Bases Legales  
+Metodología de la Investigación (Álvaro Galvis, Peréz, Márquez u otras más 
+actualizadas).  
+Abordaje Metodológico . 
+     Diseño, Tipo, Nivel de la Investigación  
+     Población y Muestra  
+Población  
+Muestra  
+     Técnicas e Instrumento de Recolección de Datos  
+     Análisis de los Datos  
+     Metodología (Fases Metodológicas)   
+     Operacionalización de Variables  
+Estudio d e Factibilidad   (Factibilidad Humana , Tecnica y Financiera, otras ) 
+Análisis Sistemático (para cada medio de enseñanza aprendizaje evaluado en la 
+descripción de la situación actual)  
+Técnicas empleadas para el desarrollo del software  
+Diagrama de la situación  actual (diagrama de Caso de Uso)  
+--- Page 104 ---
+  
+104 
+  
+II. DISEÑO  
+Descripción del Software Educativo  
+Objetivos de la Propuesta  
+Objetivo General  
+Objetivos Específicos  
+Alcance y Limitaciones  
+Estudio de Factibilidad  
+ Factibilidad Humana  
+ Factibilidad Técnica  
+ Factibilidad Financ iera, otras  
+Diagramas del Sistema Propuesto (diagrama de Caso de Uso) (Álvaro Galvis, Peréz 
+Márquez u otras mas actualizadas)  
+Modelo Lógico – Físico  
+Base de Datos  
+Diccionario archivo de datos  
+Modelo E -R (Entidad – Relación)  
+Carta Estructurada  
+Descripción M odular  
+Diseño de Pantallas  
+Análisis Costo Beneficio (Retorno de Inversión (con gráfico))  
+ 
+III. EVALUACIÓN  
+Seguridad del Sistema  
+Seguridad Lógica  
+Seguridad Física  
+Niveles de Seguridad  
+Física  
+Lógica  
+Pruebas Realizadas  
+Pistas de Auditoria  
+Manual de Usuario  (Puede colocarse como anexo)  
+Manual de Ayuda Online  
+ 
+IV. CONCLUSIONES Y RECOMENDACIONES.  
+Conclusiones  
+Recomendaciones  
+ 
+REFERENCIAS  
+ 
+ANEXOS  
+A.- Definición de Términos Básicos  
+B.- Formatos utilizados en el proceso Enseñanza -Aprendizaje  
+C- Instrumento de Re colección de Información (Modelo)  
+D.- Validación del instrumento por los expertos  
+E.- Reportes.  
+ 
+ 
+--- Page 105 ---
+  
+105 
+  
+ESQUEMA PARA LA ELABORACIÓN DEL TRABAJO 
+ESPECIAL DE GRADO,  
+ESPECIALIDAD: INFORMÁTICA  
+AUDITORIAS  
+ 
+AUTORIZACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO  (OPCIONAL)  
+LISTA DE CUADROS (SI AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LISTA DE FIGURAS (SI AMERITA)  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO  
+I. EL PROBLEMA  
+Planteamiento del Problema  
+Objetivos de la Investigación  
+Objetivo General  
+Objetivos Específicos  
+Justificac ión de la Investigación  
+Alcance de Investigación  
+Limitaciones de la Investigación  
+ 
+II. MARCO REFERENCIAL  
+Antecedentes de la Empresa  
+Misión  
+Visión  
+Organigrama Estructural  
+Antecedentes de la Investigación  
+Bases Teóricas (Se mencionan las Teorías o Modelos,  que dan sustento Teórico al 
+estudio)  
+Basamento Legal y /o Normativas (En caso de que existan, se transcribirán los 
+artículos de las leyes y normas que constituyen el Marco Legal).  
+ 
+III. ABORDAJE METODOLÓGICO  
+Diseño, Tipo, Nivel de la Investigación  
+Poblaci ón y Muestra  
+Población  
+Muestra  
+Técnicas e Instrumento de Recolección de Datos  
+Análisis de los Datos  
+Metodología (Fases Metodológicas)   
+Operacionalización de Variables  
+ 
+ 
+ 
+--- Page 106 ---
+  
+106 
+  
+IV. SISTEMA ACTUAL  
+Descripción del Sistema Actual  
+Objetivos del Sistema Actual  
+Objet ivo General  
+Objetivos Específicos  
+Diagramas funcionales (Según Metodología UML)  
+Descripción  de la evaluación de los sistemas.  
+Evaluación del análisis.  
+Evaluación del diseño lógico.  
+Evaluación  del desarrollo del Sistema.  
+Evaluación de  la implementación d el Sistema   
+Evaluación de la operación del Sistema   
+Plan de implantación   
+Descripción de la Seguridad lógica y confidencialidad.  
+  Seguridad en el personal.  
+  Seguridad física.  
+  Seguridad en la utilización de los grupos.  
+  Niveles de Seguridad  
+Procedi mientos de respaldo.  
+Descripción y Análisis de las Pistas de Auditoria  
+Descripción del Modelo Lógico – Físico de la Base de Datos  
+Diccionario de Archivos de Datos  
+Modelo Entidad Relación  
+Carta Estructurada  
+Análisis del Manual de usuario  
+  
+V. ANÁLISIS CR ÍTICO DE LA AUDITORIA  
+Descripción analítica critico de la auditoria  
+Alcance de la auditoria  
+Descripción de los tipos de Control.  
+Control presentivo.  
+Control detectivo.  
+Control evaluativo.  
+Control correctivo.   
+Análisis críticos de la seguridad:  
+Lógica  y confidencialidad.  
+Seguridad en el personal.  
+Seguridad física.  
+ Seguridad en la utilización de los grupos.  
+Pruebas  
+Resultados de la auditoria (análisis crítico).  
+ 
+VI. CONCLUSIONES Y RECOMENDACIONES.  
+Conclusiones  
+Recomendaciones  
+ 
+ 
+--- Page 107 ---
+  
+107 
+  
+REFERENCIAS  
+ 
+ANEXOS  
+A.- Definición de Términos Básicos  
+B.- Instrumentos de Recolección de Información (Modelo)  
+C.- Validación del instrumento por los expertos  
+D- Pruebas Físicas encontradas  
+E- Diseño de Pantallas  
+F.- Formatos de Análisis de la auditoria  
+G.- Informe de la audi toria para la empresa  
+  
+--- Page 108 ---
+  
+108 
+  
+ESQUEMA PARA LA ELABORACIÓN DEL TRABAJO 
+ESPECIAL DE GRADO,  
+ESPECIALIDAD: INFORMÁTICA  
+REDES  
+ 
+AUTORIZACIÓN DEL TUTOR  
+DEDICATORIA (OPCIONAL)  
+AGRADECIMIENTO (OPCIONAL)  
+LISTA DE CUADROS (SI AMERITA)  
+LISTA DE GRÁFICOS (SI AMERITA)  
+LIST A DE FIGURAS (SI AMERITA)  
+RESUMEN  
+INTRODUCCIÓN  
+ 
+CAPÍTULO  
+I. EL PROBLEMA  
+Planteamiento del Problema  
+Objetivos de la Investigación  
+Objetivo General  
+Objetivos Específicos  
+Justificación de la Investigación  
+Alcance de Investigación  
+Limitaciones de la Investiga ción 
+ 
+II. MARCO REFERENCIAL  
+Antecedentes de la Empresa  
+Misión  
+Visión  
+Organigrama Estructural  
+Antecedentes de la Investigación  
+Bases Teóricas (Se mencionan las Teorías o Modelos, que dan sustento Teórico al 
+estudio)  
+Basamento Legal y /o Normativas (En cas o de que existan, se transcribirán los 
+artículos de las leyes y normas que constituyen el Marco Legal).  
+ 
+III. ABORDAJE  METODOLÓGICO  
+Diseño, Tipo, Nivel de la Investigación  
+Población y Muestra  
+Técnicas e Instrumento de Recolección de Datos  
+Análisis de los D atos 
+Metodología (Fases Metodológicas)  
+Estudio de Factibilidad  
+ Factibilidad Humana  
+ Factibilidad Técnica  
+ Factibilidad Financiera, otras  
+Operacionalización de Variables  
+ 
+--- Page 109 ---
+  
+109 
+  
+IV. SISTEMA ACTUAL  
+Objetivos del Sistema Actual  
+Objetivo General  
+Objetivos Específico s 
+Descripción del Sistema Actual  
+Diagramas (evento, objetos y/o transición de estados) (Según Metodología MOO)  
+Análisis Situacional (Matriz DOFA)  
+ Requerimientos (Entrada, Salida, Proceso, Almacenamiento)  
+ 
+V. PROPUESTA  
+Objetivos de la Propuesta  
+Objetivo Ge neral  
+ Objetivos Específicos  
+Descripción de la Propuesta  
+Diagramas de la red (evento, objetos y/o transición de estados) (Según Metodología 
+MOO)  
+Descripción de la Topología de la red  
+Descripción de los métodos de acceso, cableado y Dispositivos de Conectiv idad.  
+Declaración de los protocolos y Medios de transmisión  
+Definición de Administración de Usuarios y Recursos  
+Codificación de la RED  
+Pruebas  
+Niveles de Seguridad  
+Física  
+Lógica  
+Usuarios  
+Recursos  
+   
+VI. CONCLUSIONES Y RECOMENDACIONES.  
+Conclusiones  
+Reco mendaciones  
+ 
+REFERENCIAS  
+ANEXOS  
+A.- Definición de Términos Básicos  
+B.- Instrumentos de Recolección de Información (Modelo)  
+C.- Validación del instrumento por los expertos  
+D.- Planos  
+E.- Fotos de Maqueta  
+F.- Fotos de la red  
+--- Page 110 ---
+  
+110 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ANEXOS  
+ 
+--- Page 111 ---
+  
+111 
+  
+ANEX O A 
+ 
+ INSTRUMENTO  DE VALIDACIÓN  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+____________________________  
+Presente. - 
+ 
+ 
+ 
+De manera más cordial me dirijo a usted, con la finalidad de solicitar la 
+colaboración a Juicio de Experto para  la validación del Instrumento de Investigación 
+que se aplicar á en el Trabajo Especial de Grado Titulado  A Q U Í  V A  E L  
+T I T U L O  D E L  T R A B A J O  E S P E C I A L  D E  G R A D O  
+E N T R E G A D O  E N  L A  C O O R D I N A C I Ó N  Para tal fin se anexa n: El 
+Objetivo General  y los Objetivos Específicos, el Cuadro de operacionalización de  las 
+Variables, el (los) Instrumento (s) y el Instrumento de Validación.  
+ 
+Esperando de su receptividad y conociendo de su meritoria opinión,  se 
+despide:  
+ 
+ 
+ 
+Atentamente.  
+ 
+Br. ______________________  
+C.I._______________  
+--- Page 112 ---
+  
+112 
+  
+ ANEXO A-1 
+ 
+INSTRUMENTO DE VALIDACIÓN  
+ 
+ 
+ 
+Nombre y Apellido del  Exper to_________________________________________  
+ 
+Título Universitario:  __________________________________________________  
+  
+ 
+El instrumento que se presenta es para validar el cuestionario que se aplicará 
+durante el desarrollo de la investigación.  
+Lea el instru mento y marque con una (X) su criterio en cuanto a los aspectos 
+que a continuación se señalan:  
+  Pertinencia: Relación estrecha entre la pregunta, los objetivos a lograr y el 
+aspecto o parte del instrumento que se encuentra desarrollado.  
+- Redacción: Es la i nterpretación unívoca del enunciado de la pregunta a través  
+de la claridad y precisión en el uso del vocabulario técnico.  
+- Adecuación: Es la correspondencia del contenido de la pregunta con el nivel  
+de preparación o desempeño del entrevistado.  
+ 
+ 
+CÓDIGO  APRE CIACIÓN  CUALITATIVA  
+B 
+ BUENO: El indicador se presenta en grado igual o  
+Ligeramente superior al mínimo aceptable.  
+R  REGULAR: El indicador no llega al mínimo aceptable  
+Pero se acerca a él.  
+D  DEFICIENTE: El indicador está lejos de alcanzar el  
+Mínimo ac eptable.  
+ 
+ 
+--- Page 113 ---
+  
+113 
+  
+ANEXO  A-2 
+ 
+EVALUACIÓN DE CRITERIOS  
+ 
+ 
+ 
+PREGUNTA / ÍTEMS  PERTINENCIA  REDACCIÓN  ADECUACIÓN  
+B R D B R D B R D 
+1          
+2          
+3          
+4          
+.          
+.          
+n          
+Observaciones y Sugerencias  
+ 
+ 
+ 
+ 
+ 
+Nombres y Ap ellidos       C.I: 
+ 
+Nivel Académico  
+ 
+Fecha:         
+ 
+Firma : _____________________________________ _______________________  
+ 
+ 
+ 
+ 
+ 
+--- Page 114 ---
+  
+114 
+  
+ANEXO  B 
+ 
+ IDENTIFICACIÓN DE CARÁTULA DEL CD  
+PORTADA  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA 
+DE ADMINISTRACIÓN INDUSTRIAL  
+EXTENSIÓN MARACAY  
+TITULO DEL TRABAJO ESPECIAL DE GRADO 
+TITULO DEL TRABAJO ESPECIAL DE  
+GRADO TITULO DEL TRABAJO  
+ESPECIAL DE GRADO TITULO  
+DEL TRABAJO ESPECIAL  
+DE GRADO TITULO  TRABAJO ESPECIAL DE GRADO PARA 
+OPTAR AL TITULO DE TSU EN LA  
+ESPECIALIDAD DE  
+NOMBRE ESPE CIALIDAD  
+Nombre del Bachiller  
+(Mes) de (Año) 
+--- Page 115 ---
+  
+115 
+  
+ANEXO  B-1  
+ 
+IDENTIFICACIÓN DE CARÁTULA DEL CD  
+CONTRA PORTADA  
+ 
+ REPÚBLICA BOLIVARIANA DE VENEZUELA  
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN  
+UNIVERSIT ARIA , CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA  
+DE ADMINISTRACIÓN INDUSTRIAL  
+EXTENSIÓN MARACAY  
+ 
+TITULO DEL TRABAJO ESPECIAL DE GRADO, TITULO DEL TRABAJO ESPECIAL DE GRADO 
+TITULO DEL TRABAJO ESPECIAL DE GRADO  
+ 
+ Autor (a): XXXXXXXXXX  
+       C.I.: XX.XXX.XXX   
+Tutor (a): XXXXXXXXXX  
+       Año: 2015  
+RESUMEN  
+ 
+La página del resumen tiene un encabezado igual al de la portada y luego el título (ambos 
+elementos centrados) y el nombre del autor, tutores y año de presentación. Luego se ubica el texto d el 
+resumen, que debe incluir en un solo párrafo escrito a simple espaciado una descripción corta del tema 
+desarrollado, del problema que se solucionó, el nombre de la metodología que se utilizó, los resultados 
+obtenidos y las conclusiones que se alcanzaron . No debe exceder de trescientas (300) palabras . En 
+la parte inferior de está página debe incluirse una línea de palabras claves o descriptores que servirán 
+para orientar la búsqueda de investigadores posteriores que puedan interesarse en este trabajo, 
+además deberá incluir la línea de investigación y el área temática en el cual se esta realizando el 
+estudio. La página del resumen tiene un encabezado igual al de la portada y luego el título (ambos 
+elementos centrados) y el nombre del autor, tutores y año de  presentación. Luego se ubica el texto del 
+resumen, que debe incluir en un solo párrafo escrito a simple espaciado una descripción corta del tema 
+desarrollado, del problema que se solucionó, el nombre de la metodología que se utilizó, los resultados 
+obteni dos y las conclusiones que se alcanzaron. No debe exceder de trescientas (300) palabras. En la 
+parte inferior de está página debe incluirse una línea de palabras claves o descriptores que servirán 
+para orientar la búsqueda de investigadores posteriores que  puedan interesarse en este trabajo, 
+además deberá incluir la línea de investigación y el área temática en el cual se esta realizando el 
+estudio  
+ 
+Descriptores o Palabras Clave: XXX, XXXXX, XXXXX.  
+Línea De Investigación : xxxxxxxx  
+Área Temática : xxxxxxxxxx x  
+--- Page 116 ---
+  
+116 
+  
+ANEXO B-2  
+ 
+IDENTIFICACIÓN  DEL CD  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ REPÚBLICA BOLIVARIANA DE VENEZUELA  
+MINIST ERIO DEL PODER POPULAR PARA LA EDUCACIÓN 
+UNIVERSITARIA , CIENCIA Y TECNOLOGÍA  
+INSTITUTO UNIVERSITARIO  DE TECNOLOGÍA  
+DE ADMIN ISTRACIÓN INDUSTRIAL  
+EXTENSI ÓN MARACAY  
+Autor (a): XXXXXXXXXX  
+C.I:          XX.XXX.XXX  
+Tutor (a): XXXXXXXXXX  
+Año: 2015  
+Especialidad:  
+TITULO DEL TRABAJO ESPECIAL DE GRADO TITULO DEL 
+TRABAJO ESPECIAL DE GRADO TITULO DEL TRABAJO  
+ESPECIAL DE GRADO TITULO DEL TRABAJO  
+ESPECIAL DE GRADO TITULO DEL  
+TRABAJO ESPECIAL  
+Maracay, (Mes)  de (Año)  
+--- Page 117 ---
+  
+117 
+  
+ANEXO C  
+ 
+ CARTA DE SUSPENSIÓN DE LA EXPOSICIÓN DEL  
+TRABAJO ESPECIAL DE GRADO  
+ 
+(ESTUDIANTE)  
+ 
+Maracay, día, mes, año.  
+ 
+Ciudadan o (a):  
+__________________________________  
+Coordina dor (a) de Trabajo Especial de Gra do. 
+Instituto Universitario de T ecnología de Administración Industrial  
+Su Despacho.  
+ 
+Por medio de la presente me dirijo a ustedes con el fin de hacer de su conocimiento, 
+que debido a problemas de EXPLICAR LOS MOTIVOS  no podré exponer mi Trabajo 
+Especial de Grado Titulado:  A q u í  V a  E l  T i t u l o  D e l  T r a b a j o  
+E s p e c i a l  D e  G r a d o  E n t r e g a d o  E n  L a  C o o r d i n a c i ó n  _  
+Por lo antes expuesto, retiro mi Trabajo Especial de Grado, de las Normas 
+para la Elaboración, Presentación y Evaluación del  Trabajo Especial de Grado del 
+Instituto Universitario de T ecnología de Administración Industrial.  
+ 
+Atentamente,  
+(Nombre y Apellidos)  
+C. I: No ___________  
+ 
+ 
+ 
+ 

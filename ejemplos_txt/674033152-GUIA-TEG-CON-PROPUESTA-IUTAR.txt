@@ -1,0 +1,1125 @@
+
+--- Page 1 ---
+ REPÚBLICA BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+TITULO DEL TRABAJO ESPECIAL DE GRADO
+EN LETRAS MAYÚSCULAS SOSTENIDA, NEGRITA, ARIAL 12 Y
+CENTRADO
+Autor: Apellido A., Nombre N.
+Maracay, Mes 2013
+--- Page 2 ---
+REPÚBLICA BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+TITULO DEL TRABAJO ESPECIAL DE GRADO
+EN LETRAS MAYÚSCULAS SOSTENIDA, NEGRITA, ARIAL 12 Y
+CENTRADO
+Trabajo Especial de Grado para Optar al Título de Técnico Superior
+Universitario en Producción y Supervisión Industrial 
+Autor: Apellido A., Nombre N.
+Tutora Académica: Prof. Avendaño M., Ana M.
+Maracay, Mes 2013
+i
+--- Page 3 ---
+ii
+--- Page 4 ---
+REPÚBLICA BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+DEPARTAMENTO DE INVESTIGACIÓN 
+ACTA DE PRESENTACIÓN DEL TRABAJO ESPECIAL DE GRADO
+El  jurado  designado  para  evaluar  el  Trabajo  Especial  de  Grado,
+titulado:  TITULO  DEL  TRABAJO  ESPECIAL  DE  GRADO  EN  LETRAS
+MAYÚSCULAS SOSTENIDA, NEGRITA, ARIAL 12 , presentado por el (la)
+bachiller Apellido A., Nombre N .,  titular de la Cédula de Identidad Nº V-
+00000000, estudiante de la carrera de XXXXXXXXXXX,  como requisito para
+optar  al  Título  de  Técnico  Superior  Universitario  en  la  carrera  de
+XXXXXXXXXXXXXXXX,  certifica que cumple con los meritos académicos
+suficientes,  y  para  su  aprobación  el  estudiante   deberá  consignar  en  la
+Dirección correspondiente, la versión final o definitiva digitalizada (CD) en un
+lapso no mayor de siete (07) días hábiles a partir de la presente fecha, de
+conformidad con las Circulares Nº 01 y Nº 02, las cuales son del entero
+conocimiento del alumno antes señalado.
+Nombre y Apellido C.I. Firma
+En Maracay, a los _____  días del mes de ______________  del año 2014
+____________________________
+Lic. Rosemary R. Blanco R.
+Directora de Trabajo Especial de Grado
+iii
+--- Page 5 ---
+REPÚBLICA BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+DEPARTAMENTO DE INVESTIGACIÓN 
+ACTA DE CONFORMIDAD DEL TRABAJO ESPECIAL DE GRADO PARA 
+LA PRESENTACIÓN ESCRITA Y EXPOSICIÓN
+  
+          
+Quien suscribe, Prof. Apellido A., Nombre N , titular de la cédula de
+identidad  Nº  0000000,  en  mi  carácter  de  Tutor  Académico  del  Trabajo
+Especial  de  Grado  presentado  por  el  (la)  Br.  Apellido  A.,  Nombre  N ,
+portador(a) de la Cédula de identidad Nº 0000000000, para optar al Título de
+Técnico Superior Universitario en la carrera de Xxxxxxxxx Xxxxxxxxxx , doy
+fe de que el referido trabajo titulado TITULO DEL TRABAJO ESPECIAL DE
+GRADO EN LETRAS MAYÚSCULAS SOSTENIDA, NEGRITA, ARIAL 12,
+reúne  los  requisitos  y  meritos  suficientes,  por  lo  tanto  autorizo  la
+presentación  escrita  y  exposición  ante  el  evaluador  designado  por  la
+institución.
+ En Maracay, a los _____ días del mes de _____________ de 2014      
+ 
+                                               
+_______________________________
+Prof. XXXXXXXXXXXXX
+C.I. 0000000000
+iv
+--- Page 6 ---
+AGRADECIMIENTO
+Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+v
+--- Page 7 ---
+DEDICATORIA
+Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+vi
+--- Page 8 ---
+ÍNDICE GENERAL
+p.p.
+ACTA DE PRESENTACIÓN……………………………..…..………… ii
+ACTA DE CONFORMIDAD……………………….……..……………… iii
+DEDICATORIA.................................................................................... iv
+AGRADECIMIENTO............................................................................ v
+INDICE GENERAL………………………………………………..……... vi 
+LISTA DE CUADROS.......................................................................... viii
+LISTA DE GRÁFICOS…………………..………………………………..
+RESUMEN...........................................................................................
+INTRODUCCIÓN…….......................................................................... 1
+CAPÍTULOS
+IEL PROBLEMA……………………………………………………. 3
+Planteamiento del Problema...................................................... 3
+Justificación de la Investigación.................................................
+Objetivos de la Investigación......................................................
+Objetivo General................................................................
+Objetivos Específicos.........................................................
+Definición Operacional de las Variables………………………….
+IIMARCO TEÓRICO …………………………………………………
+Antecedentes de la Investigación..............................................
+Bases Teóricas..........................................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+vii
+--- Page 9 ---
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Subtitulo…………...............................................................
+Bases Legales……………………………………………….………
+Definición de Términos Básicos.................................................
+IIIMARCO METODOLÓGICO ……………………………………….
+Diseño, Tipo, Nivel y Modalidad de la Investigación……………
+Unidad de Análisis……………………………..…………………...
+Población…………………………………………………………….
+Muestra………………………………………………………………
+Técnicas e Instrumentos de Recolección de Datos...................
+Validación del Instrumento………………………………………...
+IVRESULTADOS DE LA INVESTIGACIÓN ……………………….
+Técnicas de Análisis e Interpretación de los Datos……….…….
+         Conclusiones…………………….………………………………..…
+         Recomendaciones……………….………………………….………
+LA PROPUESTA …………………………………………………...
+Presentación de la Propuesta....................................................
+Justificación de la Propuesta.....................................................
+Objetivos de la Propuesta..........................................................
+         Objetivo General................................................................
+         Objetivos Específicos........................................................
+Estructura de la Propuesta.........................................................
+Factibilidad de la Propuesta.......................................................
+Análisis Costo – Beneficio..........................................................
+REFERENCIAS…………………….......................................................
+ANEXOS……………………………………………………………………
+       A  Carta de Aceptación de la Empresa………………………….….
+       B  Cuestionario………………………………………………………..
+       C  Instrumento de Validación………………………………………..
+viii
+--- Page 10 ---
+LISTA DE CUADROS
+p.p.
+CUADRO
+1El  nombre  de  cada  cuadro  corresponde  a  cada  uno  de  los
+indicadores del cuadro de variables…………….…………………
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+ix
+--- Page 11 ---
+LISTA DE GRÁFICOS
+p.p.
+GRÁFICO
+1El  nombre  de  cada  gráfico  corresponde  a  cada  uno  de  los
+indicadores del cuadro de variables…………….…………………
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+x
+--- Page 12 ---
+REPÚBLICA BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+SEDE MARACAY
+TITULO DEL TRABAJO ESPECIAL DE GRADO
+EN LETRAS MAYÚSCULAS SOSTENIDA, NEGRITA, ARIAL 12 Y
+CENTRADO
+Trabajo Especial de Grado 
+Carrera: Producción y Supervisión Industrial 
+Autor: Apellido A., Nombre N.
+Tutora Académica: Prof. Avendaño M., Ana.
+Año: 2013
+RESUMEN
+A dos espacios se transcribe el texto del resumen, en letra Arial 12, sin
+negrita, sin sangría, a espacio sencillo y con un máximo de 300 palabras, sin
+espacios entre párrafos, es decir a texto corrido. El resumen debe contener
+el propósito general del trabajo,  el diseño,  tipo, nivel y modalidad de la
+investigación,  así  como  mención  de  la  población  y  muestra,  técnicas  e
+instrumentos de recolección de la información. También se debe indicar la
+conclusión a la que se llegó en el trabajo y la recomendación que a su juicio
+considere más valiosa. En caso de ser una propuesta debe contener una
+breve referencia de la misma. El resumen debe estar reflejado en una sola
+página.
+Descriptores: 4 a 6 palabras claves que describan el TEG.
+xi
+--- Page 13 ---
+INTRODUCCIÓN
+Se realizará con una apertura sobre el tema a tratar en el trabajo de
+investigación.
+Luego, mediante enlaces se entremezcla el tema con la problemática a
+tratar en el informe, haciendo una breve reseña del mismo y el lugar donde
+se presenta.
+Finalmente, se hace referencia a la estructura que tendrá el informe,
+describiendo el contenido de cada capítulo.
+1
+--- Page 14 ---
+CAPÍTULO I
+EL PROBLEMA
+Planteamiento del Problema
+Se debe comenzar introduciendo al lector en el tema de estudio. Antes
+de escribir sobre el problema que se va a tratar, el autor debe contextualizar
+de  manera  esquemática  la  realidad  del  tema  de  estudio.  Este  esquema
+usualmente  nace  del  título.  Primero  que  nada  se  debe  realizar  una
+contextualización o formulación del tema que se va a tratar en el trabajo de
+investigación, señalando desde lo general a lo particular el contexto de la
+realidad, haciendo referencia a las variables implícitas  en el estudio (están en
+el titulo del trabajo), explicando el deber ser de la realidad del tema. 
+La  contextualización  del  tema  debe  ser  clara,  precisa  y  específica;
+utilizar términos y conceptos científicos  que designen de manera precisa los
+fenómenos  y  procesos  estudiados  (variables);  evitar  términos  vagos,
+imprecisos, que se presten a confusión o a interpretaciones diversas, o que
+no correspondan con el tema a investigar. 
+Posteriormente, se comienza a señalar la problemática en la realidad,
+describiendo el problema ( teniendo cuidado de no emitir juicios de valor ).
+Durante el planteamiento se deberán especificar los síntomas del hecho
+observado (qué es lo que pasa ), luego inferir las razones por las cuáles esa
+situación pudiera estarse presentando ( causas), finalmente describir lo que
+acarrearía  a  la  empresa  u  organización  si  esa  situación  no  mejora
+(consecuencias). 
+2
+--- Page 15 ---
+Debe escribirse de tal modo, que el lector interesado pueda hacerse
+por sí mismo una opinión independiente del problema, sin ser inducido por
+las opiniones de quién efectuó la investigación. EL ELEMENTO QUE MÁS
+CONTRIBUYE  A  ELLO  SON  LOS  DATOS  APORTADOS  POR  LA
+OBSERVACIÓN OBJETIVA.
+Finalmente,  se  debe  plantear  la  alternativa  que  el  investigador
+pretende  desarrollar  para  dar  respuesta  o  solución  a  la  problemática
+expuesta, a fin de que la empresa las conozca y pueda tomar las medidas al
+respecto. Luego se presentan las interrogantes de la investigación que deben
+estar vinculadas a los objetivos específicos planteados.
+Justificación de la Investigación
+En esta parte el autor expresa las razones por la cuales realizará la
+investigación, considerando los aportes teóricos y metodológicos referidos al
+objeto  de  conocimiento,  así  como  las  implicaciones  prácticas,  de  valor
+teórico,  relevancia social, alcance, entre otros, que tiene ésta. 
+A  continuación  se  presenta  un  ejemplo  de  cómo  se  realiza  una
+justificación, observe que en este caso el investigador utiliza los siguientes
+elementos para justificarla ( están resaltados en el texto con negritas sólo
+para efectos de explicación , usted no debe resaltarlos en su trabajo ):
+Ejemplo:  Las  grandes  empresas  en  la  actualidad  se  hacen  más
+competitivas dentro de su ramo y cada vez adoptan más estrategias a fin de
+garantizar el éxito. Estas organizaciones están adoptando herramientas de
+optimización,  basadas  en  las  nuevos  enfoques  gerenciales  (gestión
+estratégica y modelos de medición de gestión, en las Teorías de Calidad y de
+3
+--- Page 16 ---
+Gestión del Servicio, a fin de alcanzar el éxito a corto, mediano y largo plazo
+con  el  propósito  de  establecerse  metas  que  permitan  el  alcance  de  los
+Planes Estratégicos del Negocio, enfocados al cumplimiento de la visión,
+misión, valores, entre otros; elementos   que conjugados comprometen tanto
+a empleados como supervisores a la identificación con la organización, a
+través  un  sentimiento  de  compromiso  para  alcanzar  los  objetivos  de  la
+misma.
+La  necesidad de  plantear  la  evaluación  de  los  procesos  del
+Departamento de Compensación incidirá en la optimización de los mismos,
+ya que mediante su análisis se podrán establecer los lineamientos a seguir
+en cuanto a Descripción de Cargos y Movimientos de Personal, requeridos
+para  el  logro  de  los  objetivos  del  Departamento,  en  beneficio  de  la
+Corporación y a su Plan Estratégico de Negocio, esto con el fin de que esta
+empresa pueda continuar siendo una de las compañías pioneras en su ramo.
+Por lo tanto, genera beneficios  expresados en la optimización de los
+procesos del Departamento de Compensación repercutirá en la calidad de
+asesoría y servicio de la Gerencia Corporativa   de Recursos Humanos en la
+materia,  mediante  el  seguimiento  y  evaluación  de  los  procedimientos
+aplicados para la consecución de los objetivos, a fin de mejorar la calidad, el
+control de la gestión,   la satisfacción y la   respuesta a los clientes internos en
+forma oportuna y eficiente para el beneficio de toda la empresa y mantener
+un nivel de satisfacción y equilibrio interno.
+Esta investigación también se justifica desde tres puntos de vista.
+Desde el punto de vista práctico,  ya que la misma   propone al problema
+planteado una estrategia de acción que al aplicarla como se hará en el
+capitulo cuarto de esta investigación, contribuirá a resolverlo.
+4
+--- Page 17 ---
+Desde el punto de vista teórico,  esta investigación generará reflexión
+y discusión tanto sobre el conocimiento existente del área investigada, como
+dentro del ámbito de las Ciencias Administrativas, ya que de alguna manera
+u  otra,  se confrontan teorías  (en nuestro caso  se analizan tres cuerpos
+teóricos  dentro  de  las  ciencias  administrativas:  Modelo  de  Gerencia
+Estratégica,  Modelos  de  Gerencia  Estratégica  de  Recursos  Humanos  y
+Modelos de Clasificación y Medición de la Estrategia Empresarial.), lo cual
+necesariamente conlleva hacer epistemología del conocimiento existente.
+Desde  el  punto  de  vista  metodológico,  esta  investigación  está
+generando la aplicación de un nuevo método de investigación para generar
+conocimiento válido y confiable dentro del área de la Gerencia de Recursos
+Humanos en particular y de las Ciencias Administrativas en general.
+Por  otra  parte,  en  cuanto  a su  alcance ,  esta  investigación  abrirá
+nuevos caminos para empresas que presenten situaciones similares a la que
+aquí se plantea, sirviendo como marco referencial a estas.
+Por último, profesionalmente pondrá en manifiesto los conocimientos
+adquiridos durante la carrera y permitirá sentar las bases para otros estudios
+que surjan partiendo de la problemática aquí especificada.
+Objetivos de la Investigación
+Objetivo General
+Propósito de la investigación (corresponde al titulo de la investigación
+con el verbo en infinitivo).
+5
+--- Page 18 ---
+Objetivos Específicos
+Representan lo que el investigador requiere conocer para el logro del
+objetivo general. 
+Tienen la finalidad de señalar a lo que se aspira en la investigación y
+deben expresarse con claridad (son las guías del estudio). Su redacción no
+puede estar dirigida a actividades a desarrollar, sino a metas a alcanzar .
+Se deben formular empleando verbos en infinitivo  (observar, analizar,
+determinar, evaluar,  entre otros) y han de expresar una sola acción por
+objetivo.
+Los verbos a utilizar deben guardar un orden cognoscitivo, es decir,
+estructurarse en secuencia lógica, de lo más sencillo a lo más complejo. Es
+vital que los objetivos enunciados en la tesis sean alcanzados o logrados
+durante la realización de la misma, a fin de determinar las conclusiones del
+estudio.
+Operacionalización de Variables
+Debe señalarse con dos (2) autores de metodología, en primer lugar,
+qué  es  una  variable  y  luego  en  qué  consiste  la  operacionalización  de
+variables. Indicar apellido del autor, fecha (año), abrir comillas para enunciar
+la cita, cerrar comillas, colocar número de página entre paréntesis. (p. 25).
+Luego realizar una interpretación del enunciado de las citas.
+Señalar que en el cuadro 1 se mostrará la operacionalización de las
+variables que conforman la investigación.
+6
+--- Page 19 ---
+Cuadro 1
+DEFINICIÓN OPERACIONAL DE VARIABLES
+ 
+Objetivo  General:  Analizar  las  causas  que  generan  merma  líquida   para  la  optimización  del  proceso
+productivo de la línea 2 en la empresa Cervecería Regional, ubicada en  Cagua Estado Aragua.
+Objetivos Específicos VariableDimensión Indicadores InstrumentoÍtemFuente
+Describir    el  proceso
+productivo en la línea 2 de
+la  Empresa  Cervecería
+Regional.Proceso
+ProductivoLínea de
+Producción-Proceso Productivo.
+-Características  del
+proceso productivo.
+-Línea de producción.
+-Procesos de envasado.Cuestionario
+Dicotómico1
+2
+3
+4Personal
+que labora
+en la
+Línea 2
+Variable: Es algo que “cambia” o que puede asumir diferentes valores en un momento o situación determinada. Una variable
+es simplemente todo aquello que puede tomar más de un valor durante el transcurso de una investigación. Se encuentra
+inmersa dentro del objetivo específico y por lo general está ubicada después del verbo.
+Una dimensión es un elemento integrante de una variable compleja, que resulta de su análisis o descomposición.  Ámbito de
+aplicación de la variable. Es un aspecto de la variable para denotar su propiedad
+Los indicadores son  elementos,  factores,  rasgos  o  componentes  más  representativos  que  caracterizan  o  tipifican  las
+variables. Proporcionan la construcción de los instrumentos a ser utilizados en la investigación. Genera la pregunta que se
+incluye en el instrumento destinado a recolectar la información. Son las bases teóricas del trabajo de investigación. No debe
+aparecer ninguna base teórica que no esté en los indicadores.
+Instrumento: Representa el instrumento de recolección de datos que será utilizado en la investigación.
+Ítem: Constituye las preguntas que conforman el instrumento a utilizar. Cada ítem debe poseer inmerso en su redacción el
+indicador que corresponda y deben estar redactadas en atención a lograr el objetivo específico al que esté relacionado cada
+indicador.   
+7
+--- Page 20 ---
+CAPÍTULO II
+MARCO TEÓRICO
+Debe señalarse con dos autores  de metodología  en qué consiste el
+marco teórico,  indicar apellido del autor, fecha (año), abrir comillas para
+enunciar la cita, cerrar comillas, colocar número de página entre paréntesis.
+(p.  25).  Luego  realizar  una  interpretación  del  enunciado  de  las  citas.  A
+continuación se presenta un ejemplo:
+Según  lo  expuesto  en  el  Manual  de  la  Universidad  Pedagógica
+Experimental Libertador (UPEL, 2012): “El marco teórico también llamado
+marco referencial, tiene precisamente este propósito: dar a la investigación
+un sistema coordinado coherente de conceptos y proposiciones que permitan
+abordar el problema’’ (p. 16). 
+Cuando las citas textuales contienen cuarenta o más de (40) palabras,
+la estructura de ellas es la siguiente: se presentan en un párrafo aparte,
+margen derecho e izquierdo de un centímetro, interlineado sencillo y sin
+comillas. Ejemplo: Balestrini (2006), dice que el marco teórico:
+Es  el  resultado  de  la  selección  de  aquellos  aspectos  más
+relacionados  del  cuerpo  teórico  epistemológico  que  se  asume,
+referidos al tema específico elegido para su estudio. De allí pues,
+que su racionalidad, estructura lógica y consistencia interna, va a
+permitir el análisis de los hechos conocidos, así como orientar la
+búsqueda de otros datos relevantes. En consecuencia cualquiera
+que sea el punto de partida para la delimitación y el tratamiento
+del problema se requiere de la definición conceptual y la ubicación
+del contexto teórico que orienta el sentido de la investigación (p.
+91).
+8
+--- Page 21 ---
+En un párrafo siguiente se realizará la interpretación de la(s) cita(s).
+Ejemplo: Por lo expuesto, se puede decir que el marco teórico representa las
+bases fundamentales de toda investigación siendo de suma importancia su
+uso en ellas.
+Antecedentes de la Investigación
+Debe señalarse con dos (2) autores de metodología en qué consisten
+los antecedentes de la Investigación. En los antecedentes se trata de tomar
+como  referencia  investigaciones  realizadas  por  otros  autores  sobre  la
+problemática planteada. 
+Cuando  se  realizan  las  citas  textuales,  si  las  mismas  contienen
+cuarenta o más de (40) palabras, la estructura de ellas es la siguiente: se
+presentan  en  un  párrafo  aparte,  margen  derecho  e  izquierdo  de  un
+centímetro, interlineado sencillo y sin comillas. Ejemplo: Tamayo y Tamayo
+(2009) señala como antecedentes:
+Hacer una síntesis conceptual de las investigaciones o trabajos
+realizados anteriormente sobre el problema formulado, con el fin
+de determinar el enfoque metodológico de la misma investigación.
+El  antecedente  de  la  investigación  puede  indicar  conclusiones
+existentes en torno al problema planteado. (p. 98). 
+En un párrafo siguiente se realizará la interpretación de la(s) cita(s) y
+posteriormente se enunciarán y presentarán los antecedentes que sirven de
+referencia a la investigación.
+En  la  construcción  de  los  antecedentes  deben  estar  presentes  los
+siguientes  elementos:  Apellidos  del  autor(es),  inicial  del  nombre,  año  de
+9
+--- Page 22 ---
+realización, título de la tesis, propósito (objetivo general), lugar donde realizó
+la  investigación,  título  que  se  aspira  obtener,  metodología  empleada
+(haciendo referencia al tipo, diseño, nivel y modalidad de investigación en
+caso  de  ser  proyecto  factible);  así  mismo  debe  indicarse  la  población,
+muestra, técnicas e instrumento utilizados. Luego se presenta una breve
+referencia  a  los  resultados  obtenidos  y  las  conclusiones  a  las  que  se
+llegaron. (Todos estos datos se encuentran plasmados en el resumen de
+las tesis), por lo que se recomienda copiar éstos tal como aparecen en los
+trabajos.  En  caso  de  carecer  el  resumen  de  alguno  de  los  elementos
+requeridos, extraerlo del capítulo que corresponda). 
+Finalmente, debe realizarse un párrafo que indique cómo se relaciona
+dicho antecedente con la investigación que se está realizando y en qué
+forma contribuye con ella.  A continuación se presenta un ejemplo:
+Villegas,  L.  (2004),  presentó  su  trabajo  de  investigación  titulado:
+“Estrategias de Integración para el Docente en el Proceso de Transición de
+Niños Preescolares a la Primera Etapa de Educación Básica”. Realizada en
+el Instituto universitario de Tecnología “Antonio Ricaurte” para optar al título
+de  Técnico  Superior  en  Educación  Preescolar.  Tuvo  como  objetivo
+establecer  estrategias  de  integración  para  docentes  en  el  proceso  de
+transición de niños preescolares a la primera etapa de educación básica. El
+mismo se basó en una modalidad de proyecto factible, apoyado en una
+investigación de campo de tipo documental, con diseño no experimental y
+nivel descriptivo. La población estuvo conformada por ocho (8) docentes los
+cuales fueron tomados en su totalidad como muestra para el estudio. Se
+utilizó como técnicas de recolección de datos la observación directa y la
+encuesta y como instrumento un cuestionario dicotómico estructurado por
+quince (15) ítems. Se concluyó que la aplicación de estrategias por parte del
+10
+--- Page 23 ---
+docente facilita la integración del niño del preescolar a la primera etapa de
+educación básica.
+Luego  se  presenta  el  párrafo  donde  se  señala  la  relación  del
+antecedente  con  el  trabajo  en  desarrollo.  Los  antecedentes  deben  tener
+cinco años de anterioridad al actual  (mínimo 3 máximo 5),  ordenados en
+forma ascendente (desde el más antiguo al más reciente). Ejemplo: 2009,
+2010, 2011, 2012.
+Bases Teóricas
+En primer lugar debe definirse con dos (2) autores de metodología en
+qué consisten las bases teóricas, comentar las citas. Luego, se comienzan a
+presentar  las  bases  teóricas  del  trabajo,  las  cuales  corresponden  a  los
+indicadores del  cuadro  de  operacionalización  de  variables,  deben
+desarrollarse TODOS en el mismo orden que aparecen en dicho cuadro .
+La elaboración del marco teórico implica el procesamiento y análisis de
+la información teórica recabada a través de la revisión bibliográfica, y de
+otras fuentes documentales, que le permiten al investigador construir una
+sólida perspectiva teórica que explique el problema objeto de estudio.
+Cada base teórica  debe definirse con dos (2) autores y luego cerrar
+con  un  comentario  las  citas  textuales.  Ninguna  base  teórica  puede
+presentarse sin autor que sustente teóricamente lo que ella significa. En un
+párrafo aparte debe presentarse la relación con el contexto donde se está
+investigando  (empresa).  Se  debe  realizar  mínimo una  página  de
+contenido por cada base teórica .
+11
+--- Page 24 ---
+Algo a tener en cuenta respecto a la incorporación de la teoría en el
+marco referencial, es lo siguiente: no se trata de listar autores y de copiar
+textual e indiscriminadamente los aportes teóricos proporcionados por ellos.
+Se  trata  de  demostrar  cómo  el  conjunto  de  conocimientos  obtenidos  se
+relacionan con la investigación en proceso; es decir, constituyen el ámbito
+teórico dentro del cual el autor del Trabajo Especial de Grado formula sus
+proposiciones específicas, describe e interpreta los hechos que le interesan.
+Y en ese demostrar, hay un proceso reflexivo que configuran (a su vez)
+aportes de sí a las respectivas teorías.
+Bases Legales
+Definir con dos (2) autores de metodología en qué consisten las bases
+legales, comentar las citas. La construcción de las bases legales se debe
+hacer  según  el  ordenamiento  jurídico  vigente  utilizando  la  Pirámide  de
+Kelsen y debe tener el año correspondiente: 1) Constitución. 2) Leyes. 3)
+Reglamentos. 4) Decretos. 5) Resoluciones. 
+El nombre de la base legal que se esté utilizando se coloca centrado,
+negrita, cursiva y entre paréntesis el año que le corresponda. Luego en el
+párrafo siguiente se coloca el (los) artículo(s) a utilizar. Después de colocar
+todos los artículos,  debe explicarse cómo está relacionada esa base legal
+con la investigación o decir  por qué se está utilizando .
+Definición de Términos Básicos
+Definir  con  dos  (2)  autores  de  metodología  en  qué  consiste  la
+definición de términos básicos y comentar las citas. 
+12
+--- Page 25 ---
+Los  términos  básicos  s e  refieren  a  toda  aquella  terminología  poco
+conocida o de carácter técnico  utilizada a lo largo del trabajo, el mismo
+sirve para clarificar mejor el problema a fin de evitar ambigüedades en los
+términos usados para  plantearlo,  con  ello  se  gana mayor claridad  en  la
+investigación. Se definen los términos con un diccionario en orden alfabético.
+No deben presentarse aquí los términos utilizados  como bases
+teóricas.
+13
+--- Page 26 ---
+CAPÌTULO III
+MARCO METODOLÓGICO
+Definir con dos (2) autores de metodología  en qué consiste el marco
+metodológico, comentar las citas. 
+Diseño, Tipo, Nivel y Modalidad de la investigación
+En un Proyecto Factible, la metodología es la siguiente:  Diseño: No
+experimental. Tipo: de campo y documental. Nivel: descriptivo y Modalidad:
+Proyecto Factible.
+Se  debe  definir  CADA  UNO  DE  ELLOS  con  dos  (2)  autores  de
+metodología y comentar las citas. La definición de cada término debe estar
+presentada en el mismo orden en que aparecen en el párrafo anterior .
+Unidad de Análisis
+Corresponde  al  área  donde  se  está  realizando  la  investigación.  Se
+define con dos (2) autores  de metodología  en que consiste la unidad de
+análisis, comentar cita. Luego menciona cuál es la Unidad de Análisis de su
+investigación.  Ejemplo: La unidad de análisis de la presente investigación
+corresponde al área de almacén de la empresa Suministros Aragua C.A.
+Población
+Definir con dos (2) autores de metodología qué es población, comentar
+las citas. Señalar la cantidad de elementos que conforman la población y
+dónde están ubicados. En el caso que la población esté conformada por
+14
+--- Page 27 ---
+individuos que ostenten cargos distintos, debe indicarse en un cuadro de dos
+columnas la distribución de esa población, tal como se indica a continuación:
+Cuadro 2
+DISTRIBUCIÓN DE LA POBLACIÓN
+TRABAJADORES CANTIDAD
+Supervisores 2
+Operadores de Línea 8
+Montacarguistas 2
+Almacenistas 4
+Total 16
+Tal  como  se  observa,  la  palabra  Cuadro se  ubica  SOBRE  EL
+CUADRO en posición centrada, negrita y la primera letra en mayúscula y se
+deberá colocar el número que corresponda en caso de que existan cuadros
+que precedan al que se está elaborando. El nombre de cada cuadro se
+escribirá de igual forma centrado, negrita y todo en mayúscula sostenida.
+Muestra
+Definir con dos (2) autores de metodología qué es muestra, comentar
+las citas. En atención a que la muestra constituye una parte de la población,
+es  importante  que  la  misma  sea  representativa  de  la  población  que  se
+estudia, por lo que se recomienda que para estudios descriptivos sea lo más
+numerosa posible. Cuando la población sea muy pequeña (menos de 25
+personas) se debe tomar la totalidad de la población y señalarla como una
+muestra censal, debe definirse con autor en qué consiste la muestra censal
+(no hay ningún tipo de muestreo en este caso).
+15
+--- Page 28 ---
+Si la población es muy numerosa, se debe calcular la muestra a través
+de criterios metodológicos, es decir utilizar fórmulas estadísticas. Una vez
+calculada la muestra se debe señalar el tipo de muestreo que será utilizado,
+es decir, cómo se va a seleccionar a los sujetos a los cuales se les aplicará
+el instrumento de recolección de datos. Existen diferentes tipos de muestreo
+y se debe seleccionar el que mejor se adapte a la investigación, como se
+muestran en la figura 1:
+  
+Figura 1
+TIPOS DE MUESTREO
+Tal como se observa, la palabra  Figura (o Gráfico)  debe ubicarse
+DEBAJO  de  la  figura  o  del  gráfico  en  posición  centrada,  negrita  y  la
+primera letra en mayúscula y se deberá colocar el número que correspondaMuestreo 
+probabilístico
+Al azar 
+simpleAl azar 
+sistemáticoEstratificadoPor 
+conglomeradoMixto
+Muestreo no 
+probabilístico
+Accidental IntencionalPor cuotas
+16
+--- Page 29 ---
+en caso de que existan figuras o gráficos que precedan al que se está
+presentando. El nombre de cada figuras o gráficos se escribirá de igual forma
+centrado, negrita y todo en mayúscula sostenida.
+Una vez escogido el tipo de muestreo a utilizar este debe ser definido
+con un (1) autor de metodología, comentar cita, y realizar la explicación con
+los datos correspondientes a fin de obtener la muestra del estudio.
+Técnicas e Instrumentos de Recolección de Datos
+Definir con dos (2) autores  de metodología  en qué consisten las
+técnicas  e  instrumentos  de  recolección  de  datos,  comentar  citas;  luego
+señalar cuáles técnicas y cuáles instrumentos serán utilizados , éstos también
+deben definirse con dos (2) autores de metodología y comentar las citas. En
+el  cuadro  3  se  señalan  las  técnicas  más  utilizadas  con  sus  respectivos
+instrumentos:
+Cuadro 3
+TÉCNICAS E INSTRUMENTOS DE RECOLECCIÓN DE DATOS
+TECNICAS INSTRUMENTOS
+Observación directa Lista de cotejo.
+Guía de observación.
+Registro de observación.
+Encuesta Cuestionarios (dicotómico, mixtos, de 
+preguntas abiertas)
+Con escalamiento (Likert, Osgood)
+Validez de los Instrumentos
+Definir  con  dos  (2)  autores  de  metodología  en  qué  consiste  la
+validación  de  instrumentos,  comentar  citas.  Luego  debe  señalar  que  la
+17
+--- Page 30 ---
+validación  se  realizará  a  través  de  la  técnica  denominada  Juicio  de
+Expertos,  debe  definir  esta  técnica  con  un  (1)  autor  de  metodología,
+comentar la cita y después indicar las áreas/especialidad de esos expertos,
+por regla es uno en el área de metodología y otro en la carrera que se cursa.
+Estos  expertos  validarán  atendiendo  a  los  criterios  de  pertinencia,
+redacción y adecuación  establecidos en el Manual del IUTAR (2010). 
+Para la validación del instrumento el estudiante deberá presentar al
+experto  los  siguientes  documentos:  instrumento  diseñado,  cuadro  de
+operacionalización de variables, validación por juicio de experto, instrumento
+para validación del cuestionario, constancia de aprobación del instrumento.
+(Ver anexo C)
+18
+--- Page 31 ---
+CAPÍTULO IV
+RESULTADOS DE LA INVESTIGACIÓN
+Técnicas de Análisis e Interpretación de los Resultados
+En este capítulo se presentan los resultados que se obtienen después
+de la aplicación del instrumento de recolección de datos. Se procede a definir
+con dos (2) autores de metodología  en qué consisten los resultados de la
+investigación, comentar citas, luego señalar cuál técnica de análisis se va a
+utilizar y definirla con dos (2) autores de metodología y comentar las citas.
+Para este tipo de trabajos bajo paradigma cuantitativo, la técnica de análisis
+a utilizar es la ESTADÍSTICA DESCRIPTIVA .
+Debe  señalarse  que  se  utilizarán  los  cuadros  de  frecuencia  y  los
+gráficos  circulares  y  definir  cada  uno  de  ellos  con  dos  (2)  autores  de
+metodología, comentar que se efectuará un análisis cualitativo y cuantitativo
+de la información obtenida.
+Al momento de  redactar la interpretación de los resultados , una vez
+hecho  el  análisis  cuantitativo  usted  deberá  sustentar  con  un  autor  el
+indicador que se esté manejando en el ítem correspondiente  a fin de dar
+sustento  teórico  a  la  interpretación  (este  autor  debe  ser  uno  de  los
+desarrollados  en  las  bases  teóricas).  Luego  debe  realizar  el  análisis
+cualitativo, interpretación por parte del autor de los resultados obtenidos en
+relación a la realidad donde se desarrollan los acontecimientos . 
+A continuación se presentan 2 modelos de cómo debe presentarse el
+análisis e interpretación de los resultados. Es importante destacar que los
+resultados de cada ítem  deben presentarse en una sola página :
+19
+--- Page 32 ---
+INSTRUMENTO DE LA OBSERVACIÓN DIRECTA
+Cuadro 5
+LISTA DE COTEJO (O EL QUE CORRESPONDA)
+ítemDescripción Alternativas
+SiNo
+1¿Ítem  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx? X
+2¿Ítem  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx? X
+3
+4
+5
+Análisis e Interpretación:  El análisis e interpretación de estos ítems
+debe realizarlos el investigador, estos ítems constituyen elementos presentes
+o ausentes en la organización (empresa) y que pueden estar influyendo en la
+problemática que se está presentando. Deberá usted realizar un análisis e
+interpretación  de  esa  situación  tomando  en  cuenta  la  realidad  que  se
+presenta en la empresa, y sólo sobre lo que usted observa, (este instrumento
+no  se  aplica  a  los  trabajadores).  Debe  explicar  (por  separado)  las
+consecuencias  que  implica  para  la  empresa  las  situaciones  observadas.
+Coloque tantos párrafos como ítems tenga, y cada uno de ellos debe tener
+inmerso el indicador que corresponda (ver cuadro de variables).
+20
+--- Page 33 ---
+Ítem  1.  Las  actividades  son  planificadas  de  manera  efectiva  en  el
+Almacén de la empresa.
+Cuadro 5
+PLANIFICACIÓN
+Criterio Frecuencia %
+Muy de Acuerdo 00
+De Acuerdo 18
+Indeciso 325
+En Desacuerdo 542
+Muy en Desacuerdo 325
+12100
+Gráfico 1
+PLANIFICACIÓN
+Análisis e Interpretación: El ocho por ciento (8%) está de Acuerdo, el
+veinticinco por ciento (25%) respondió Indeciso, el cuarenta y dos por ciento
+(42%) en desacuerdo y el veinticinco por ciento (25%) respondieron que
+están muy en desacuerdo respecto a la planificación de las actividades. Es
+así,  que  Melinkoff  (1999)  dice  que  la  planificación  es:  “El  proceso  de
+establecer objetivos y escoger el medio más apropiado para el logro de los
+mismos.” (p. 9). En atención a los resultados obtenidos, se infiere que en el
+21
+--- Page 34 ---
+almacén de la empresa Inversiones B-12 C.A. (Tiendas San Miguel) tienen
+que planificarse todas las actividades para poder cumplir con sus objetivos.
+Ítem  4.  ¿Durante  el  proceso  de  envasado  las  botellas  son
+seleccionadas adecuadamente?
+Cuadro 6
+PROCESO DE ENVASADO
+Alternativa Frecuencia Porcentaje 
+SI 1144%
+NO 1456%
+Total 25100%
+Gráfico 4
+PROCESO DE ENVASADO
+Análisis e Interpretación:  Los resultados exponen que la mayoría de los
+encuestados considera que d urante el proceso de envasado las botellas no son
+seleccionadas adecuadamente . Esto ocurre porque al ser el proceso mecánico y no
+aplicarse debidos mantenimientos a las máquinas que conforman este proceso, se
+introducen durante el envasado botellas no conformes que luego son rechazadas
+junto con el líquido que contienen produciéndose así la merma de éste. Según lo
+expuesto por Sánchez (2009): El envasado es un método para conservar alimentos
+consiste  en  calentarlos  a  una  temperatura  que  destruya  los  posibles
+microorganismos presentes y sellarlos en tarros, latas o bolsas herméticas (…). (p.
+89). En la empresa Cervecería Regional del Centro, la etapa de envasado es una de
+las más importantes dentro de proceso de elaboración de cerveza, es aquí donde el
+22
+--- Page 35 ---
+proceso de filtración es envasada en botellas de vidrio retornables cumpliendo las
+normas de calidad, volumen y presentación.  
+23
+--- Page 36 ---
+CONCLUSIONES Y RECOMENDACIONES
+Conclusiones
+Deben estar organizadas en función de los objetivos específicos, el
+investigador  debe  analizar  a  la  luz  de  las  teorías  y  de  los  resultados
+obtenidos.
+Para escribir las conclusiones el estudiante debe tener a la mano los
+resultados  que  obtuvo  de  su  investigación  (análisis  e  interpretación  de
+resultados/ítems), junto con los objetivos específicos del trabajo, además
+debe tomar la precaución de no citar ningún autor ya que eso es materia del
+marco teórico, es decir, no debe  apoyar lo que dice citando un autor, lo que
+si puede hacer es referir en base a la sección de marco teórico donde está la
+base teórica que sirve de soporte a su conclusión.
+Ahora  bien,  para  iniciar  la  presentación  de  las  conclusiones  es
+recomendable iniciar con un párrafo introductorio, donde el estudiante pueda
+tener el mecanismo de apertura para comenzar a exponerlas, por ejemplo
+podría ser un párrafo como sigue: 
+Una vez aplicado el instrumento de recolección de datos, procesados
+los mismos y obtenida la información que de ello se generó conjuntamente
+con los respectivos análisis, se obtuvieron unos resultados que le permiten al
+investigador presentar el siguiente conjunto de conclusiones:
+Es aquí donde se debe hacer uso de los objetivos específicos, pues se
+deben realizar las conclusiones en base a ellos. Para esta construcción, hará
+mención de lo especificado en el objetivo especifico que esté desarrollando,
+24
+--- Page 37 ---
+luego tomará el análisis e interpretación de los ítems que correspondan a ese
+objetivo  especifico  en  particular  y  redactar  las  conclusiones  tomando  en
+cuenta  esos  análisis  e  interpretaciones  y  realizando  los  aportes  que
+correspondan a su propia observación en el contexto de la realidad de la
+empresa y de la problemática que se estudia. 
+Debe haber tantas conclusiones como objetivos específicos se hayan
+planteado. Se debe ser muy claro en cuanto a señalar que dicha conclusión
+está referida a tal objetivo, además de ser enfático y seguro en lo que se
+afirma.
+Recomendaciones
+Se deben realizar única y exclusivamente sobre el tema tratado. No se
+puede recomendar sobre lo que se cree, sino sobre lo que se observó o
+evidenció y sobre los resultados obtenidos. Deben estar dirigidas  a ofrecer
+alternativas de mejorar la situación objeto de estudio.
+Al igual que las conclusiones, antes de presentar las recomendaciones
+debe iniciarse con un párrafo introductorio y luego enunciar cada una de las
+recomendaciones.  Para  su  construcción,  tome  en  cuenta  las  debilidades
+evidenciadas en los resultados de cada ítem analizado.
+25
+--- Page 38 ---
+CAPÍTULO V
+LA PROPUESTA 
+Presentación Introductoria de la Propuesta
+Debe reseñarse un esbozo de la propuesta que se va a realizar y
+mencionar que la misma contribuirá en la solución de la problemática que se
+presenta la empresa, haciendo mención del problema y su solución.
+Justificación de la Propuesta
+La justificación consiste en evidenciar la necesidad de la realización de
+la propuesta; es decir, manifestar la importancia de realización de la misma;
+además se debe indicar por qué es relevante para la empresa resolver la
+problemática  planteada  (qué  consecuencias  traería  a  la  empresa  si  la
+situación no se resuelve), así como señalar los beneficios que aportará a la
+empresa la realización de dicha propuesta.
+Objetivos de la Propuesta
+Objetivo General
+Constituye el nombre de la propuesta con el verbo en infinitivo.
+Objetivos Específicos
+Xxxxxxxxxxxxxxx  xxxxxxxxxxxxxx  xxxxxxxxxxxxxxx  xxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxx.
+26
+--- Page 39 ---
+Xxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+La Propuesta
+En esta sección se debe indicar la forma cómo va a estar estructurada
+la propuesta y presentarla como tal: lineamientos, programa u otros, de tal
+manera que la empresa pueda hacer uso de ella.
+Factibilidad de la Propuesta
+La factibilidad, consiste en definir el nivel de posibilidades de éxito para
+conseguir la solución de las necesidades. Se manejarán cuatro (4) niveles de
+factibilidad que servirán para determinar si un proyecto puede ser exitoso o
+no, (señalar en la medida que la empresa los posea) estos niveles son:
+Técnica: La factibilidad técnica se relaciona con ver si el equipo de
+trabajo cuenta con las herramientas, los conocimientos, las habilidades y la
+experiencia para hacer que el proyecto sea exitoso.
+Económica: La factibilidad económica surge de analizar si los recursos
+económicos y financieros necesarios para desarrollar las actividades pueden
+ser cubiertos. Se presenta así el análisis costo–beneficio donde se mostrarán
+los costos del proyecto.
+Psicosocial: La  implantación  de  cualquier  nuevo  procedimiento  en
+cualquier  organización  crea  un  impacto  social  que  puede  ocasionar  su
+aceptación o el rechazo total al cambio que se pretende introducir, señalar el
+impacto que producirá en los trabajadores y en la empresa. 
+27
+--- Page 40 ---
+Operativa: La  factibilidad  operativa  está  determinada  por  la
+disponibilidad  de  todos  los  recursos  necesarios  para  llevar  adelante  el
+proyecto.
+Análisis Costo-Beneficio
+El costo beneficio de la propuesta representa el análisis de los gastos
+necesarios para la puesta en marcha de las mismas y posibles utilidades o
+beneficios que se describen de dicha propuesta, debe presentarse en un
+cuadro de la siguiente manera:
+Cuadro XX
+ANÁLISIS COSTO-BENEFICIO
+DESCRIPCIÓN COSTO 
+(Bs. F)BENEFICIO
+Realizar  una  interpretación  del  contenido  del  cuadro  resaltando  el
+beneficio general que la propuesta representa para la empresa.
+28
+--- Page 41 ---
+REFERENCIAS
+Para la presentación de las referencias bibliográficas se deberá señalar
+en este orden: Apellido del Autor, inicial del nombre. Año de publicación
+(entre paréntesis). Titulo de la Obra en Cursiva sin Negritas y en Mayúscula
+sólo la Inicial de Cada Palabra Principal . Nº de edición (si la tiene). País de
+publicación: Editorial. 
+Las referencias se escriben a espacio sencillo y con sangría francesa
+(un centímetro de margen a partir de la segunda línea ). Deben presentarse
+en orden alfabético y deben estar  TODOS los autores mencionados a lo
+largo del trabajo de investigación (incluso los utilizados como antecedentes),
+no debe faltar ninguno y no debe aparecer alguno que no esté referido en el
+trabajo. 
+A continuación se presentan ejemplos para la correcta presentación de
+las referencias:
+Arias, F. (2012). El Proyecto de Investigación. Introducción a la Metodología
+Científica. (5ta. Ed). Caracas, Venezuela: Editorial Episteme C.A.
+Rojas, M. (2002).  Administración del Mantenimiento - Antiguos y Nuevos
+Paradigmas.  Documento  en  línea,  disponible  en:
+http://www.gestiopolis.com/recursos/documentos/fulldocs/ger/admtnmto. htm
+[Consulta: año, mes y día].
+Constitución de la República Bolivariana de Venezuela  (1999). Gaceta Oficial
+Nº 36.860. Diciembre 30, 1999. Caracas.
+Instituto Universitario de Tecnología Antonio Ricaurte (2010). Normas para la
+Presentación  de  Trabajos  Escritos,  de  Unidades  Curriculares,
+Monografías, Proyectos, Informes de Pasantías, Trabajos Especiales de
+Grado y Trabajos de Ascenso . Venezuela. Autor. 
+29
+--- Page 42 ---
+Ley Orgánica de Prevención, Condiciones y Medio Ambiente de Trabajo.
+Gaceta Oficial N° 38.236 de fecha 26 de Julio del 2005. Caracas.
+Romero Pino, C. (2007). Evaluación del Proceso de Control de Inventarios en
+el Departamento de Almacén General para el Mejoramiento del Manejo
+de Materiales en la Empresa Alimentos Heinz C.A., ubicada en San
+Joaquín, Estado Carabobo . Instituto Universitario de Tecnología Antonio
+Ricaurte (IUTAR). Sede Maracay. Venezuela.  Trabajo de Grado No
+Publicado.
+Universidad Pedagógica Experimental Libertador. (2012). Manual de Trabajo
+de Grado, de Especialización y Maestría y Tesis Doctorales.  (4ta. Ed.).
+Caracas:  Ediciones  FEDUPEL  (Fondo  Editorial  de  la  Universidad
+Pedagógica Experimental Libertador).
+Wikipedia®  (s/f).  Prevención  y  Salud  Laboral .  [Enciclopedia  en  línea].
+Disponible  en: 
+http://es.wikipedia.org/wiki/Prevenci
+%C3%B3n_de_riesgos_laborales#Prevenci.C3.B3n_de_riesgos_laboral
+es   [Consulta: año, mes y día].
+30
+--- Page 43 ---
+ANEXOS 
+31
+--- Page 44 ---
+ANEXO  A
+CARTA DE ACEPTACIÓN DE LA EMPRESA
+32
+--- Page 45 ---
+PAPEL CON MEMBRETE DE LA EMPRESA
+LOGO Y RIF
+                                                            Ciudad y fecha
+Señores:
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+ANTONIO RICAURTE (IUTAR).
+Sede Maracay.
+Por  medio  del presente tenemos el agrado de dirigirnos  a usted con la
+finalidad de hacer de su conocimiento que hemos aprobado que el (la) bachiller
+XXXXX XXXXXXXXXX, portador de la cédula de identidad Nº XXXXXXXXXXXX,
+estudiante de la Especialidad de XXXXXXXXXXXXX en esa Institución Educativa,
+desarrolle dentro de las instalaciones de nuestra organización, su Trabajo Especial
+de  Grado  titulado:  XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.
+Atentamente,
+XXXXXXXXXXXXXXXXXX
+C.I. 000000000
+Cargo
+(Teléfonos y Dirección de la Empresa)
+33
+--- Page 46 ---
+ANEXO  B
+INSTRUMENTOS DE RECOLECCIÓN DE DATOS
+34
+--- Page 47 ---
+REPÚBLICA BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+INSTRUMENTO DE RECOLECCIÓN DE DATOS
+El  presente  cuestionario  tiene  como  propósito  recolectar  los  datos
+necesarios  para  la  realización  de  la  Investigación  titulada:  TITULO  DEL
+TRABAJO EN MAYUSCULAS.
+Instrucciones:
+Lea cuidadosamente cada item antes de responder.
+Marque con una (X) en la opción que más se ajuste a su criterio.
+Responda de forma sincera, aplicando criterios de objetividad.
+No es necesario que identifique ni firme el cuestionario
+Responda con total libertad, recuerde que la intención de la aplicación
+del instrumento es sólo para recabar información sobre el tema indicado, con
+fines netamente investigativos y académicos.
+Atentamente;
+Nombres y Apellido.
+Autor
+35
+--- Page 48 ---
+REPÚBLICA DE BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+CUESTIONARIO
+Nº ITEM SINO
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+36
+--- Page 49 ---
+REPÚBLICA DE BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+INSTRUMENTO DE LA OBSERVACIÓN DIRECTA
+LISTA DE COTEJO
+Nº
+ítemDescripción Alternativas
+SiNo
+1¿  Ítem  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx? 
+2¿  Ítem  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx? 
+3
+4
+5
+37
+--- Page 50 ---
+ANEXO  C
+INSTRUMENTO DE VALIDACIÓN
+38
+--- Page 51 ---
+REPÚBLICA DE BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+VALIDACIÓN POR JUICIO DE EXPERTO
+Apreciado Experto:
+El instrumento que se presenta es para validar el cuestionario que se
+aplicará  durante  el  desarrollo  del  Trabajo  de  Grado  titulado:  XXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX, elaborado por el
+bachiller:  XXXXXXXXXXXXXXXX,  cédula  de  identidad  No  XXXXXXXXX,
+para  optar  al  Título  de  Técnico  Superior  Universitario  en  la  Carrera  de
+XXXXXXXXXXXXXXXXXXXXXXX .
+Lea el instrumento y marque con una (x) su criterio en cuanto a los
+aspectos que a continuación se señalan:
+Pertinencia: Relación estrecha entre la pregunta, los objetivos a lograr
+y el aspecto o parte del instrumento que se encuentra desarrollado.
+Redacción: El ítem está escrito con claridad y precisión, utilizando
+para ello un lenguaje técnico y se interpreta un solo significado.
+Adecuación: Es la correspondencia del contenido de la pregunta con
+el nivel de preparación o desempeño del entrevistado. 
+CÓDIGO APRECIACIÓN
+BBUENO: El indicador se presenta en grado igual o 
+ligeramente superior al mínimo aceptable.
+RREGULAR: El indicador no llega al mínimo aceptable, 
+pero se acerca a él.
+DDEFICIENTE: El indicador está lejos de alcanzar el 
+mínimo aceptable.
+Fuente: Metodología de la Investigación Cuantitativa. Palella y Martins, (2003, p 148).
+39
+--- Page 52 ---
+Instrumento para Validación  del Cuestionario
+ PREGUNTAS/ITEMESPERTINENCIA REDACIÒN ADECUACIÒN 
+BRDBRDBRD
+1         
+2         
+3         
+4         
+5         
+6         
+7         
+8         
+9         
+10         
+11         
+12         
+13         
+14
+15
+16
+17
+18
+Observaciones y Sugerencias
+_____________________________________________________________
+_____________________________________________________________
+_____________________________________________________________
+Nombres y Apellidos: ____________________________________________
+C.I: ___________ Nivel Académico: _____________ Cargo: ____________
+Fecha: ______________ Hora: ____________
+Firma: ____________________
+40
+--- Page 53 ---
+REPÚBLICA DE BOLIVARIANA DE VENEZUELA
+MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
+INSTITUTO UNIVERSITARIO DE TECNOLOGÍA
+“ANTONIO RICAURTE”
+CONSTANCIA DE APROBACIÓN DEL INSTRUMENTO
+Especialista en _________________________________
+Quien  suscribe,  ___________________________________________,
+C.I. Nº ________________________, mediante la presente hago constar que
+el  instrumento  de  recolección  de  datos  del  Trabajo  Especial  de  Grado
+titulado: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXX,  cuyo autor es  el (la) bachiller:
+XXXXXXXXXXXXXXXXXXXXXXXX,  C.I.  No  XXXXXXXXXX,  aspirante  al
+título de Técnico Superior Universitario en la Carrera de XXXXXXXXXXXXX ,
+reúne los requisitos suficientes y necesarios para ser aplicado en el logro de
+los objetivos que se desean obtener en esta investigación.
+Constancia  de  Aprobación  que  se  expide  a  solicitud  de  la  parte
+interesada en Maracay a los _______ días del mes de __________________
+de 2014.
+Atentamente;
+____________________________________________
+41
