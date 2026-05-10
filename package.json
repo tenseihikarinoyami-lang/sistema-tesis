@@ -14,7 +14,7 @@
     "firebase": "^12.12.1",
     "firebase-admin": "^13.9.0",
     "framer-motion": "^11.11.17",
-    "lucide-react": "^1.14.0",
+    "lucide-react": "^0.468.0",
     "motion-dom": "^12.38.0",
     "motion-utils": "^12.36.0",
     "next": "15.1.0",

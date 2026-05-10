@@ -4,9 +4,9 @@ import { Document, Packer, Paragraph, HeadingLevel } from 'docx';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const projectId = params.id;
+  const { id: projectId } = await params;
 
   try {
     const docSnap = await adminDb.collection("projects").doc(projectId).get();
@@ -47,7 +47,7 @@ export async function GET(
 
     const buffer = await Packer.toBuffer(doc);
 
-    return new NextResponse(buffer, {
+    return new Response(buffer as any, {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'Content-Disposition': `attachment; filename="Tesis_${projectId}.docx"`,
