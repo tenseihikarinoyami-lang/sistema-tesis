@@ -311,26 +311,30 @@ export default function NewProjectPage() {
       </div>
 
       {/* Form Content */}
-      <div className="glass academic-card min-h-[600px] flex flex-col relative overflow-hidden">
-        <AnimatePresence mode="wait">
-          {currentStep === 0 && <StepRequisitos key="step0" data={formData} onChange={updateField} />}
-          {currentStep === 1 && <StepEstructura key="step1" data={formData} onChange={updateField} />}
-          {currentStep === 2 && <StepContenido key="step2" data={formData} onChange={updateField} />}
-          {currentStep === 3 && <StepRevision key="step3" data={formData} onChange={updateField} />}
-        </AnimatePresence>
+      <div className="glass academic-card relative overflow-hidden">
+        {/* Step content area */}
+        <div className="min-h-[480px]">
+          <AnimatePresence mode="wait">
+            {currentStep === 0 && <StepRequisitos key="step0" data={formData} onChange={updateField} />}
+            {currentStep === 1 && <StepEstructura key="step1" data={formData} onChange={updateField} />}
+            {currentStep === 2 && <StepContenido key="step2" data={formData} onChange={updateField} />}
+            {currentStep === 3 && <StepRevision key="step3" data={formData} onChange={updateField} />}
+          </AnimatePresence>
+        </div>
 
-        <div className="mt-auto pt-10 flex justify-between items-center border-t border-gray-100">
+        {/* Navigation */}
+        <div className="-mx-12 px-12 pb-4 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/5">
           <button 
             onClick={prevStep}
             disabled={currentStep === 0}
-            className={`flex items-center gap-2 px-8 py-3 rounded-xl font-bold transition-all ${
-              currentStep === 0 ? 'text-gray-700 pointer-events-none' : 'text-gray-400 hover:bg-white/5'
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all order-2 sm:order-1 ${
+              currentStep === 0 ? 'text-gray-700 pointer-events-none opacity-0' : 'text-gray-400 hover:bg-white/5'
             }`}
           >
-            <ChevronLeft size={20} /> Anterior
+            <ChevronLeft size={18} /> Anterior
           </button>
           
-          <div className="text-xs text-gray-400 font-medium uppercase tracking-widest">
+          <div className="text-xs text-gray-500 font-medium uppercase tracking-widest order-1 sm:order-2">
             Paso {currentStep + 1} de {steps.length}
           </div>
 
@@ -338,11 +342,13 @@ export default function NewProjectPage() {
             <button 
               onClick={handleGenerate}
               disabled={generating}
-              className={`academic-btn-gold flex items-center gap-2 ${generating ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`academic-btn-gold flex items-center gap-2 order-3 ${
+                generating ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
               {generating ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
                   Procesando...
                 </>
               ) : (
@@ -352,9 +358,9 @@ export default function NewProjectPage() {
           ) : (
             <button 
               onClick={nextStep}
-              className="academic-btn-primary flex items-center gap-2"
+              className="academic-btn-primary flex items-center gap-2 order-3"
             >
-              Siguiente <ChevronRight size={20} />
+              Siguiente <ChevronRight size={18} />
             </button>
           )}
         </div>
@@ -369,7 +375,7 @@ function StepRequisitos({ data, onChange }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="space-y-12"
+      className="space-y-10"
     >
       <div>
         <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Parámetros Institucionales</h2>
@@ -467,7 +473,7 @@ function StepEstructura({ data, onChange }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="space-y-12"
+      className="space-y-10"
     >
       <div>
         <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Arquitectura del Saber</h2>
@@ -512,7 +518,7 @@ function StepContenido({ data, onChange }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="space-y-12"
+      className="space-y-10"
     >
       <div>
         <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Núcleo Temático</h2>
@@ -571,7 +577,7 @@ function StepRevision({ data, onChange }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="space-y-12"
+      className="space-y-10"
     >
       <div>
         <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Refinamiento Superior</h2>
