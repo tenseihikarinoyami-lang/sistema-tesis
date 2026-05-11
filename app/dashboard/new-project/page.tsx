@@ -162,12 +162,20 @@ export default function NewProjectPage() {
           duration: 15000 
         });
 
+        // Helper to extract error from a failed response
+        const assertOk = async (res: Response, fallback: string) => {
+          if (!res.ok) {
+            const body = await res.json().catch(() => ({}));
+            throw new Error(body.error || fallback);
+          }
+        };
+
         const resResearch = await fetch('/api/thesis/generate-chapter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ projectId: project_id, chapter, formData, prevContent, step: 'research' }),
         });
-        if (!resResearch.ok) throw new Error(`Fallo en investigación de ${chapter}`);
+        await assertOk(resResearch, `Fallo en investigación de ${chapter}`);
         const { research } = await resResearch.json();
 
         // Step 2: Write
@@ -180,7 +188,7 @@ export default function NewProjectPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ projectId: project_id, chapter, formData, prevContent, research, step: 'write' }),
         });
-        if (!resWrite.ok) throw new Error(`Fallo en redacción de ${chapter}`);
+        await assertOk(resWrite, `Fallo en redacción de ${chapter}`);
         const { draft } = await resWrite.json();
 
         // Step 3: Audit
@@ -193,7 +201,7 @@ export default function NewProjectPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ projectId: project_id, chapter, formData, draft, step: 'audit' }),
         });
-        if (!resAudit.ok) throw new Error(`Fallo en auditoría de ${chapter}`);
+        await assertOk(resAudit, `Fallo en auditoría de ${chapter}`);
         const { audit } = await resAudit.json();
 
         // Step 4: Humanize & Finalize Chapter
@@ -206,11 +214,12 @@ export default function NewProjectPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ projectId: project_id, chapter, formData, draft, audit, step: 'humanize' }),
         });
-        if (!resHuman.ok) throw new Error(`Fallo en finalización de ${chapter}`);
+        await assertOk(resHuman, `Fallo en finalización de ${chapter}`);
         const { finalVersion } = await resHuman.json();
         
         prevContent = finalVersion;
       }
+
 
       // 3. Finalize
       await fetch('/api/thesis/finalize', {
@@ -226,13 +235,34 @@ export default function NewProjectPage() {
       router.push('/dashboard/projects');
     } catch (error: any) {
       console.error("Error en la generación:", error);
-      toast.error("Fallo Crítico", {
-        description: error.message || "No se pudo completar la generación.",
-      });
+      const msg: string = error?.message || "";
+
+      if (msg.includes("CUOTA_DIARIA_AGOTADA")) {
+        toast.error("Cuota Diaria Agotada", {
+          description:
+            "La API de Gemini gratuita alcanzó su límite diario. " +
+            "El servicio se restablecerá automáticamente mañana, o puedes " +
+            "activar un plan de pago en Google AI Studio (ai.google.dev).",
+          duration: 12000,
+        });
+      } else if (msg.includes("LIMITE_ALCANZADO")) {
+        toast.error("Límite de Solicitudes", {
+          description:
+            "Se superó el límite por minuto de la API. " +
+            "Espera unos minutos y vuelve a intentarlo.",
+          duration: 10000,
+        });
+      } else {
+        toast.error("Error en el Motor OBELISCO", {
+          description: msg || "No se pudo completar la generación. Revisa la consola para más detalles.",
+          duration: 8000,
+        });
+      }
     } finally {
       setGenerating(false);
     }
   };
+
 
   if (!mounted) return null;
 

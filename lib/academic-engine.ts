@@ -1,17 +1,92 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+// ─────────────────────────────────────────────────────────────
+// Retry helper with exponential backoff for 429 rate-limit errors
+// ─────────────────────────────────────────────────────────────
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  agentName: string,
+  maxRetries = 3
+): Promise<T> {
+  let lastError: any;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      lastError = error;
+      const msg: string = error?.message || "";
+      const is429 = msg.includes("429") || msg.includes("Too Many Requests") || msg.includes("RESOURCE_EXHAUSTED");
+
+      if (!is429) throw error; // Non-rate-limit error → propagate immediately
+
+      // Detect DAILY quota exhaustion (limit: 0 on the free tier daily metric)
+      const isDailyExhausted =
+        msg.includes("FreeTier") &&
+        (msg.includes("PerDay") || msg.includes("generate_content_free_tier_requests"));
+
+      if (isDailyExhausted || attempt >= maxRetries) {
+        // Parse server-suggested retry delay if present
+        const retryMatch = msg.match(/retry.*?(\d+)[\s.]/i) || msg.match(/retryDelay[^\d]*(\d+)/i);
+        const retrySeconds = retryMatch ? parseInt(retryMatch[1]) : null;
+
+        if (isDailyExhausted) {
+          throw new Error(
+            `CUOTA_DIARIA_AGOTADA: La cuota diaria gratuita de la API de Gemini se ha agotado. ` +
+            `Por favor, espera hasta mañana o configura un plan de pago en Google AI Studio. ` +
+            `(Agente: ${agentName})`
+          );
+        }
+        throw new Error(
+          `LIMITE_ALCANZADO: Se superó el límite de solicitudes por minuto tras ${maxRetries} reintentos. ` +
+          `Intenta de nuevo en ${retrySeconds ? `${retrySeconds} segundos` : "unos minutos"}. ` +
+          `(Agente: ${agentName})`
+        );
+      }
+
+      // Exponential backoff: 5s, 15s, 35s
+      const waitMs = Math.min(5000 * Math.pow(3, attempt), 40000);
+      console.warn(
+        `[${agentName}] 429 Rate limit hit (attempt ${attempt + 1}/${maxRetries + 1}). ` +
+        `Retrying in ${waitMs / 1000}s...`
+      );
+      await sleep(waitMs);
+    }
+  }
+
+  throw lastError;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Main engine
+// ─────────────────────────────────────────────────────────────
 export class AcademicEngine {
   private genAI: GoogleGenerativeAI;
   private model: any;
 
   constructor(apiKey: string) {
+    if (!apiKey) throw new Error("API Key for Gemini is required");
     this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({ 
+    this.model = this.genAI.getGenerativeModel({
       model: "gemini-2.0-flash",
       generationConfig: {
         temperature: 0.4,
-      }
+        topP: 0.8,
+        topK: 40,
+      },
     });
+  }
+
+  private async safeGenerate(prompt: string, agentName: string): Promise<string> {
+    return withRetry(async () => {
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      if (!text) throw new Error(`Empty response from ${agentName}`);
+      return text;
+    }, agentName);
   }
 
   async researcherAgent(topic: string, context: string): Promise<string> {
@@ -23,14 +98,13 @@ export class AcademicEngine {
       Retorna una lista de hallazgos bibliográficos simulados en formato APA 7 y los conceptos clave.
       Mantén las respuestas en ESPAÑOL y con rigor académico.
     `;
-    const result = await this.model.generateContent(prompt);
-    return result.response.text();
+    return this.safeGenerate(prompt, "ResearcherAgent");
   }
 
   async writerAgent(section: string, researchData: string, data: any, context: string): Promise<string> {
-    const tono = data.tone || 'Académico Formal';
-    const programa = data.program || 'Investigación Científica';
-    
+    const tono = data.tone || "Académico Formal";
+    const programa = data.program || "Investigación Científica";
+
     const systemPrompt = `
       Eres el Agente Redactor de OBELISCO. Tu objetivo es transformar datos de investigación en prosa académica impecable.
       REGLAS:
@@ -41,19 +115,18 @@ export class AcademicEngine {
       - Escribe siempre en ESPAÑOL académico.
       - Mínimo 300 palabras por sección.
     `;
-    
+
     const humanPrompt = `
       Sección: ${section}
       Datos de Investigación: ${researchData}
-      Contexto del Proyecto: ${data.description || ''}
-      Título de la Tesis: ${data.title || ''}
-      Contenido Previo (para coherencia): ${context || 'N/A'}
+      Contexto del Proyecto: ${data.description || ""}
+      Título de la Tesis: ${data.title || ""}
+      Contenido Previo (para coherencia): ${context || "N/A"}
       
       Redacta el contenido exhaustivo y académico para esta sección.
     `;
-    
-    const result = await this.model.generateContent(`${systemPrompt}\n\n${humanPrompt}`);
-    return result.response.text();
+
+    return this.safeGenerate(`${systemPrompt}\n\n${humanPrompt}`, "WriterAgent");
   }
 
   async auditorAgent(content: string, thesisType: string): Promise<string> {
@@ -69,8 +142,7 @@ export class AcademicEngine {
       
       Retorna una breve crítica y sugerencias de corrección. Si todo está perfecto, indica 'APROBADO'.
     `;
-    const result = await this.model.generateContent(prompt);
-    return result.response.text();
+    return this.safeGenerate(prompt, "AuditorAgent");
   }
 
   async humanizerAgent(content: string): Promise<string> {
@@ -85,14 +157,13 @@ export class AcademicEngine {
       
       Texto Original: ${content}
     `;
-    const result = await this.model.generateContent(prompt);
-    return result.response.text();
+    return this.safeGenerate(prompt, "HumanizerAgent");
   }
 
   async generateStructuralPlan(data: any): Promise<string> {
     const nivel = (data.level || "TEG").toUpperCase();
     let baseStructure = "";
-    
+
     if (nivel.includes("PNF")) {
       baseStructure = `
         - Páginas Preliminares (Portada, Índice, Resumen)
@@ -126,8 +197,7 @@ export class AcademicEngine {
       Estructura base obligatoria: ${baseStructure}
       Retorna el índice detallado en formato Markdown. Escribe en ESPAÑOL.
     `;
-    
-    const result = await this.model.generateContent(prompt);
-    return result.response.text();
+
+    return this.safeGenerate(prompt, "StructuralPlanAgent");
   }
 }
