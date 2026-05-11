@@ -108,7 +108,7 @@ export default function ProjectsPage() {
           <h1 className="text-5xl font-black text-white academic-text mb-4 tracking-tighter">Mis Investigaciones</h1>
           <p className="text-gray-400">Gestiona y descarga tus proyectos generados por OBELISCO.</p>
         </div>
-        <Link href="/new-project">
+        <Link href="/dashboard/new-project">
           <button className="academic-btn-gold flex items-center gap-2">
             <Plus size={20} /> Nueva Tesis
           </button>
@@ -140,7 +140,7 @@ export default function ProjectsPage() {
             <div className="p-20 text-center space-y-4">
               <FileText size={48} className="mx-auto text-gray-700" />
               <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">No hay proyectos activos</p>
-              <Link href="/new-project">
+              <Link href="/dashboard/new-project">
                 <button className="text-accent text-sm font-black hover:underline underline-offset-8">INICIAR PRIMERA INVESTIGACIÓN</button>
               </Link>
             </div>
@@ -200,7 +200,7 @@ export default function ProjectsPage() {
                     </td>
                     <td className="px-8 py-6">
                       <div className="flex justify-end gap-2 relative">
-                        <Link href={`/projects/${project.id}`}>
+                        <Link href={`/dashboard/projects/${project.id}`}>
                           <button className="p-3 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-all" title="Ver Detalles">
                             <Eye size={18} />
                           </button>

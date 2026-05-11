@@ -41,7 +41,7 @@ export default function LandingPage() {
             <Link href="/login" className="text-sm font-black text-white/60 hover:text-white transition-colors uppercase tracking-widest">
               Acceso
             </Link>
-            <Link href="/new-project" className="px-6 py-3 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+            <Link href="/dashboard/new-project" className="px-6 py-3 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition-all">
               Empezar
             </Link>
           </nav>
@@ -74,7 +74,7 @@ export default function LandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
-            <Link href="/new-project" className="btn-premium flex items-center gap-3 text-lg">
+            <Link href="/dashboard/new-project" className="btn-premium flex items-center gap-3 text-lg">
               Iniciar Proyecto <ArrowRight size={20} />
             </Link>
             <button className="flex items-center gap-3 px-8 py-4 font-bold text-slate-300 hover:text-white transition-all group">

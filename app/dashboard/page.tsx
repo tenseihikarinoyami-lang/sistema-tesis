@@ -68,7 +68,7 @@ export default function DashboardPage() {
           animate={{ opacity: 1, x: 0 }}
           className="flex gap-4"
         >
-          <Link href="/new-project" className="academic-btn-primary flex items-center gap-3">
+          <Link href="/dashboard/new-project" className="academic-btn-primary flex items-center gap-3">
             Iniciar Nueva Tesis <ArrowRight size={20} />
           </Link>
         </motion.div>
@@ -109,7 +109,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 space-y-10">
           <div className="flex items-center justify-between border-b border-gray-100 pb-6">
              <h3 className="text-3xl font-black text-primary academic-text">Proyectos Recientes</h3>
-             <Link href="/projects" className="text-sm font-bold text-primary hover:underline uppercase tracking-widest text-[10px]">Gestionar todos</Link>
+             <Link href="/dashboard/projects" className="text-sm font-bold text-primary hover:underline uppercase tracking-widest text-[10px]">Gestionar todos</Link>
           </div>
           <div className="space-y-6">
             {loading ? (
@@ -131,7 +131,7 @@ export default function DashboardPage() {
               <div className="p-12 text-center border-2 border-dashed border-gray-200 rounded-[2.5rem] space-y-4">
                 <FileText size={48} className="mx-auto text-gray-300" />
                 <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No hay investigaciones recientes</p>
-                <Link href="/new-project" className="text-primary text-sm font-black hover:underline">Iniciar mi primera tesis</Link>
+                <Link href="/dashboard/new-project" className="text-primary text-sm font-black hover:underline">Iniciar mi primera tesis</Link>
               </div>
             )}
           </div>
@@ -233,7 +233,7 @@ function ProjectCard({ id, title, subject, progress, date }: any) {
             ></motion.div>
           </div>
         </div>
-        <Link href={`/projects/${id}`}>
+        <Link href={`/dashboard/projects/${id}`}>
           <button className="p-3 text-gray-400 hover:text-primary hover:bg-gray-50 rounded-xl transition-all">
             <ChevronRight size={20} />
           </button>
