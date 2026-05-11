@@ -169,25 +169,34 @@ export default function DashboardLayout({
              </form>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 md:gap-8">
             <button className="relative p-3 text-slate-400 hover:text-white transition-all glass-hover rounded-xl">
               <Bell size={22} />
               <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-accent rounded-full border-2 border-[#050505] shadow-[0_0_8px_#10B981]"></span>
             </button>
             
-            <div className="h-10 w-[1px] bg-white/10"></div>
+            <div className="h-10 w-[1px] bg-white/10 hidden sm:block"></div>
 
             <div className="flex items-center gap-4 cursor-pointer group">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-black text-white group-hover:text-primary transition-colors academic-text">{user.displayName || user.email?.split('@')[0] || 'Investigador'}</p>
                 <p className="text-[10px] font-bold text-accent uppercase tracking-widest">{role === 'admin' ? 'Administrador Central' : 'Investigador Activo'}</p>
               </div>
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-purple-600 p-[2px] shadow-[0_0_20px_rgba(79,70,229,0.3)] group-hover:shadow-[0_0_30px_rgba(79,70,229,0.5)] transition-all">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-primary to-purple-600 p-[2px] shadow-[0_0_20px_rgba(79,70,229,0.3)] group-hover:shadow-[0_0_30px_rgba(79,70,229,0.5)] transition-all">
                 <div className="w-full h-full bg-[#0A0A0A] rounded-[calc(1rem-2px)] flex items-center justify-center text-white font-black text-lg academic-text">
                   {user.email?.[0].toUpperCase() || 'U'}
                 </div>
               </div>
             </div>
+
+            {/* Mobile logout — only visible when sidebar is hidden */}
+            <button
+              onClick={handleLogout}
+              title="Cerrar sesión"
+              className="lg:hidden flex items-center gap-2 p-3 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+            >
+              <LogOut size={20} />
+            </button>
           </div>
         </header>
 

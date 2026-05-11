@@ -17,13 +17,15 @@ export default function LoginPage() {
   const router = useRouter();
 
   const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-  const disabledError = searchParams?.get('error') === 'disabled';
+  const errorParam = searchParams?.get('error');
 
   useEffect(() => {
-    if (disabledError) {
-      setError("Tu cuenta ha sido inhabilitada por el administrador central.");
+    if (errorParam === 'disabled') {
+      setError('Tu cuenta ha sido inhabilitada por el administrador. Contacta al soporte.');
+    } else if (errorParam === 'expired') {
+      setError('Tu cuenta ha vencido. Por favor contacta al administrador para renovar el acceso.');
     }
-  }, [disabledError]);
+  }, [errorParam]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
