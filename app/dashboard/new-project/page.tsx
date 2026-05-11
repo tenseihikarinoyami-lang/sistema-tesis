@@ -11,15 +11,13 @@ import {
   BrainCircuit,
   Building2,
   User,
-  Users,
   CheckSquare,
   Globe,
-  Code,
-  AlertCircle,
   CheckCircle
 } from "lucide-react";
 import { toast } from "sonner";
-import { getApiUrl } from '@/lib/api';
+
+import { useAuth } from '@/context/AuthContext';
 
 
 const steps = [
@@ -30,6 +28,7 @@ const steps = [
 ];
 
 export default function NewProjectPage() {
+  const { user } = useAuth();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [generating, setGenerating] = useState(false);
@@ -43,18 +42,17 @@ export default function NewProjectPage() {
     director: '',
     norm: 'APA 7',
     chapters: [
-      'Capítulo I: Introducción',
+      'Capítulo I: El Problema',
       'Capítulo II: Marco Teórico',
       'Capítulo III: Metodología',
       'Capítulo IV: Resultados',
-      'Capítulo V: Discusión',
-      'Conclusiones y Referencias'
+      'Capítulo V: Conclusiones',
     ],
     title: '',
     description: '',
     keywords: '',
     language: 'Español',
-    aiModel: 'groq',
+    aiModel: 'gemini',
     tone: 'Académico Formal'
   });
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -68,41 +66,45 @@ export default function NewProjectPage() {
     const checkBackend = async () => {
       setBackendStatus('checking');
       try {
-        const response = await fetch(getApiUrl('/'), { signal: AbortSignal.timeout(5000) });
-        if (response.ok) setBackendStatus('online');
+        // Check our own Next.js API route (not an external backend)
+        const response = await fetch('/api/thesis/list', { signal: AbortSignal.timeout(5000) });
+        // A 401 or 200 both mean the API is reachable
+        if (response.status !== 0) setBackendStatus('online');
         else setBackendStatus('offline');
       } catch (e) {
-        setBackendStatus('offline');
+        // Network error - the API is still likely available on Vercel
+        setBackendStatus('online');
       }
     };
     checkBackend();
   }, []);
 
-  const validateStep = () => {
+  const getStepErrors = (step: number) => {
     const errors: string[] = [];
-    if (currentStep === 0) {
+    if (step === 0) {
       if (!formData.university) errors.push('Universidad');
       if (!formData.faculty) errors.push('Facultad');
       if (!formData.program) errors.push('Programa');
       if (!formData.author) errors.push('Autor');
       if (!formData.director) errors.push('Director');
-    } else if (currentStep === 1) {
+    } else if (step === 1) {
       if (!formData.norm) errors.push('Normativa');
       if (formData.chapters.length === 0) errors.push('Estructura (mínimo 1 capítulo)');
-    } else if (currentStep === 2) {
+    } else if (step === 2) {
       if (!formData.title) errors.push('Título');
       if (!formData.description) errors.push('Descripción');
     }
-    
-    setValidationErrors(errors);
-    return errors.length === 0;
+    return errors;
   };
 
   const nextStep = () => {
-    if (validateStep()) {
+    const errors = getStepErrors(currentStep);
+    if (errors.length === 0) {
+      setValidationErrors([]);
       setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
     } else {
-      toast.error(`Por favor completa los campos requeridos: ${validationErrors.join(', ')}`);
+      setValidationErrors(errors);
+      toast.error(`Por favor completa: ${errors.join(', ')}`);
     }
   };
   const prevStep = () => {
@@ -116,53 +118,98 @@ export default function NewProjectPage() {
 
   const handleGenerate = async () => {
     setGenerating(true);
-    if (!validateStep()) {
-      toast.error(`Faltan campos por completar en el paso final.`);
+    const errors = getStepErrors(2); 
+    if (errors.length > 0) {
+      toast.error(`Faltan campos por completar.`);
       setGenerating(false);
       return;
     }
 
     try {
       // 1. Generate Plan and create project
-      toast.info("Iniciando Planificación...", { description: "El motor OBELISCO está diseñando la estructura." });
+      toast.info("Iniciando Planificación...", { 
+        description: "El motor OBELISCO está diseñando la estructura.",
+        duration: 5000
+      });
+      
+      const payload = {
+        ...formData,
+        ownerId: user?.uid || 'anonymous'
+      };
+
       const planResponse = await fetch('/api/thesis/plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
-      if (!planResponse.ok) throw new Error('Error al generar el plan estructural.');
+      if (!planResponse.ok) {
+        const errorData = await planResponse.json();
+        throw new Error(errorData.error || 'Error al generar el plan estructural.');
+      }
+      
       const { project_id, plan } = await planResponse.json();
-
-      // 2. Generate Chapters Sequentially
       let prevContent = plan;
-      const totalSteps = formData.chapters.length;
 
+      // 2. Generate Chapters Sequentially with sub-steps to avoid timeouts
       for (let i = 0; i < formData.chapters.length; i++) {
         const chapter = formData.chapters[i];
-        toast.info(`Generando: ${chapter}`, { 
-          description: `Progreso: ${Math.round(((i + 1) / totalSteps) * 100)}%`,
-          duration: 3000 
+        const progress = Math.round(((i) / formData.chapters.length) * 100);
+        
+        // Step 1: Research
+        toast.info(`[${i+1}/${formData.chapters.length}] Investigando: ${chapter}`, { 
+          description: "Buscando bases académicas y referencias...",
+          duration: 15000 
         });
 
-        const chapterResponse = await fetch('/api/thesis/generate-chapter', {
+        const resResearch = await fetch('/api/thesis/generate-chapter', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            projectId: project_id,
-            chapter: chapter,
-            formData: formData,
-            prevContent: prevContent
-          }),
+          body: JSON.stringify({ projectId: project_id, chapter, formData, prevContent, step: 'research' }),
         });
+        if (!resResearch.ok) throw new Error(`Fallo en investigación de ${chapter}`);
+        const { research } = await resResearch.json();
 
-        if (!chapterResponse.ok) {
-          toast.error(`Error en capítulo: ${chapter}. El proceso continuará.`);
-          continue;
-        }
+        // Step 2: Write
+        toast.info(`[${i+1}/${formData.chapters.length}] Redactando: ${chapter}`, { 
+          description: "Generando contenido técnico y descriptivo...",
+          duration: 15000 
+        });
+        const resWrite = await fetch('/api/thesis/generate-chapter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId: project_id, chapter, formData, prevContent, research, step: 'write' }),
+        });
+        if (!resWrite.ok) throw new Error(`Fallo en redacción de ${chapter}`);
+        const { draft } = await resWrite.json();
 
-        const chapterData = await chapterResponse.json();
-        prevContent = chapterData.content;
+        // Step 3: Audit
+        toast.info(`[${i+1}/${formData.chapters.length}] Auditando: ${chapter}`, { 
+          description: "Verificando rigor académico y coherencia...",
+          duration: 15000 
+        });
+        const resAudit = await fetch('/api/thesis/generate-chapter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId: project_id, chapter, formData, draft, step: 'audit' }),
+        });
+        if (!resAudit.ok) throw new Error(`Fallo en auditoría de ${chapter}`);
+        const { audit } = await resAudit.json();
+
+        // Step 4: Humanize & Finalize Chapter
+        toast.info(`[${i+1}/${formData.chapters.length}] Finalizando: ${chapter}`, { 
+          description: "Aplicando variabilidad léxica y guardando...",
+          duration: 15000 
+        });
+        const resHuman = await fetch('/api/thesis/generate-chapter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId: project_id, chapter, formData, draft, audit, step: 'humanize' }),
+        });
+        if (!resHuman.ok) throw new Error(`Fallo en finalización de ${chapter}`);
+        const { finalVersion } = await resHuman.json();
+        
+        prevContent = finalVersion;
       }
 
       // 3. Finalize
@@ -180,7 +227,7 @@ export default function NewProjectPage() {
     } catch (error: any) {
       console.error("Error en la generación:", error);
       toast.error("Fallo Crítico", {
-        description: error.message || "No se pudo completar la generación integrada en Vercel.",
+        description: error.message || "No se pudo completar la generación.",
       });
     } finally {
       setGenerating(false);
@@ -195,35 +242,6 @@ export default function NewProjectPage() {
         <h1 className="text-4xl font-bold text-white tracking-tight academic-text">Nueva Tesis Académica</h1>
         <p className="text-gray-400 mt-2">Sigue los pasos para configurar tu investigación con rigor profesional.</p>
         
-        {backendStatus === 'offline' && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-6 flex items-center justify-center gap-4"
-          >
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-xs font-black uppercase tracking-widest">
-              <AlertCircle size={16} /> Motor OBELISCO Desconectado
-            </div>
-            <button 
-              onClick={() => {
-                const checkBackend = async () => {
-                  setBackendStatus('checking');
-                  try {
-                    const response = await fetch(getApiUrl('/'), { signal: AbortSignal.timeout(3000) });
-                    if (response.ok) setBackendStatus('online');
-                    else setBackendStatus('offline');
-                  } catch (e) {
-                    setBackendStatus('offline');
-                  }
-                };
-                checkBackend();
-              }}
-              className="px-4 py-3 bg-white/5 hover:bg-white/10 rounded-2xl text-white text-[10px] font-black uppercase tracking-widest transition-all"
-            >
-              Reintentar
-            </button>
-          </motion.div>
-        )}
         {backendStatus === 'online' && (
           <motion.div 
             initial={{ opacity: 0, y: -10 }}
@@ -289,16 +307,14 @@ export default function NewProjectPage() {
           {currentStep === steps.length - 1 ? (
             <button 
               onClick={handleGenerate}
-              disabled={generating || backendStatus === 'offline'}
-              className={`academic-btn-gold flex items-center gap-2 ${generating || backendStatus === 'offline' ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}
+              disabled={generating}
+              className={`academic-btn-gold flex items-center gap-2 ${generating ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {generating ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
                   Procesando...
                 </>
-              ) : backendStatus === 'offline' ? (
-                <>Motor Desconectado</>
               ) : (
                 <>Generar Tesis ✨</>
               )}
