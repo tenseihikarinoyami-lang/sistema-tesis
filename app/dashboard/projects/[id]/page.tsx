@@ -49,7 +49,7 @@ export default function ProjectDetailsPage() {
         setProject(data);
       } else {
         toast.error("Proyecto no encontrado");
-        router.push('/projects');
+        router.push('/dashboard/projects');
       }
     } catch (error) {
       console.error("Error fetching project:", error);
@@ -74,7 +74,7 @@ export default function ProjectDetailsPage() {
       });
       if (response.ok) {
         toast.success("Proyecto eliminado correctamente");
-        router.push('/projects');
+        router.push('/dashboard/projects');
       } else {
         toast.error("Error al eliminar el proyecto");
       }
@@ -102,7 +102,7 @@ export default function ProjectDetailsPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-4">
           <button 
-            onClick={() => router.push('/projects')}
+            onClick={() => router.push('/dashboard/projects')}
             className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-xs font-black uppercase tracking-widest group"
           >
             <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Volver al Listado

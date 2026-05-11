@@ -41,7 +41,7 @@ export default function RegisterPage() {
         updatedAt: serverTimestamp()
       });
 
-      router.push('/');
+      router.push('/dashboard');
     } catch (err: any) {
       setError('Error al crear la cuenta. Intente con otro correo.');
       console.error(err);

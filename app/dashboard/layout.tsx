@@ -56,7 +56,7 @@ export default function DashboardLayout({
     const formData = new FormData(e.currentTarget);
     const query = formData.get('search');
     if (query) {
-      router.push(`/projects?q=${encodeURIComponent(query.toString())}`);
+      router.push(`/dashboard/projects?q=${encodeURIComponent(query.toString())}`);
     }
   };
 

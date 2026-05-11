@@ -176,7 +176,7 @@ export default function NewProjectPage() {
         description: `Proyecto ID: ${project_id}. Todo el contenido ha sido generado exitosamente.`,
         duration: 8000,
       });
-      router.push('/projects');
+      router.push('/dashboard/projects');
     } catch (error: any) {
       console.error("Error en la generación:", error);
       toast.error("Fallo Crítico", {

@@ -33,7 +33,7 @@ export default function LoginPage() {
     try {
       const loginEmail = email === 'admin' ? 'admin@obelisco.ai' : email;
       await signInWithEmailAndPassword(auth, loginEmail, password);
-      router.push('/');
+      router.push('/dashboard');
     } catch (err: any) {
       setError('Credenciales inválidas o error de conexión.');
       console.error(err);
