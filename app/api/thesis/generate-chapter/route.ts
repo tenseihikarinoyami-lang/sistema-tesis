@@ -12,11 +12,14 @@ export async function POST(req: NextRequest) {
     const { projectId, chapter, formData, prevContent, step = 'all' } = body;
     console.log(`[${projectId}] Chapter API: Starting step "${step}" for "${chapter}"`);
     
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
       return NextResponse.json({ error: "Configuración de IA faltante." }, { status: 500 });
     }
 
-    const engine = new AcademicEngine(process.env.GEMINI_API_KEY);
+    const engine = new AcademicEngine(
+      process.env.GEMINI_API_KEY,
+      process.env.GROQ_API_KEY
+    );
     const projectRef = adminDb.collection("projects").doc(projectId);
     
     try {

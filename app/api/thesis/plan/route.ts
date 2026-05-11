@@ -10,12 +10,15 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     console.log("Plan API: Received request data:", { ...data, author: "REDACTED" });
     
-    if (!process.env.GEMINI_API_KEY) {
-      console.error("Plan API: GEMINI_API_KEY is missing!");
+    if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
+      console.error("Plan API: No AI API keys configured!");
       return NextResponse.json({ error: "Configuración de IA faltante (API Key)." }, { status: 500 });
     }
 
-    const engine = new AcademicEngine(process.env.GEMINI_API_KEY);
+    const engine = new AcademicEngine(
+      process.env.GEMINI_API_KEY,
+      process.env.GROQ_API_KEY
+    );
     
     console.log("Plan API: Generating structural plan...");
     let plan;

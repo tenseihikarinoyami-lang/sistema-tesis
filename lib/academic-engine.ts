@@ -1,14 +1,43 @@
+import Groq from "groq-sdk";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // ─────────────────────────────────────────────────────────────
-// Retry helper with exponential backoff for 429 rate-limit errors
+// Types
+// ─────────────────────────────────────────────────────────────
+type Provider = "groq" | "gemini";
+
+// ─────────────────────────────────────────────────────────────
+// Retry helper with exponential backoff for rate-limit errors
 // ─────────────────────────────────────────────────────────────
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+function isRateLimitError(error: any): boolean {
+  const msg: string = error?.message || error?.toString() || "";
+  return (
+    msg.includes("429") ||
+    msg.includes("Too Many Requests") ||
+    msg.includes("RESOURCE_EXHAUSTED") ||
+    msg.includes("rate_limit") ||
+    msg.includes("rate limit") ||
+    msg.includes("CUOTA_DIARIA_AGOTADA") ||
+    msg.includes("LIMITE_ALCANZADO")
+  );
+}
+
+function isDailyExhausted(error: any): boolean {
+  const msg: string = error?.message || error?.toString() || "";
+  return (
+    (msg.includes("FreeTier") && (msg.includes("PerDay") || msg.includes("generate_content_free_tier_requests"))) ||
+    msg.includes("tokens_per_day") ||
+    msg.includes("requests_per_day")
+  );
+}
 
 async function withRetry<T>(
   fn: () => Promise<T>,
   agentName: string,
-  maxRetries = 3
+  provider: Provider,
+  maxRetries = 2
 ): Promise<T> {
   let lastError: any;
 
@@ -17,39 +46,20 @@ async function withRetry<T>(
       return await fn();
     } catch (error: any) {
       lastError = error;
-      const msg: string = error?.message || "";
-      const is429 = msg.includes("429") || msg.includes("Too Many Requests") || msg.includes("RESOURCE_EXHAUSTED");
 
-      if (!is429) throw error; // Non-rate-limit error → propagate immediately
+      if (!isRateLimitError(error)) throw error; // Propagate non-quota errors immediately
 
-      // Detect DAILY quota exhaustion (limit: 0 on the free tier daily metric)
-      const isDailyExhausted =
-        msg.includes("FreeTier") &&
-        (msg.includes("PerDay") || msg.includes("generate_content_free_tier_requests"));
-
-      if (isDailyExhausted || attempt >= maxRetries) {
-        // Parse server-suggested retry delay if present
-        const retryMatch = msg.match(/retry.*?(\d+)[\s.]/i) || msg.match(/retryDelay[^\d]*(\d+)/i);
-        const retrySeconds = retryMatch ? parseInt(retryMatch[1]) : null;
-
-        if (isDailyExhausted) {
-          throw new Error(
-            `CUOTA_DIARIA_AGOTADA: La cuota diaria gratuita de la API de Gemini se ha agotado. ` +
-            `Por favor, espera hasta mañana o configura un plan de pago en Google AI Studio. ` +
-            `(Agente: ${agentName})`
-          );
-        }
+      if (isDailyExhausted(error) || attempt >= maxRetries) {
+        const tag = isDailyExhausted(error) ? "CUOTA_DIARIA_AGOTADA" : "LIMITE_ALCANZADO";
         throw new Error(
-          `LIMITE_ALCANZADO: Se superó el límite de solicitudes por minuto tras ${maxRetries} reintentos. ` +
-          `Intenta de nuevo en ${retrySeconds ? `${retrySeconds} segundos` : "unos minutos"}. ` +
-          `(Agente: ${agentName})`
+          `${tag}[${provider}]: ${error?.message || "Rate limit exceeded"} (Agente: ${agentName})`
         );
       }
 
-      // Exponential backoff: 5s, 15s, 35s
-      const waitMs = Math.min(5000 * Math.pow(3, attempt), 40000);
+      // Backoff: 4s → 12s → 30s
+      const waitMs = Math.min(4000 * Math.pow(3, attempt), 35000);
       console.warn(
-        `[${agentName}] 429 Rate limit hit (attempt ${attempt + 1}/${maxRetries + 1}). ` +
+        `[${agentName}][${provider}] Rate limit (attempt ${attempt + 1}/${maxRetries + 1}). ` +
         `Retrying in ${waitMs / 1000}s...`
       );
       await sleep(waitMs);
@@ -60,34 +70,121 @@ async function withRetry<T>(
 }
 
 // ─────────────────────────────────────────────────────────────
-// Main engine
+// Provider clients
 // ─────────────────────────────────────────────────────────────
-export class AcademicEngine {
-  private genAI: GoogleGenerativeAI;
+class GroqClient {
+  private client: Groq;
+  // Best free model for academic Spanish text generation
+  private readonly MODEL = "llama-3.3-70b-versatile";
+
+  constructor(apiKey: string) {
+    this.client = new Groq({ apiKey });
+  }
+
+  async generate(prompt: string, agentName: string): Promise<string> {
+    return withRetry(async () => {
+      const completion = await this.client.chat.completions.create({
+        model: this.MODEL,
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.4,
+        max_tokens: 4096,
+      });
+      const text = completion.choices[0]?.message?.content;
+      if (!text) throw new Error(`Empty response from Groq (${agentName})`);
+      return text;
+    }, agentName, "groq");
+  }
+}
+
+class GeminiClient {
   private model: any;
 
   constructor(apiKey: string) {
-    if (!apiKey) throw new Error("API Key for Gemini is required");
-    this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({
+    const genAI = new GoogleGenerativeAI(apiKey);
+    this.model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash",
-      generationConfig: {
-        temperature: 0.4,
-        topP: 0.8,
-        topK: 40,
-      },
+      generationConfig: { temperature: 0.4, topP: 0.8, topK: 40 },
     });
   }
 
-  private async safeGenerate(prompt: string, agentName: string): Promise<string> {
+  async generate(prompt: string, agentName: string): Promise<string> {
     return withRetry(async () => {
       const result = await this.model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-      if (!text) throw new Error(`Empty response from ${agentName}`);
+      const text = result.response.text();
+      if (!text) throw new Error(`Empty response from Gemini (${agentName})`);
       return text;
-    }, agentName);
+    }, agentName, "gemini");
   }
+}
+
+// ─────────────────────────────────────────────────────────────
+// AcademicEngine — Groq primary, Gemini fallback
+// ─────────────────────────────────────────────────────────────
+export class AcademicEngine {
+  private groq: GroqClient | null = null;
+  private gemini: GeminiClient | null = null;
+
+  constructor(
+    geminiKey?: string,
+    groqKey?: string
+  ) {
+    if (groqKey) this.groq = new GroqClient(groqKey);
+    if (geminiKey) this.gemini = new GeminiClient(geminiKey);
+
+    if (!this.groq && !this.gemini) {
+      throw new Error("Se requiere al menos una API key (GROQ o GEMINI).");
+    }
+  }
+
+  /**
+   * Try Groq first (10x more free quota, fastest).
+   * If Groq fails with daily exhaustion → fallback to Gemini.
+   * If both fail → throw the last error.
+   */
+  private async safeGenerate(prompt: string, agentName: string): Promise<string> {
+    // 1. Try Groq
+    if (this.groq) {
+      try {
+        const result = await this.groq.generate(prompt, agentName);
+        return result;
+      } catch (groqError: any) {
+        const msg: string = groqError?.message || "";
+        const isExhausted = msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO");
+
+        if (!isExhausted) throw groqError; // Unexpected error → propagate
+
+        console.warn(
+          `[${agentName}] Groq quota exhausted. ` +
+          (this.gemini ? "Switching to Gemini fallback..." : "No fallback available.")
+        );
+
+        // 2. Fallback to Gemini
+        if (this.gemini) {
+          try {
+            return await this.gemini.generate(prompt, agentName);
+          } catch (geminiError: any) {
+            const gMsg: string = geminiError?.message || "";
+            // Both exhausted → throw user-friendly error
+            throw new Error(
+              `CUOTA_DIARIA_AGOTADA[ambos]: Tanto Groq como Gemini han agotado su cuota diaria. ` +
+              `Espera hasta mañana o activa un plan de pago. (Agente: ${agentName})`
+            );
+          }
+        }
+
+        throw groqError;
+      }
+    }
+
+    // Groq not configured → use Gemini directly
+    if (this.gemini) {
+      return this.gemini.generate(prompt, agentName);
+    }
+
+    throw new Error("No hay proveedores de IA disponibles.");
+  }
+
+  // ── Agents ────────────────────────────────────────────────
 
   async researcherAgent(topic: string, context: string): Promise<string> {
     const prompt = `
@@ -95,7 +192,7 @@ export class AcademicEngine {
       Tarea: Identificar 3 fuentes bibliográficas reales (libros o artículos científicos) y 3 conceptos clave necesarios para investigar: ${topic}
       Contexto Institucional: ${context}
       
-      Retorna una lista de hallazgos bibliográficos simulados en formato APA 7 y los conceptos clave.
+      Retorna una lista de hallazgos bibliográficos en formato APA 7 y los conceptos clave.
       Mantén las respuestas en ESPAÑOL y con rigor académico.
     `;
     return this.safeGenerate(prompt, "ResearcherAgent");
@@ -105,7 +202,7 @@ export class AcademicEngine {
     const tono = data.tone || "Académico Formal";
     const programa = data.program || "Investigación Científica";
 
-    const systemPrompt = `
+    const prompt = `
       Eres el Agente Redactor de OBELISCO. Tu objetivo es transformar datos de investigación en prosa académica impecable.
       REGLAS:
       - Tercera persona impersonal (NUNCA 'nosotros' o 'yo').
@@ -114,9 +211,7 @@ export class AcademicEngine {
       - Máximo rigor sintáctico.
       - Escribe siempre en ESPAÑOL académico.
       - Mínimo 300 palabras por sección.
-    `;
 
-    const humanPrompt = `
       Sección: ${section}
       Datos de Investigación: ${researchData}
       Contexto del Proyecto: ${data.description || ""}
@@ -125,8 +220,7 @@ export class AcademicEngine {
       
       Redacta el contenido exhaustivo y académico para esta sección.
     `;
-
-    return this.safeGenerate(`${systemPrompt}\n\n${humanPrompt}`, "WriterAgent");
+    return this.safeGenerate(prompt, "WriterAgent");
   }
 
   async auditorAgent(content: string, thesisType: string): Promise<string> {
@@ -140,7 +234,7 @@ export class AcademicEngine {
       2. Falta de citas.
       3. Coherencia con el título.
       
-      Retorna una breve crítica y sugerencias de corrección. Si todo está perfecto, indica 'APROBADO'.
+      Retorna una breve crítica y sugerencias de corrección. Si todo está correcto, indica 'APROBADO'.
     `;
     return this.safeGenerate(prompt, "AuditorAgent");
   }
@@ -162,10 +256,9 @@ export class AcademicEngine {
 
   async generateStructuralPlan(data: any): Promise<string> {
     const nivel = (data.level || "TEG").toUpperCase();
-    let baseStructure = "";
 
-    if (nivel.includes("PNF")) {
-      baseStructure = `
+    const baseStructure = nivel.includes("PNF")
+      ? `
         - Páginas Preliminares (Portada, Índice, Resumen)
         - Introducción
         - Capítulo I: Descripción del Proyecto (Diagnóstico, Metodología, Alternativas, Justificación)
@@ -173,9 +266,8 @@ export class AcademicEngine {
         - Capítulo III: Conclusiones y Recomendaciones
         - Capítulo IV: Propuesta (Productos/Servicios, Fundamentación, Plan de Acción)
         - Referencias y Anexos
-      `;
-    } else {
-      baseStructure = `
+      `
+      : `
         - Páginas Preliminares (Portada, Dedicatoria, Agradecimiento, Índice, Resumen)
         - Introducción
         - Capítulo I: El Problema (Planteamiento, Justificación, Objetivos, Variables)
@@ -185,7 +277,6 @@ export class AcademicEngine {
         - Conclusiones y Recomendaciones
         - Referencias y Anexos
       `;
-    }
 
     const prompt = `
       Rol: Arquitecto de Investigaciones Académicas Senior (Normativa UPEL/IUTAR).

@@ -80,7 +80,7 @@ export default function ProfilePage() {
             className="glass academic-card p-8 flex items-center gap-6"
           >
             <div className="p-4 bg-white/5 rounded-3xl border border-white/5">
-              {React.cloneElement(stat.icon as React.ReactElement, { size: 24 })}
+              {React.cloneElement(stat.icon as React.ReactElement<{ size?: number }>, { size: 24 })}
             </div>
             <div>
               <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">{stat.label}</p>
