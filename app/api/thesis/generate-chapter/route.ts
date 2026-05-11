@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AcademicEngine } from '@/lib/academic-engine';
-import { adminDb, admin } from '@/lib/firebase-admin';
+import { adminDb } from '@/lib/firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
 // Vercel Timeout Adjustment (Max 60s for Pro, Hobby is limited to 10s)
 export const maxDuration = 60;
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
         await projectRef.update({
           [`content.${chapter}`]: finalVersion,
           current_phase: `Completado: ${chapter}`,
-          progress: admin.firestore.FieldValue.increment(5)
+          progress: FieldValue.increment(5)
         });
       }
 
