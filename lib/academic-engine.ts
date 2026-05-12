@@ -6,15 +6,30 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // ─────────────────────────────────────────────────────────────
 type Provider = "groq" | "gemini" | "openrouter" | "ollama";
 
-// Blacklist persistente en la sesión de Node
+// Blacklist persistente en la sesión de Node (con TTL de 30 minutos)
+const BLACKLIST_TTL_MS = 30 * 60 * 1000; // 30 minutos
+
 const getGlobalState = () => {
-  if (!(global as any).AI_STATE) {
-    (global as any).AI_STATE = {
-      blacklist: new Set<string>(),
+  if (!(global as Record<string, unknown>).AI_STATE) {
+    (global as Record<string, unknown>).AI_STATE = {
+      blacklist: new Map<string, number>(), // proveedor -> timestamp de cuando fue bloqueado
       modelCooldowns: new Map<string, number>() // modelName -> timestamp de fallo
     };
   }
-  return (global as any).AI_STATE;
+  return (global as Record<string, unknown>).AI_STATE as {
+    blacklist: Map<string, number>;
+    modelCooldowns: Map<string, number>;
+  };
+};
+
+const isBlacklisted = (state: ReturnType<typeof getGlobalState>, provider: string): boolean => {
+  const ts = state.blacklist.get(provider);
+  if (!ts) return false;
+  if (Date.now() - ts > BLACKLIST_TTL_MS) {
+    state.blacklist.delete(provider); // TTL expirado, remover
+    return false;
+  }
+  return true;
 };
 
 interface AIResponse {
@@ -84,6 +99,12 @@ async function withRetry<T>(
       return await fn();
     } catch (error: unknown) {
       lastError = error;
+      const msg = error instanceof Error ? error.message : String(error);
+
+      // Errores de red/fetch: no reintentar, propagar para que el motor pruebe otro proveedor
+      const isNetworkError = msg.includes('fetch failed') || msg.includes('ECONNREFUSED') ||
+        msg.includes('network') || msg.includes('ENOTFOUND') || msg.includes('ETIMEDOUT');
+      if (isNetworkError) throw error;
 
       if (!isRateLimitError(error)) throw error;
 
@@ -136,13 +157,13 @@ class GroqClient implements BaseClient {
           });
           return completion.choices[0]?.message?.content || "";
         }, agentName, "groq");
-      } catch (error: any) {
-        lastError = error;
-        const msg = error.message || "";
+      } catch (error: unknown) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        const msg = lastError.message;
         console.warn(`[Groq] Modelo ${model} falló: ${msg}`);
         
         if (msg.includes("403") || msg.includes("401")) {
-            state.blacklist.add("groq");
+            state.blacklist.set("groq", Date.now());
             break; 
         }
         
@@ -206,16 +227,17 @@ class OpenRouterClient implements BaseClient {
           const data = (await res.json()) as AIResponse;
           return data.choices?.[0]?.message?.content || "";
         }, agentName, "openrouter");
-      } catch (error: any) {
-        lastError = error;
-        console.warn(`[OpenRouter] Falló ${model}: ${error.message}`);
+      } catch (error: unknown) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        const msg = lastError.message;
+        console.warn(`[OpenRouter] Falló ${model}: ${msg}`);
         
-        if (error.message.includes("401")) {
-            state.blacklist.add("openrouter");
+        if (msg.includes("401")) {
+            state.blacklist.set("openrouter", Date.now());
             break;
         }
         
-        if (error.message.includes("404") || error.message.includes("not found")) {
+        if (msg.includes("404") || msg.includes("not found") || msg.includes("No endpoints found")) {
             state.modelCooldowns.set(`openrouter:${model}`, Date.now());
         }
       }
@@ -244,11 +266,14 @@ class GeminiClient implements BaseClient {
           const result = await model.generateContent(prompt);
           return result.response.text();
         }, agentName, "gemini", 1);
-      } catch (error: any) {
-        lastError = error;
-        console.warn(`[Gemini] Falló ${modelName}: ${error.message}`);
-        if (isDailyExhausted(error) && modelName === "gemini-1.5-pro") {
-            state.blacklist.add("gemini");
+      } catch (error: unknown) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        const msg = lastError.message;
+        console.warn(`[Gemini] Falló ${modelName}: ${msg}`);
+        // Solo bloquear si es cuota diaria agotada real, no errores de red
+        const isNetworkErr = msg.includes('fetch failed') || msg.includes('ECONNREFUSED') || msg.includes('ENOTFOUND');
+        if (isDailyExhausted(error) && !isNetworkErr && modelName === "gemini-1.5-pro") {
+            state.blacklist.set("gemini", Date.now());
         }
       }
     }
@@ -330,33 +355,37 @@ export class AcademicEngine {
 
   private async safeGenerate(prompt: string, agentName: string): Promise<string> {
     const state = getGlobalState();
-    const providers: Provider[] = [this.preferred, "openrouter", "gemini", "groq", "ollama"];
+    // Siempre intentar en este orden: preferido, openrouter, groq, gemini, ollama
+    const providers: Provider[] = [this.preferred, "openrouter", "groq", "gemini", "ollama"];
     const uniqueProviders = Array.from(new Set(providers));
     
     const failures: string[] = [];
 
     for (const pName of uniqueProviders) {
       const client = this.clients[pName];
-      if (!client || state.blacklist.has(pName)) {
-          if (client && state.blacklist.has(pName)) {
-              failures.push(`${pName}: En lista negra (Errores previos)`);
-          }
-          continue;
+      
+      // Si el proveedor está en blacklist activa, saltar pero registrar
+      if (isBlacklisted(state, pName)) {
+        failures.push(`${pName}: Bloqueado temporalmente (cuota agotada, reintentará en 30 min)`);
+        continue;
       }
+
+      if (!client) continue;
 
       // Evitar Ollama en producción a menos que sea el preferido
       if (pName === "ollama" && process.env.NODE_ENV === "production" && this.preferred !== "ollama") continue;
 
       try {
-        return await client.generate(prompt, agentName);
-      } catch (error: any) {
-        const msg = error.message || String(error);
+        const result = await client.generate(prompt, agentName);
+        if (result && result.trim().length > 0) return result;
+        throw new Error(`Respuesta vacía de ${pName}`);
+      } catch (error: unknown) {
+        const msg = error instanceof Error ? error.message : String(error);
         
-        // Si Ollama no está corriendo y es el preferido, reportar explícitamente pero seguir con fallback
         if (msg.includes("OLLAMA_NOT_RUNNING")) {
-            failures.push(`Ollama: No detectado localmente`);
+            failures.push(`Ollama: No está ejecutándose localmente`);
         } else {
-            failures.push(`${pName}: ${msg.substring(0, 60)}`);
+            failures.push(`${pName}: ${msg.substring(0, 80)}`);
         }
         
         console.error(`[AcademicEngine] Fallo en ${pName}: ${msg}`);
@@ -364,7 +393,7 @@ export class AcademicEngine {
     }
 
     const failureDetails = failures.map(f => `• ${f}`).join("\n");
-    throw new Error(`CRÍTICO: No se pudo generar el contenido tras intentar con todos los proveedores.\n\nDETALLES DE FALLOS:\n${failureDetails}\n\nRECOMENDACIÓN: Si usas Ollama, verifica que esté abierto. Si usas Gemini/Groq, espera unos minutos por el límite de cuota.`);
+    throw new Error(`CRÍTICO: No se pudo generar el contenido.\n\nDETALLES:\n${failureDetails}\n\nSolución: Espera unos minutos y vuelve a intentarlo. Si el error persiste, contacta soporte.`);
   }
 
   async researcherAgent(topic: string, context: string): Promise<string> {
