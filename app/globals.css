@@ -23,17 +23,27 @@
 }
 
 @layer components {
-  /* Premium Glassmorphism */
+  /* Premium Glassmorphism - GPU accelerated for animation stability */
   .glass {
     background: rgba(10, 10, 10, 0.6);
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.05);
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+  
+  /* Fallback for browsers without backdrop-filter support */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass {
+      background: rgba(10, 10, 10, 0.95);
+    }
   }
 
   .glass-hover:hover {
     background: rgba(15, 15, 15, 0.8);
     border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-4px);
+    transform: translateY(-4px) translateZ(0);
     box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.2);
   }
 
@@ -203,9 +213,28 @@
   }
 
   .academic-card {
-    @apply p-12 rounded-[3rem] border border-white/5 shadow-2xl;
+    @apply p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-white/5 shadow-2xl;
     background: rgba(10, 10, 10, 0.5);
-    backdrop-filter: blur(32px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+  
+  @media (max-width: 768px) {
+    .academic-card {
+      @apply p-4 rounded-[1.5rem];
+      background: rgba(10, 10, 10, 0.7);
+    }
+  }
+
+  @media (max-width: 640px) {
+    h1, .text-5xl, .text-6xl {
+      @apply text-3xl;
+    }
+    h2, .text-4xl {
+      @apply text-2xl;
+    }
   }
 
   /* Academic Typography Enhancements */

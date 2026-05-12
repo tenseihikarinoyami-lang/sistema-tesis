@@ -42,3 +42,7 @@ next-env.d.ts
 
 # GUIA PERSONAL (NO SUBIR)
 GUIA_FINAL_VERCEL.md
+GUIA_DESPLIEGUE.md
+
+# Backend Python (se usa solo localmente)
+backend/

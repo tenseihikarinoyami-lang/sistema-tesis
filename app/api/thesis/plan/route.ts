@@ -1,13 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AcademicEngine } from '@/lib/academic-engine';
 import { adminDb } from '@/lib/firebase-admin';
+import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
 
-// Vercel Timeout Adjustment
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 export async function POST(req: NextRequest) {
+  const clientId = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous';
+  const rateLimit = checkRateLimit(clientId);
+  const rateHeaders = getRateLimitHeaders(rateLimit);
+  
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ error: "Límite de solicitudes alcanzado. Espera un momento." }, { status: 429, headers: rateHeaders });
+  }
   try {
     const data = await req.json();
+    
+    // Validate required fields
+    if (!data.title || !data.university || !data.author) {
+      return NextResponse.json({ error: "Faltan campos requeridos: título, universidad o autor" }, { status: 400 });
+    }
+    
     console.log("Plan API: Received request data:", { ...data, author: "REDACTED" });
     
     if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {

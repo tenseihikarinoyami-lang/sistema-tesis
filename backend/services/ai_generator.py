@@ -180,25 +180,28 @@ class AcademicEngine:
 
         prompt = ChatPromptTemplate.from_template("""
         Rol: Arquitecto de Investigaciones Académicas Senior (Normativa UPEL/IUTAR).
-        Institución: {institucion}, {facultad}.
-        Tarea: Diseñar el índice detallado para un trabajo de tipo {thesis_type} en {carrera}.
-        Título: {titulo}
-        Tema: {descripcion}
+        Institución: {university}, {faculty}.
+        Tarea: Diseñar el índice detallado para un trabajo de tipo {thesis_type} en {program}.
+        Título: {title}
+        Tema: {description}
         
         Estructura base obligatoria: {base_structure}
         Retorna el índice detallado en formato Markdown. Escribe en ESPAÑOL.
         """)
         
-        chain = prompt | self.llm
-        response = await invoke_with_retry(chain, {
-            "institucion": institucion,
-            "facultad": facultad,
+        inputs = {
+            "university": institucion,
+            "faculty": facultad,
             "thesis_type": thesis_type,
-            "carrera": carrera,
-            "titulo": titulo,
-            "descripcion": descripcion,
+            "program": carrera,
+            "title": titulo,
+            "description": descripcion,
             "base_structure": base_structure,
-        })
+        }
+        
+        print(f"[OBELISCO] Generating plan with inputs: {list(inputs.keys())}")
+        chain = prompt | self.llm
+        response = await invoke_with_retry(chain, inputs)
         return response.content
 
 

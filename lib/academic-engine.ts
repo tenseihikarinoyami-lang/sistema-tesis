@@ -103,15 +103,33 @@ class GeminiClient {
     const genAI = new GoogleGenerativeAI(apiKey);
     this.model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash",
-      generationConfig: { temperature: 0.4, topP: 0.8, topK: 40 },
+      generationConfig: { 
+        temperature: 0.4, 
+        topP: 0.8, 
+        topK: 40,
+        maxOutputTokens: 8192
+      },
     });
   }
 
   async generate(prompt: string, agentName: string): Promise<string> {
+    // Clean prompt to avoid special characters that might confuse the model
+    const cleanPrompt = prompt.replace(/[^\x00-\x7F]/g, (char) => {
+      // Keep Spanish characters
+      if (/[áéíóúñÁÉÍÓÚÑ]/.test(char)) return char;
+      return '';
+    });
+    
     return withRetry(async () => {
-      const result = await this.model.generateContent(prompt);
-      const text = result.response.text();
-      if (!text) throw new Error(`Empty response from Gemini (${agentName})`);
+      const result = await this.model.generateContent(cleanPrompt);
+      const text = result.response?.text?.();
+      if (!text || text.trim().length === 0) {
+        throw new Error(`Empty response from Gemini (${agentName})`);
+      }
+      // Validate response doesn't contain image error
+      if (text.includes("Cannot read") && text.includes(".png")) {
+        throw new Error(`Model attempted image processing. Use text-only prompt.`);
+      }
       return text;
     }, agentName, "gemini");
   }

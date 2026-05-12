@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { 
   Book, 
@@ -284,24 +284,24 @@ export default function NewProjectPage() {
       </div>
 
       {/* Stepper */}
-      <div className="flex justify-between mb-16 relative px-10">
+      <div className="flex justify-between mb-8 md:mb-16 relative px-4 md:px-10">
         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200/50 -translate-y-1/2 z-0"></div>
         {steps.map((step, index) => (
-          <div key={step.id} className="relative z-10 flex flex-col items-center gap-3">
+          <div key={step.id} className="relative z-10 flex flex-col items-center gap-1 md:gap-3">
             <motion.div 
               initial={false}
               animate={{ 
-                backgroundColor: index <= currentStep ? '#1E3A8A' : '#FFFFFF',
+                backgroundColor: index <= currentStep ? '#4F46E5' : '#FFFFFF',
                 color: index <= currentStep ? '#FFFFFF' : '#94A3B8',
-                scale: index === currentStep ? 1.2 : 1
+                scale: index === currentStep ? 1.1 : 1
               }}
-              className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                index <= currentStep ? 'border-primary shadow-xl shadow-primary/20' : 'border-gray-200 bg-white'
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
+                index <= currentStep ? 'border-primary shadow-lg md:shadow-xl shadow-primary/20' : 'border-gray-200 bg-white'
               }`}
             >
-              {index < currentStep ? <Check size={24} /> : step.icon}
+              {index < currentStep ? <Check size={20} /> : React.cloneElement(step.icon as React.ReactElement<{ size?: number }>, { size: 18 })}
             </motion.div>
-            <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${
+            <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-widest ${
               index <= currentStep ? 'text-accent' : 'text-gray-500'
             }`}>
               {step.title}
@@ -312,26 +312,23 @@ export default function NewProjectPage() {
 
       {/* Form Content */}
       <div className="glass academic-card relative overflow-hidden">
-        {/* Step content area */}
-        <div className="min-h-[480px]">
-          <AnimatePresence mode="wait">
-            {currentStep === 0 && <StepRequisitos key="step0" data={formData} onChange={updateField} />}
-            {currentStep === 1 && <StepEstructura key="step1" data={formData} onChange={updateField} />}
-            {currentStep === 2 && <StepContenido key="step2" data={formData} onChange={updateField} />}
-            {currentStep === 3 && <StepRevision key="step3" data={formData} onChange={updateField} />}
-          </AnimatePresence>
+        <div className="min-h-[400px] md:min-h-[480px] relative z-10">
+          {currentStep === 0 && <StepRequisitos key="step0" data={formData} onChange={updateField} />}
+          {currentStep === 1 && <StepEstructura key="step1" data={formData} onChange={updateField} />}
+          {currentStep === 2 && <StepContenido key="step2" data={formData} onChange={updateField} />}
+          {currentStep === 3 && <StepRevision key="step3" data={formData} onChange={updateField} />}
         </div>
 
         {/* Navigation */}
-        <div className="-mx-12 px-12 pb-4 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/5">
+        <div className="-mx-4 md:-mx-12 px-4 md:px-12 pb-4 pt-6 md:pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 md:gap-4 border-t border-white/5">
           <button 
             onClick={prevStep}
             disabled={currentStep === 0}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all order-2 sm:order-1 ${
+            className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold transition-all order-2 sm:order-1 text-sm md:text-base ${
               currentStep === 0 ? 'text-gray-700 pointer-events-none opacity-0' : 'text-gray-400 hover:bg-white/5'
             }`}
           >
-            <ChevronLeft size={18} /> Anterior
+            <ChevronLeft size={16} /> Anterior
           </button>
           
           <div className="text-xs text-gray-500 font-medium uppercase tracking-widest order-1 sm:order-2">
@@ -375,14 +372,14 @@ function StepRequisitos({ data, onChange }: any) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="space-y-10"
+      className="space-y-6 md:space-y-10"
     >
       <div>
-        <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Parámetros Institucionales</h2>
-        <p className="text-slate-400 text-sm font-medium">Define el ecosistema donde se validará tu investigación.</p>
+        <h2 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-3 academic-text tracking-tighter">Parámetros Institucionales</h2>
+        <p className="text-slate-400 text-xs md:text-sm font-medium">Define el ecosistema donde se validará tu investigación.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
         <InputGroup 
           label="Universidad / Institución" 
           placeholder="Ej: Universidad Central de Venezuela" 
@@ -612,26 +609,26 @@ function StepRevision({ data, onChange }: any) {
           </div>
         </div>
 
-        <div className="p-10 glass bg-primary/10 rounded-[3rem] border border-primary/20 space-y-8 shadow-2xl shadow-primary/10">
-          <div className="flex items-center gap-5">
-            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-primary shadow-inner">
-              <BrainCircuit size={32} />
+        <div className="p-8 bg-gradient-to-br from-primary/20 to-accent/10 rounded-[2rem] border border-primary/30 space-y-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-primary/30 rounded-xl flex items-center justify-center text-primary">
+              <BrainCircuit size={24} />
             </div>
             <div>
-              <h4 className="font-black text-xl text-white academic-text tracking-tight">Motor SIGA v2.0</h4>
-              <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Protocolo Activado</p>
+              <h4 className="font-bold text-lg text-white">Motor SIGA v2.0</h4>
+              <p className="text-[10px] font-bold text-accent uppercase tracking-widest">Protocolo Activado</p>
             </div>
           </div>
-          <p className="text-sm text-slate-400 font-medium leading-relaxed">
-            Se aplicará el **Sistema Inteligente de Generación Académica** para asegurar variabilidad léxica, coherencia transversal y rigor metodológico absoluto.
+          <p className="text-sm text-gray-300">
+            Sistema Inteligente de Generación Académica con variabilidad léxica y rigor metodológico.
           </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-             <div className="px-5 py-2.5 bg-black/40 rounded-2xl text-[10px] font-black text-accent border border-accent/20 uppercase tracking-widest flex items-center gap-3">
-               <Check size={14} strokeWidth={4} /> Citas {data.norm}
-             </div>
-             <div className="px-5 py-2.5 bg-black/40 rounded-2xl text-[10px] font-black text-primary border border-primary/20 uppercase tracking-widest flex items-center gap-3">
-               <Check size={14} strokeWidth={4} /> Anti-Detección IA
-             </div>
+          <div className="flex gap-3">
+             <span className="px-3 py-1.5 bg-black/40 rounded-lg text-[10px] font-bold text-accent border border-accent/30 uppercase">
+               Citas {data.norm}
+             </span>
+             <span className="px-3 py-1.5 bg-black/40 rounded-lg text-[10px] font-bold text-primary border border-primary/30 uppercase">
+               Anti-Detección IA
+             </span>
           </div>
         </div>
       </div>
@@ -668,12 +665,7 @@ function NormCard({ title, desc, selected = false, onClick }: any) {
         ? 'bg-primary text-white border-primary shadow-2xl shadow-primary/40 scale-105' 
         : 'bg-black/40 text-slate-400 border-white/5 hover:border-white/20 hover:bg-black/60'
     }`}>
-      {selected && (
-        <motion.div 
-          layoutId="norm-bg"
-          className="absolute inset-0 bg-gradient-to-br from-primary to-accent opacity-20"
-        />
-      )}
+      <div className={`absolute inset-0 bg-gradient-to-br from-primary to-accent transition-opacity duration-500 ${selected ? 'opacity-20' : 'opacity-0'}`} />
       <div className="font-black text-3xl mb-2 relative z-10">{title}</div>
       <div className={`text-[9px] uppercase font-black tracking-[0.2em] relative z-10 ${selected ? 'text-white/80' : 'text-slate-600'}`}>
         {desc}

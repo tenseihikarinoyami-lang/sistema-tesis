@@ -2,5 +2,10 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "maxLambdaDuration": 300,
+  "regions": ["iad1"],
+  "env": {
+    "NEXT_PUBLIC_FIREBASE_PROJECT_ID": "@firebase_project_id"
+  }
 }

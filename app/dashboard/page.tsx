@@ -17,7 +17,8 @@ import {
   Gavel,
   PieChart,
   Palette,
-  MoreVertical
+  MoreVertical,
+  ChevronRight
 } from "lucide-react";
 import Link from 'next/link';
 import { getApiUrl } from '@/lib/api';
@@ -44,10 +45,10 @@ export default function DashboardPage() {
   }, []);
 
   const stats = {
-    active: projects.filter(p => p.status === 'processing').length,
-    hours: projects.length * 40, // Estimación
-    completed: projects.filter(p => p.status === 'completed').length,
-    originality: projects.length > 0 ? "99.8%" : "---"
+    active: Array.isArray(projects) ? projects.filter(p => p?.status === 'processing').length : 0,
+    hours: Array.isArray(projects) ? projects.length * 40 : 0, // Estimación
+    completed: Array.isArray(projects) ? projects.filter(p => p?.status === 'completed').length : 0,
+    originality: (Array.isArray(projects) && projects.length > 0) ? "99.8%" : "---"
   };
 
   const recentProjects = projects.slice(0, 3);

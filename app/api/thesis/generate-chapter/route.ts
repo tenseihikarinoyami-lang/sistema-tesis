@@ -2,11 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { AcademicEngine } from '@/lib/academic-engine';
 import { adminDb } from '@/lib/firebase-admin';
 import { FieldValue } from 'firebase-admin/firestore';
+import { checkRateLimit, getRateLimitHeaders } from '@/lib/rate-limit';
 
-// Vercel Timeout Adjustment (Max 60s for Pro, Hobby is limited to 10s)
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 export async function POST(req: NextRequest) {
+  const clientId = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous';
+  const rateLimit = checkRateLimit(clientId);
+  const rateHeaders = getRateLimitHeaders(rateLimit);
+  
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ error: "Límite de solicitudes alcanzado. Espera un momento." }, { status: 429, headers: rateHeaders });
+  }
+  
   const startTime = Date.now();
   try {
     const body = await req.json();

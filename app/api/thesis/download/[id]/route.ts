@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
 import { Document, Packer, Paragraph, HeadingLevel } from 'docx';
 
+export const maxDuration = 120;
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id: projectId } = await params;
+
+  if (!projectId) {
+    return NextResponse.json({ error: "Missing project ID" }, { status: 400 });
+  }
 
   try {
     const docSnap = await adminDb.collection("projects").doc(projectId).get();
@@ -46,8 +52,9 @@ export async function GET(
     });
 
     const buffer = await Packer.toBuffer(doc);
+    const uint8 = new Uint8Array(buffer);
 
-    return new Response(buffer as any, {
+    return new NextResponse(uint8, {
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'Content-Disposition': `attachment; filename="Tesis_${projectId}.docx"`,
