@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
       const aiMsg: string = aiError?.message || "";
       const isRateLimit = aiMsg.includes("CUOTA_DIARIA_AGOTADA") || aiMsg.includes("LIMITE_ALCANZADO") || aiMsg.includes("429");
       return NextResponse.json({ 
-        error: aiMsg || `Error en ${chapter} (${step})`,
+        error: aiMsg || `Error en motor de IA durante ${chapter} (${step})`,
         timeElapsed: Date.now() - startTime
       }, { status: isRateLimit ? 429 : 500 });
     }

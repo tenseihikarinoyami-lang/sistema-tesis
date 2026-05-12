@@ -1,115 +1,122 @@
 import os
-import random
+import json
+import time
 import asyncio
-from typing import List, Dict, Any
-from dotenv import load_dotenv
+from typing import List, Dict, Any, Optional
+from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.prompts import ChatPromptTemplate
+from dotenv import load_dotenv
 
 load_dotenv()
 
-async def invoke_with_retry(chain, inputs: dict, max_retries: int = 4, base_delay: float = 10.0):
-    """Invoke a LangChain chain with exponential backoff on rate-limit errors."""
-    for attempt in range(max_retries):
+async def invoke_with_retry(client, messages, retries=3):
+    """Utility to retry LLM calls with exponential backoff."""
+    for i in range(retries):
         try:
-            return await chain.ainvoke(inputs)
+            return await client.ainvoke(messages)
         except Exception as e:
-            error_str = str(e)
-            is_rate_limit = ('RESOURCE_EXHAUSTED' in error_str or '429' in error_str or
-                             'quota' in error_str.lower() or 'rate' in error_str.lower())
-            if is_rate_limit and attempt < max_retries - 1:
-                delay = base_delay * (2 ** attempt)  # 10s, 20s, 40s, 80s
-                print(f"[OBELISCO] Rate limit hit. Retrying in {delay:.0f}s... (attempt {attempt + 1}/{max_retries})")
-                await asyncio.sleep(delay)
-            else:
-                raise
+            if i == retries - 1:
+                raise e
+            wait_time = (2 ** i) + 1
+            print(f"[RETRY] Error: {str(e)[:100]}. Retrying in {wait_time}s...")
+            await asyncio.sleep(wait_time)
 
 class AcademicEngine:
-    def __init__(self, provider: str = "gemini"):
-        self.provider = provider
-        self.llm = self._setup_llm()
+    def __init__(self, provider: str = "openrouter"):
+        self.preferred_provider = provider
+        self._setup_clients()
 
-    def _setup_llm(self):
-        if self.provider == "gemini":
-            return ChatGoogleGenerativeAI(
-                model="gemini-2.0-flash",          # Stable fast model available with this API key
-                google_api_key=os.getenv("GEMINI_API_KEY"),
-                temperature=0.4
-            )
-        elif self.provider == "groq":
-            return ChatGroq(
-                model="llama-3.3-70b-versatile",           # Updated to supported model
-                api_key=os.getenv("GROQ_API_KEY"),
-                temperature=0.4
-            )
-        elif self.provider == "openrouter":
-            return ChatOpenAI(
-                model="anthropic/claude-3-haiku",  # More cost-effective on OpenRouter
-                api_key=os.getenv("OPENROUTER_API_KEY"),
-                base_url="https://openrouter.ai/api/v1",
-                temperature=0.4
-            )
-        # Fallback to Gemini if provider unknown
-        return ChatGoogleGenerativeAI(
+    def _setup_clients(self):
+        # Gemini
+        self.gemini = ChatGoogleGenerativeAI(
             model="gemini-2.0-flash",
             google_api_key=os.getenv("GEMINI_API_KEY"),
             temperature=0.4
         )
+        # Groq
+        self.groq = ChatGroq(
+            model="llama-3.3-70b-versatile",
+            api_key=os.getenv("GROQ_API_KEY"),
+            temperature=0.4
+        )
+        # OpenRouter
+        self.openrouter = ChatOpenAI(
+            model="meta-llama/llama-3.3-70b-instruct",
+            api_key=os.getenv("OPENROUTER_API_KEY"),
+            base_url="https://openrouter.ai/api/v1",
+            temperature=0.4
+        )
 
-    async def researcher_agent(self, topic: str, context: str) -> List[str]:
+    async def _safe_invoke(self, messages: Any, agent_name: str) -> str:
+        if self.preferred_provider == "groq":
+            order = [("groq", self.groq), ("openrouter", self.openrouter), ("gemini", self.gemini)]
+        elif self.preferred_provider == "gemini":
+            order = [("gemini", self.gemini), ("openrouter", self.openrouter), ("groq", self.groq)]
+        else:
+            order = [("openrouter", self.openrouter), ("groq", self.groq), ("gemini", self.gemini)]
+
+        last_error = None
+        for name, client in order:
+            if not client: continue
+            try:
+                print(f"[OBELISCO] Intentando con {name} para {agent_name}...")
+                response = await invoke_with_retry(client, messages)
+                return response.content
+            except Exception as e:
+                last_error = e
+                print(f"[OBELISCO] Fallo en {name}: {str(e)[:100]}")
+
+        raise last_error or Exception("No hay proveedores disponibles")
+
+    async def researcher_agent(self, topic: str, context: str) -> str:
         """Agente Investigador: Simula la búsqueda de fuentes reales y hechos académicos."""
-        prompt = ChatPromptTemplate.from_template("""
+        prompt = """
         Rol: Investigador Académico Senior (Experto en RAG).
         Tarea: Identificar 3 fuentes bibliográficas reales (libros o artículos científicos) y 3 conceptos clave necesarios para investigar: {topic}
         Contexto Institucional: {context}
         
         Retorna una lista de hallazgos bibliográficos simulados en formato APA 7 y los conceptos clave.
         Mantén las respuestas en ESPAÑOL y con rigor académico.
-        """)
-        chain = prompt | self.llm
-        response = await invoke_with_retry(chain, {"topic": topic, "context": context})
-        return response.content
+        """
+        messages = [HumanMessage(content=prompt.format(topic=topic, context=context))]
+        return await self._safe_invoke(messages, "ResearcherAgent")
 
     async def writer_agent(self, section: str, research_data: str, data: Dict[str, Any], context: str) -> str:
         """Agente Redactor: Genera la prosa académica basada en la investigación."""
-        tono = data.get('tone', data.get('tono', 'Académico Formal'))
-        programa = data.get('program', data.get('disciplina', 'Investigación Científica'))
-        
         system_prompt = f"""
-        Eres el Agente Redactor de OBELISCO. Tu objetivo es transformar datos de investigación en prosa académica impecable.
-        REGLAS:
-        - Tercera persona impersonal (NUNCA 'nosotros' o 'yo').
-        - Integrar las fuentes de investigación proporcionadas de forma fluida.
-        - Tono: {tono}. Disciplina: {programa}.
-        - Máximo rigor sintáctico.
-        - Escribe siempre en ESPAÑOL académico.
-        - Mínimo 300 palabras por sección.
+        Eres el Redactor Académico Senior del sistema OBELISCO. 
+        Tu objetivo es generar prosa de altísimo nivel académico, sin redundancias y con absoluta coherencia.
+        - Normativa: {data.get('norm', 'APA 7')}
+        - Nivel: {data.get('level', 'Licenciatura')}
+        - Tono: {data.get('tone', 'Académico Formal')}
+        - Idioma: {data.get('language', 'Español')}
         """
         
         human_prompt = f"""
-        Sección: {section}
-        Datos de Investigación: {research_data}
-        Contexto del Proyecto: {data.get('description', data.get('descripcion', ''))}
-        Título de la Tesis: {data.get('title', data.get('titulo', ''))}
-        Contenido Previo (para coherencia): {context if context else 'N/A'}
+        INVESTIGACIÓN PREVIA:
+        {research_data}
         
+        CONTEXTO DEL PROYECTO:
+        - Título: {data.get('title')}
+        - Descripción: {data.get('description')}
+        - Capítulo/Sección Actual: {section}
+        - Contenido Previo: {context[:500]}...
+        
+        INSTRUCCIÓN:
         Redacta el contenido exhaustivo y académico para esta sección.
         """
-        
         messages = [
             SystemMessage(content=system_prompt),
             HumanMessage(content=human_prompt)
         ]
-        
-        response = await invoke_with_retry(self.llm, messages)
-        return response.content
+        return await self._safe_invoke(messages, "WriterAgent")
 
-    async def auditor_agent(self, content: str, thesis_type: str) -> Dict[str, Any]:
+    async def auditor_agent(self, content: str, thesis_type: str) -> str:
         """Agente Metodólogo: Verifica el cumplimiento de normas institucionales."""
-        prompt = ChatPromptTemplate.from_template("""
+        prompt = """
         Rol: Auditor Metodológico (Especialista en {thesis_type}).
         Tarea: Evaluar el siguiente contenido académico en ESPAÑOL.
         Contenido: {content}
@@ -120,14 +127,13 @@ class AcademicEngine:
         3. Coherencia con el título.
         
         Retorna una breve crítica y sugerencias de corrección. Si todo está perfecto, indica 'APROBADO'.
-        """)
-        chain = prompt | self.llm
-        response = await invoke_with_retry(chain, {"content": content, "thesis_type": thesis_type})
-        return response.content
+        """
+        messages = [HumanMessage(content=prompt.format(content=content, thesis_type=thesis_type))]
+        return await self._safe_invoke(messages, "AuditorAgent")
 
     async def humanizer_agent(self, content: str) -> str:
         """Agente Humanizador: Elimina patrones de IA y mejora la fluidez."""
-        prompt = ChatPromptTemplate.from_template("""
+        prompt = """
         Rol: Editor de Estilo Humano.
         Tarea: Refinar el texto para que sea indistinguible de un humano experto.
         - Elimina muletillas de IA ('en conclusión', 'es importante destacar', 'cabe señalar').
@@ -137,126 +143,52 @@ class AcademicEngine:
         - NO acortes el texto; solo mejóralo.
         
         Texto Original: {content}
-        """)
-        chain = prompt | self.llm
-        response = await invoke_with_retry(chain, {"content": content})
-        return response.content
+        """
+        messages = [HumanMessage(content=prompt.format(content=content))]
+        return await self._safe_invoke(messages, "HumanizerAgent")
 
     async def generate_structural_plan(self, data: Dict[str, Any]):
         """Paso 1: Generar índice jerárquico basado en nivel académico y requisitos."""
-        # Support both camelCase (frontend) and snake_case field names
-        nivel = data.get("level", data.get("nivel", "TEG")).upper()
+        titulo = data.get("title", "Sin título")
+        universidad = data.get("university", "Desconocida")
+        nivel = data.get("level", "Licenciatura")
+        descripcion = data.get("description", "")
+        base_structure = ", ".join(data.get("chapters", []))
         
-        if "PNF" in nivel:
-            thesis_type = "PNF"
-            base_structure = """
-            - Páginas Preliminares (Portada, Índice, Resumen)
-            - Introducción
-            - Capítulo I: Descripción del Proyecto (Diagnóstico, Metodología, Alternativas, Justificación)
-            - Capítulo II: Planificación del Proyecto (Cronograma)
-            - Capítulo III: Conclusiones y Recomendaciones
-            - Capítulo IV: Propuesta (Productos/Servicios, Fundamentación, Plan de Acción)
-            - Referencias y Anexos
-            """
-        else:
-            thesis_type = data.get("level", "TEG")
-            base_structure = """
-            - Páginas Preliminares (Portada, Dedicatoria, Agradecimiento, Índice, Resumen)
-            - Introducción
-            - Capítulo I: El Problema (Planteamiento, Justificación, Objetivos, Variables)
-            - Capítulo II: Marco Teórico (Antecedentes, Bases Teóricas, Bases Legales, Términos)
-            - Capítulo III: Marco Metodológico (Diseño, Nivel, Población, Muestra, Instrumentos, Validez)
-            - Capítulo IV: Resultados de la Investigación
-            - Conclusiones y Recomendaciones
-            - Referencias y Anexos
-            """
-
-        # Normalize field names for template
-        institucion = data.get("university", data.get("institucion", ""))
-        facultad = data.get("faculty", data.get("facultad", ""))
-        carrera = data.get("program", data.get("carrera", ""))
-        titulo = data.get("title", data.get("titulo", ""))
-        descripcion = data.get("description", data.get("descripcion", ""))
-
-        prompt = ChatPromptTemplate.from_template("""
-        Rol: Arquitecto de Investigaciones Académicas Senior (Normativa UPEL/IUTAR).
-        Institución: {university}, {faculty}.
-        Tarea: Diseñar el índice detallado para un trabajo de tipo {thesis_type} en {program}.
-        Título: {title}
-        Tema: {description}
+        prompt = """
+        Rol: Arquitecto Académico Senior.
+        Tarea: Diseñar la estructura lógica (Índice detallado) para una tesis.
         
-        Estructura base obligatoria: {base_structure}
-        Retorna el índice detallado en formato Markdown. Escribe en ESPAÑOL.
-        """)
+        DATOS:
+        - Título: {title}
+        - Universidad: {university}
+        - Nivel: {level}
+        - Descripción: {description}
+        - Estructura Base: {base_structure}
+        
+        REQUERIMIENTO:
+        Genera un índice jerárquico exhaustivo. Para cada capítulo, desglosa al menos 3 sub-puntos.
+        Asegura que la estructura cumpla con el rigor del nivel {level}.
+        Formato de salida: Texto estructurado con numeración decimal (1., 1.1., 1.1.1.).
+        Idioma: ESPAÑOL.
+        """
         
         inputs = {
-            "university": institucion,
-            "faculty": facultad,
-            "thesis_type": thesis_type,
-            "program": carrera,
             "title": titulo,
+            "university": universidad,
+            "level": nivel,
             "description": descripcion,
             "base_structure": base_structure,
         }
-        
-        print(f"[OBELISCO] Generating plan with inputs: {list(inputs.keys())}")
-        chain = prompt | self.llm
-        response = await invoke_with_retry(chain, inputs)
-        return response.content
+        messages = [HumanMessage(content=prompt.format(**inputs))]
+        return await self._safe_invoke(messages, "StructuralPlanAgent")
 
 
 class ThesisForgePipeline:
-    def __init__(self, provider: str = "gemini"):
-        self.engine = AcademicEngine(provider)
+    def __init__(self, provider: str = "openrouter"):
+        self.engine = AcademicEngine(provider=provider)
 
-    def _update_db(self, project_id: str, updates: Dict[str, Any]):
-        from firebase_admin import firestore
-        db = firestore.client()
-        db.collection("projects").document(project_id).update(updates)
-
-    async def run(self, data: Dict[str, Any], project_id: str):
-        try:
-            # 1. Planificación Estructural
-            self._update_db(project_id, {"current_phase": "Planificación Estructural", "progress": 15})
-            plan = await self.engine.generate_structural_plan(data)
-            
-            chapters = data.get("chapters", ["Introducción", "Capítulo I: El Problema"])
-            full_content = {"Plan de Investigación": plan}
-            context = ""
-            
-            for i, ch in enumerate(chapters):
-                progress = 20 + int((i / len(chapters)) * 70)
-                self._update_db(project_id, {
-                    "current_phase": f"Generando: {ch}",
-                    "progress": progress
-                })
-                
-                title = data.get("title", data.get("titulo", "Investigación Académica"))
-                university = data.get("university", data.get("institucion", ""))
-                
-                # Flujo Multi-Agente
-                research = await self.engine.researcher_agent(f"{ch} sobre: {title}", university)
-                draft = await self.engine.writer_agent(ch, research, data, context)
-                audit = await self.engine.auditor_agent(draft, data.get("level", "TEG"))
-                final_version = await self.engine.humanizer_agent(
-                    draft if "APROBADO" in audit else f"{draft}\n\nNota de Auditoría: {audit}"
-                )
-                
-                full_content[ch] = final_version
-                context = final_version[-800:]  # Wider context window for coherence
-
-            # Finalizar
-            self._update_db(project_id, {
-                "status": "completed",
-                "progress": 100,
-                "current_phase": "Tesis Finalizada",
-                "content": full_content
-            })
-            
-            return full_content
-        except Exception as e:
-            self._update_db(project_id, {
-                "status": "error",
-                "current_phase": f"Error: {str(e)[:150]}"
-            })
-            raise e
+    async def run_step_by_step(self, data: Dict[str, Any]):
+        """Ejecución controlada por pasos para evitar timeouts y permitir supervisión."""
+        # Nota: La lógica de persistencia se maneja en el API de Next.js o en un worker aparte.
+        pass

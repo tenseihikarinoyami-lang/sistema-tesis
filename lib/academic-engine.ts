@@ -2,38 +2,72 @@ import Groq from "groq-sdk";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // ─────────────────────────────────────────────────────────────
-// Types
+// Tipos y Estado Global
 // ─────────────────────────────────────────────────────────────
-type Provider = "groq" | "gemini";
+type Provider = "groq" | "gemini" | "openrouter" | "ollama";
+
+// Blacklist persistente en la sesión de Node
+const getGlobalState = () => {
+  if (!(global as any).AI_STATE) {
+    (global as any).AI_STATE = {
+      blacklist: new Set<string>(),
+      modelCooldowns: new Map<string, number>() // modelName -> timestamp de fallo
+    };
+  }
+  return (global as any).AI_STATE;
+};
+
+interface AIResponse {
+  choices?: Array<{
+    message?: {
+      content?: string;
+    };
+  }>;
+}
+
+interface BaseClient {
+  generate(prompt: string, agentName: string): Promise<string>;
+}
 
 // ─────────────────────────────────────────────────────────────
-// Retry helper with exponential backoff for rate-limit errors
+// Ayudantes de Reintento y Errores
 // ─────────────────────────────────────────────────────────────
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 function isRateLimitError(error: unknown): boolean {
   const msg: string = error instanceof Error ? error.message : String(error);
+  
+  if (msg.includes("403") || msg.includes("Access denied") || msg.includes("401") || msg.includes("Unauthorized")) {
+    return false; // Errores permanentes de acceso/auth
+  }
+
+  const statusMatch = msg.match(/\b(429|500|502|503|504|402)\b/);
+  
   return (
-    msg.includes("429") ||
-    msg.includes("Too Many Requests") ||
+    statusMatch !== null ||
+    msg.toLowerCase().includes("too many requests") ||
     msg.includes("RESOURCE_EXHAUSTED") ||
     msg.includes("rate_limit") ||
-    msg.includes("rate limit") ||
     msg.includes("CUOTA_DIARIA_AGOTADA") ||
     msg.includes("LIMITE_ALCANZADO") ||
     msg.includes("límite diario") ||
-    msg.includes("quota")
+    msg.includes("quota") ||
+    msg.includes("overloaded") ||
+    msg.includes("payment_required")
   );
 }
 
 function isDailyExhausted(error: unknown): boolean {
-  const msg: string = error instanceof Error ? error.message : String(error);
+  const msg: string = (error instanceof Error ? error.message : String(error)).toLowerCase();
   return (
-    (msg.includes("FreeTier") && (msg.includes("PerDay") || msg.includes("generate_content_free_tier_requests"))) ||
-    msg.includes("tokens_per_day") ||
-    msg.includes("requests_per_day") ||
-    msg.includes("alcanzó su límite diario") ||
-    msg.includes("límite diario")
+    msg.includes("daily") || 
+    msg.includes("diario") ||
+    msg.includes("quota") ||
+    msg.includes("cuota") ||
+    msg.includes("limit reached") ||
+    msg.includes("límite alcanzado") ||
+    msg.includes("free_tier") ||
+    msg.includes("exhausted")
   );
 }
 
@@ -41,7 +75,7 @@ async function withRetry<T>(
   fn: () => Promise<T>,
   agentName: string,
   provider: Provider,
-  maxRetries = 3
+  maxRetries = 2
 ): Promise<T> {
   let lastError: unknown;
 
@@ -51,314 +85,318 @@ async function withRetry<T>(
     } catch (error: unknown) {
       lastError = error;
 
-      if (!isRateLimitError(error)) throw error; // Propagate non-quota errors immediately
+      if (!isRateLimitError(error)) throw error;
 
       if (isDailyExhausted(error) || attempt >= maxRetries) {
         const tag = isDailyExhausted(error) ? "CUOTA_DIARIA_AGOTADA" : "LIMITE_ALCANZADO";
-        const errMsg = error instanceof Error ? error.message : "Rate limit exceeded";
-        throw new Error(
-          `${tag}[${provider}]: ${errMsg} (Agente: ${agentName})`
-        );
+        const errMsg = error instanceof Error ? error.message : "Error de límite de tasa";
+        throw new Error(`${tag}[${provider}]: ${errMsg} (Agente: ${agentName})`);
       }
 
-      // Backoff: 5s → 10s → 20s → 40s (Max 45s wait, enough to clear Groq's 1-min limits)
-      const waitMs = Math.min(5000 * Math.pow(2, attempt), 45000);
-      console.warn(
-        `[${agentName}][${provider}] Rate limit (attempt ${attempt + 1}/${maxRetries + 1}). ` +
-        `Retrying in ${waitMs / 1000}s...`
-      );
+      const waitMs = Math.min(3000 * Math.pow(2, attempt), 30000);
+      console.warn(`[${agentName}][${provider}] Reintentando en ${waitMs / 1000}s... (intento ${attempt + 1})`);
       await sleep(waitMs);
     }
   }
-
   throw lastError;
 }
 
 // ─────────────────────────────────────────────────────────────
-// Provider clients
+// Clientes de Proveedores
 // ─────────────────────────────────────────────────────────────
-class GroqClient {
+
+class GroqClient implements BaseClient {
   private client: Groq;
-  // Best free model for academic Spanish text generation
-  private readonly MODEL = "llama-3.3-70b-versatile";
+  private readonly MODELS = [
+    "llama-3.3-70b-versatile",
+    "llama-3.1-70b-versatile",
+    "llama-3.1-8b-instant",
+    "mixtral-8x7b-32768"
+  ];
 
   constructor(apiKey: string) {
     this.client = new Groq({ apiKey });
   }
 
   async generate(prompt: string, agentName: string): Promise<string> {
-    return withRetry(async () => {
-      const completion = await this.client.chat.completions.create({
-        model: this.MODEL,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.4,
-        max_tokens: 4096,
-      });
-      const text = completion.choices[0]?.message?.content;
-      if (!text) throw new Error(`Empty response from Groq (${agentName})`);
-      return text;
-    }, agentName, "groq");
+    let lastError: Error | null = null;
+    const state = getGlobalState();
+
+    for (const model of this.MODELS) {
+      if (state.modelCooldowns.has(`groq:${model}`)) continue;
+
+      try {
+        console.log(`[Groq] Probando: ${model}...`);
+        return await withRetry(async () => {
+          const completion = await this.client.chat.completions.create({
+            model: model,
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.3,
+            max_tokens: 4096,
+          });
+          return completion.choices[0]?.message?.content || "";
+        }, agentName, "groq");
+      } catch (error: any) {
+        lastError = error;
+        const msg = error.message || "";
+        console.warn(`[Groq] Modelo ${model} falló: ${msg}`);
+        
+        if (msg.includes("403") || msg.includes("401")) {
+            state.blacklist.add("groq");
+            break; 
+        }
+        
+        if (msg.includes("404") || msg.includes("not found")) {
+            state.modelCooldowns.set(`groq:${model}`, Date.now());
+        }
+      }
+    }
+    throw lastError || new Error(`Fallo total en Groq para ${agentName}`);
   }
 }
 
-class OpenRouterClient {
+class OpenRouterClient implements BaseClient {
   private apiKey: string;
-  private readonly MODEL = "meta-llama/llama-3.3-70b-instruct";
+  private readonly MODELS = [
+    "meta-llama/llama-3.3-70b-instruct",
+    "meta-llama/llama-3.1-70b-instruct",
+    "meta-llama/llama-3.1-8b-instruct",
+    "google/gemini-pro-1.5-exp:free",
+    "google/gemini-flash-1.5-8b",
+    "mistralai/mistral-7b-instruct:free",
+    "openrouter/free",
+    "openrouter/auto"
+  ];
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
   }
 
   async generate(prompt: string, agentName: string): Promise<string> {
-    return withRetry(async () => {
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: this.MODEL,
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.4,
-          max_tokens: 4096,
-        })
-      });
-      if (!res.ok) {
-        const errBody = await res.text();
-        throw new Error(`OpenRouter Error: ${res.status} ${errBody}`);
+    let lastError: Error | null = null;
+    const state = getGlobalState();
+
+    for (const model of this.MODELS) {
+      if (state.modelCooldowns.has(`openrouter:${model}`)) continue;
+
+      try {
+        console.log(`[OpenRouter] Probando: ${model}...`);
+        return await withRetry(async () => {
+          const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${this.apiKey}`,
+              'Content-Type': 'application/json',
+              'HTTP-Referer': 'https://obelisco.ai',
+              'X-Title': 'Obelisco AI'
+            },
+            body: JSON.stringify({
+              model: model,
+              messages: [{ role: 'user', content: prompt }],
+              temperature: 0.4,
+              max_tokens: 4096,
+            })
+          });
+
+          if (!res.ok) {
+            const errText = await res.text();
+            throw new Error(`OpenRouter Error ${res.status}: ${errText}`);
+          }
+
+          const data = (await res.json()) as AIResponse;
+          return data.choices?.[0]?.message?.content || "";
+        }, agentName, "openrouter");
+      } catch (error: any) {
+        lastError = error;
+        console.warn(`[OpenRouter] Falló ${model}: ${error.message}`);
+        
+        if (error.message.includes("401")) {
+            state.blacklist.add("openrouter");
+            break;
+        }
+        
+        if (error.message.includes("404") || error.message.includes("not found")) {
+            state.modelCooldowns.set(`openrouter:${model}`, Date.now());
+        }
       }
-      const data = await res.json();
-      const text = data.choices?.[0]?.message?.content;
-      if (!text) throw new Error(`Empty response from OpenRouter (${agentName})`);
-      return text;
-    }, agentName, "openrouter");
+    }
+    throw lastError || new Error(`Fallo total en OpenRouter para ${agentName}`);
   }
 }
 
-class GeminiClient {
-  private model: ReturnType<GoogleGenerativeAI['getGenerativeModel']>;
+class GeminiClient implements BaseClient {
+  private genAI: GoogleGenerativeAI;
+  private readonly MODELS = ["gemini-1.5-flash", "gemini-1.5-pro"];
 
   constructor(apiKey: string) {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    this.model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
-      generationConfig: { 
-        temperature: 0.4, 
-        topP: 0.8, 
-        topK: 40,
-        maxOutputTokens: 8192
-      },
-    });
+    this.genAI = new GoogleGenerativeAI(apiKey);
   }
 
   async generate(prompt: string, agentName: string): Promise<string> {
-    // Clean prompt to avoid special characters that might confuse the model
-    const cleanPrompt = prompt.replace(/[^\x00-\x7F]/g, (char) => {
-      // Keep Spanish characters
-      if (/[áéíóúñÁÉÍÓÚÑ]/.test(char)) return char;
-      return '';
-    });
-    
-    return withRetry(async () => {
-      const result = await this.model.generateContent(cleanPrompt);
-      const text = result.response?.text?.();
-      if (!text || text.trim().length === 0) {
-        throw new Error(`Empty response from Gemini (${agentName})`);
+    let lastError: Error | null = null;
+    const state = getGlobalState();
+
+    for (const modelName of this.MODELS) {
+      try {
+        console.log(`[Gemini] Probando: ${modelName}...`);
+        return await withRetry(async () => {
+          const model = this.genAI.getGenerativeModel({ model: modelName });
+          const result = await model.generateContent(prompt);
+          return result.response.text();
+        }, agentName, "gemini", 1);
+      } catch (error: any) {
+        lastError = error;
+        console.warn(`[Gemini] Falló ${modelName}: ${error.message}`);
+        if (isDailyExhausted(error) && modelName === "gemini-1.5-pro") {
+            state.blacklist.add("gemini");
+        }
       }
-      // Validate response doesn't contain image error
-      if (text.includes("Cannot read") && text.includes(".png")) {
-        throw new Error(`Model attempted image processing. Use text-only prompt.`);
+    }
+    throw lastError || new Error(`Fallo total en Gemini para ${agentName}`);
+  }
+}
+
+class OllamaClient implements BaseClient {
+  private baseUrl: string;
+  private readonly MODELS = ["llama3.3:70b", "llama3.1:8b", "llama3", "mistral"];
+
+  constructor(url: string = "http://localhost:11434") {
+    this.baseUrl = url;
+  }
+
+  async generate(prompt: string, agentName: string): Promise<string> {
+    let lastError: Error | null = null;
+    for (const model of this.MODELS) {
+      try {
+        console.log(`[Ollama] Probando: ${model}...`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+        const res = await fetch(`${this.baseUrl}/api/generate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model, prompt, stream: false }),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        
+        if (!res.ok) throw new Error(`Ollama error ${res.status}`);
+        const data = await res.json();
+        return data.response || "";
+      } catch (error: any) {
+        lastError = error;
+        const isFetchError = error.name === 'AbortError' || error.message.includes("fetch failed") || error.message.includes("ECONNREFUSED");
+        
+        console.warn(`[Ollama] Falló ${model}: ${error.message}`);
+        
+        if (isFetchError) {
+            throw new Error("OLLAMA_NOT_RUNNING: El servicio local de Ollama no responde. Asegúrate de que esté abierto.");
+        }
       }
-      return text;
-    }, agentName, "gemini");
+    }
+    throw lastError || new Error("Ollama no disponible");
   }
 }
 
 // ─────────────────────────────────────────────────────────────
-// AcademicEngine — Soporta selección y fallback
+// AcademicEngine Main Class
 // ─────────────────────────────────────────────────────────────
+
 export class AcademicEngine {
-  private groq: GroqClient | null = null;
-  private gemini: GeminiClient | null = null;
-  private openrouter: OpenRouterClient | null = null;
-  private preferredModel: string;
+  private clients: Partial<Record<Provider, BaseClient>> = {};
+  private preferred: Provider;
 
   constructor(
     geminiKey?: string,
     groqKey?: string,
     openRouterKey?: string,
-    preferredModel: string = "openrouter"
+    preferred: string = "openrouter",
+    ollamaUrl: string = "http://localhost:11434"
   ) {
-    if (groqKey) this.groq = new GroqClient(groqKey);
-    if (geminiKey) this.gemini = new GeminiClient(geminiKey);
-    if (openRouterKey) this.openrouter = new OpenRouterClient(openRouterKey);
-    this.preferredModel = preferredModel;
+    const cleanKey = (key?: string) => key?.trim().replace(/^["']|["']$/g, '');
 
-    if (!this.groq && !this.gemini && !this.openrouter) {
-      throw new Error("Se requiere al menos una API key (GROQ, GEMINI u OPENROUTER).");
-    }
+    const gKey = cleanKey(geminiKey);
+    const grKey = cleanKey(groqKey);
+    const orKey = cleanKey(openRouterKey);
+
+    if (gKey) this.clients.gemini = new GeminiClient(gKey);
+    if (grKey) this.clients.groq = new GroqClient(grKey);
+    if (orKey) this.clients.openrouter = new OpenRouterClient(orKey);
+    this.clients.ollama = new OllamaClient(ollamaUrl);
+    
+    this.preferred = (this.clients[preferred as Provider] ? preferred : "openrouter") as Provider;
   }
 
-  /**
-   * Intenta usar el modelo preferido. Si se agota, intenta el fallback.
-   */
   private async safeGenerate(prompt: string, agentName: string): Promise<string> {
-    // Definir orden de proveedores: [primario, secundario, terciario]
-    let order: Array<{ name: string, client: GroqClient | GeminiClient | OpenRouterClient | null }> = [];
+    const state = getGlobalState();
+    const providers: Provider[] = [this.preferred, "openrouter", "gemini", "groq", "ollama"];
+    const uniqueProviders = Array.from(new Set(providers));
     
-    if (this.preferredModel === "groq") {
-      order = [{ name: 'groq', client: this.groq }, { name: 'openrouter', client: this.openrouter }, { name: 'gemini', client: this.gemini }];
-    } else if (this.preferredModel === "gemini") {
-      order = [{ name: 'gemini', client: this.gemini }, { name: 'openrouter', client: this.openrouter }, { name: 'groq', client: this.groq }];
-    } else {
-      order = [{ name: 'openrouter', client: this.openrouter }, { name: 'groq', client: this.groq }, { name: 'gemini', client: this.gemini }];
-    }
+    const failures: string[] = [];
 
-    let lastError: unknown = null;
+    for (const pName of uniqueProviders) {
+      const client = this.clients[pName];
+      if (!client || state.blacklist.has(pName)) {
+          if (client && state.blacklist.has(pName)) {
+              failures.push(`${pName}: En lista negra (Errores previos)`);
+          }
+          continue;
+      }
 
-    for (let i = 0; i < order.length; i++) {
-      const provider = order[i];
-      if (!provider.client) continue;
+      // Evitar Ollama en producción a menos que sea el preferido
+      if (pName === "ollama" && process.env.NODE_ENV === "production" && this.preferred !== "ollama") continue;
 
       try {
-        const result = await provider.client.generate(prompt, agentName);
-        return result;
-      } catch (error: unknown) {
-        lastError = error;
-        const msg: string = error instanceof Error ? error.message : String(error);
+        return await client.generate(prompt, agentName);
+      } catch (error: any) {
+        const msg = error.message || String(error);
         
-        // Determinar si es un error de cuota para el mensaje final, pero siempre intentar fallback
-        const isExhausted = msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO") || msg.includes("429");
-        if (isExhausted) {
-            lastError = new Error(`CUOTA_DIARIA_AGOTADA[${provider.name}]: ${msg}`);
+        // Si Ollama no está corriendo y es el preferido, reportar explícitamente pero seguir con fallback
+        if (msg.includes("OLLAMA_NOT_RUNNING")) {
+            failures.push(`Ollama: No detectado localmente`);
+        } else {
+            failures.push(`${pName}: ${msg.substring(0, 60)}`);
         }
-
-        const nextProvider = (i < order.length - 1 && order[i+1].client) ? order[i+1] : null;
-        console.warn(
-          `[${agentName}] ${provider.name} falló (Error: ${msg.substring(0, 50)}...). ` +
-          (nextProvider ? `Haciendo fallback a ${nextProvider.name}...` : "No hay fallback disponible.")
-        );
-        // Continuar el ciclo para intentar con el siguiente proveedor
+        
+        console.error(`[AcademicEngine] Fallo en ${pName}: ${msg}`);
       }
     }
 
-    if (lastError) {
-      // Si llegamos acá, significa que todos los disponibles fallaron
-      throw lastError;
-    }
-
-    throw new Error("No hay proveedores de IA disponibles.");
+    const failureDetails = failures.map(f => `• ${f}`).join("\n");
+    throw new Error(`CRÍTICO: No se pudo generar el contenido tras intentar con todos los proveedores.\n\nDETALLES DE FALLOS:\n${failureDetails}\n\nRECOMENDACIÓN: Si usas Ollama, verifica que esté abierto. Si usas Gemini/Groq, espera unos minutos por el límite de cuota.`);
   }
-
-  // ── Agents ────────────────────────────────────────────────
 
   async researcherAgent(topic: string, context: string): Promise<string> {
-    const prompt = `
-      Rol: Investigador Académico Senior (Experto en RAG).
-      Tarea: Identificar 3 fuentes bibliográficas reales (libros o artículos científicos) y 3 conceptos clave necesarios para investigar: ${topic}
-      Contexto Institucional: ${context}
-      
-      Retorna una lista de hallazgos bibliográficos en formato APA 7 y los conceptos clave.
-      Mantén las respuestas en ESPAÑOL y con rigor académico.
-    `;
-    return this.safeGenerate(prompt, "ResearcherAgent");
+    const prompt = `Investiga bibliografía APA 7 y conceptos clave para: ${topic}. Contexto Institucional: ${context}. Responde en ESPAÑOL académico.`;
+    return this.safeGenerate(prompt, "Investigador");
   }
 
-  async writerAgent(section: string, researchData: string, data: Record<string, unknown>, context: string): Promise<string> {
-    const tono = typeof data.tone === 'string' ? data.tone : "Académico Formal";
-    const programa = typeof data.program === 'string' ? data.program : "Investigación Científica";
-    const description = typeof data.description === 'string' ? data.description : "";
-    const title = typeof data.title === 'string' ? data.title : "";
-
-    const prompt = `
-      Eres el Agente Redactor de OBELISCO. Tu objetivo es transformar datos de investigación en prosa académica impecable.
-      REGLAS:
-      - Tercera persona impersonal (NUNCA 'nosotros' o 'yo').
-      - Integrar las fuentes de investigación proporcionadas de forma fluida.
-      - Tono: ${tono}. Disciplina: ${programa}.
-      - Máximo rigor sintáctico.
-      - Escribe siempre en ESPAÑOL académico.
-      - Mínimo 300 palabras por sección.
-
-      Sección: ${section}
-      Datos de Investigación: ${researchData}
-      Contexto del Proyecto: ${description}
-      Título de la Tesis: ${title}
-      Contenido Previo (para coherencia): ${context || "N/A"}
-      
-      Redacta el contenido exhaustivo y académico para esta sección.
-    `;
-    return this.safeGenerate(prompt, "WriterAgent");
+  async writerAgent(section: string, research: string, data: any, context: string): Promise<string> {
+    const prompt = `Redacta la sección "${section}" para una tesis de "${data.program}" titulada "${data.title}". 
+    Usa estos datos de investigación: ${research}. 
+    Contexto previo del documento: ${context || "N/A"}. 
+    REGLAS: Tercera persona impersonal, ESPAÑOL académico, mínimo 300 palabras, tono "${data.tone || 'académico formal'}".`;
+    return this.safeGenerate(prompt, "Redactor");
   }
 
-  async auditorAgent(content: string, thesisType: string): Promise<string> {
-    const prompt = `
-      Rol: Auditor Metodológico (Especialista en ${thesisType}).
-      Tarea: Evaluar el siguiente contenido académico en ESPAÑOL.
-      Contenido: ${content}
-      
-      Busca:
-      1. Uso de primera persona (Prohibido).
-      2. Falta de citas.
-      3. Coherencia con el título.
-      
-      Retorna una breve crítica y sugerencias de corrección. Si todo está correcto, indica 'APROBADO'.
-    `;
-    return this.safeGenerate(prompt, "AuditorAgent");
+  async auditorAgent(content: string, type: string): Promise<string> {
+    const prompt = `Audita este texto de tesis (${type}): ${content}. 
+    Busca errores de estilo (primera persona) y falta de citas. 
+    Si está bien, responde 'APROBADO'. Si no, da sugerencias breves en ESPAÑOL.`;
+    return this.safeGenerate(prompt, "Auditor");
   }
 
   async humanizerAgent(content: string): Promise<string> {
-    const prompt = `
-      Rol: Editor de Estilo Humano.
-      Tarea: Refinar el texto para que sea indistinguible de un humano experto.
-      - Elimina muletillas de IA ('en conclusión', 'es importante destacar', 'cabe señalar').
-      - Varía la longitud de las oraciones.
-      - Mejora los conectores lógicos.
-      - Mantén el idioma ESPAÑOL y el tono académico formal.
-      - NO acortes el texto; solo mejóralo.
-      
-      Texto Original: ${content}
-    `;
-    return this.safeGenerate(prompt, "HumanizerAgent");
+    const prompt = `Humaniza este texto académico eliminando rastro de IA pero manteniendo la formalidad y el rigor: ${content}. 
+    No acortes el texto, mejora la fluidez y conectores en ESPAÑOL.`;
+    return this.safeGenerate(prompt, "Humanizador");
   }
 
-  async generateStructuralPlan(data: Record<string, unknown>): Promise<string> {
-    const levelStr = typeof data.level === 'string' ? data.level : "TEG";
-    const nivel = levelStr.toUpperCase();
-
-    const baseStructure = nivel.includes("PNF")
-      ? `
-        - Páginas Preliminares (Portada, Índice, Resumen)
-        - Introducción
-        - Capítulo I: Descripción del Proyecto (Diagnóstico, Metodología, Alternativas, Justificación)
-        - Capítulo II: Planificación del Proyecto (Cronograma)
-        - Capítulo III: Conclusiones y Recomendaciones
-        - Capítulo IV: Propuesta (Productos/Servicios, Fundamentación, Plan de Acción)
-        - Referencias y Anexos
-      `
-      : `
-        - Páginas Preliminares (Portada, Dedicatoria, Agradecimiento, Índice, Resumen)
-        - Introducción
-        - Capítulo I: El Problema (Planteamiento, Justificación, Objetivos, Variables)
-        - Capítulo II: Marco Teórico (Antecedentes, Bases Teóricas, Bases Legales, Términos)
-        - Capítulo III: Marco Metodológico (Diseño, Nivel, Población, Muestra, Instrumentos, Validez)
-        - Capítulo IV: Resultados de la Investigación
-        - Conclusiones y Recomendaciones
-        - Referencias y Anexos
-      `;
-
-    const prompt = `
-      Rol: Arquitecto de Investigaciones Académicas Senior (Normativa UPEL/IUTAR).
-      Institución: ${data.university}, ${data.faculty}.
-      Tarea: Diseñar el índice detallado para un trabajo de tipo ${data.level} en ${data.program}.
-      Título: ${data.title}
-      Tema: ${data.description}
-      
-      Estructura base obligatoria: ${baseStructure}
-      Retorna el índice detallado en formato Markdown. Escribe en ESPAÑOL.
-    `;
-
-    return this.safeGenerate(prompt, "StructuralPlanAgent");
+  async generateStructuralPlan(data: any): Promise<string> {
+    const prompt = `Diseña un índice detallado (Markdown) para una tesis de ${data.level} en ${data.program}. 
+    Título: ${data.title}. Universidad: ${data.university}. 
+    Escribe en ESPAÑOL con rigor académico.`;
+    return this.safeGenerate(prompt, "Planificador");
   }
 }

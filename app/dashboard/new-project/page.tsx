@@ -27,13 +27,35 @@ const steps = [
   { id: 'revision', title: 'Revisión', icon: <BrainCircuit size={20} /> },
 ];
 
+interface ProjectFormData {
+  university: string;
+  faculty: string;
+  program: string;
+  level: string;
+  author: string;
+  director: string;
+  norm: string;
+  chapters: string[];
+  title: string;
+  description: string;
+  keywords: string;
+  language: string;
+  aiModel: string;
+  tone: string;
+}
+
+interface StepProps {
+  data: ProjectFormData;
+  onChange: (field: keyof ProjectFormData, value: string | string[]) => void;
+}
+
 export default function NewProjectPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [generating, setGenerating] = useState(false);
   const [backendStatus, setBackendStatus] = useState<'checking' | 'online' | 'offline'>('checking');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProjectFormData>({
     university: '',
     faculty: '',
     program: '',
@@ -52,7 +74,7 @@ export default function NewProjectPage() {
     description: '',
     keywords: '',
     language: 'Español',
-    aiModel: 'groq',
+    aiModel: 'openrouter',
     tone: 'Académico Formal'
   });
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -112,7 +134,7 @@ export default function NewProjectPage() {
     setValidationErrors([]);
   };
 
-  const updateField = (field: string, value: any) => {
+  const updateField = (field: keyof ProjectFormData, value: string | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -233,31 +255,23 @@ export default function NewProjectPage() {
         duration: 8000,
       });
       router.push('/dashboard/projects');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error en la generación:", error);
-      const msg: string = error?.message || "";
-
-      if (msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO")) {
-        let title = "Límite de Solicitudes";
-        let desc = "Se superó el límite de la API. Espera unos minutos y vuelve a intentarlo.";
-
-        if (msg.includes("CUOTA_DIARIA_AGOTADA")) {
-          title = "Cuota Diaria Agotada";
-          desc = "La API ha alcanzado su límite diario. Intenta con otro modelo de IA en el panel anterior o espera hasta mañana.";
-          if (msg.includes("[ambos]")) {
-             desc = "Todos los modelos (Groq y Gemini) han agotado su cuota gratuita. Por favor, espera hasta mañana para generar más contenido.";
-          } else if (msg.toLowerCase().includes("gemini")) {
-             desc = "La API de Gemini agotó su límite diario. Intenta seleccionando Groq o espera hasta mañana.";
-          } else if (msg.toLowerCase().includes("groq")) {
-             desc = "La API de Groq agotó su límite diario. Intenta seleccionando Gemini o espera hasta mañana.";
-          }
-        }
-        
-        toast.error(title, { description: desc, duration: 12000 });
+      const msg: string = error instanceof Error ? error.message : String(error);
+      if (msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO") || msg.includes("429")) {
+        toast.error("Límite de cuota alcanzado", {
+          description: "Todos los proveedores (OpenRouter, Groq, Gemini) han agotado su cuota gratuita o están saturados. Por favor, intenta de nuevo más tarde o mañana.",
+          duration: 10000
+        });
+      } else if (msg.includes("ERROR_PROVEEDOR")) {
+        toast.error("Error de Conexión con IA", {
+          description: "Hubo un problema técnico con los proveedores de IA. Verifica tu conexión o intenta con otro modelo.",
+          duration: 10000
+        });
       } else {
-        toast.error("Error en el Motor OBELISCO", {
-          description: msg || "No se pudo completar la generación. Revisa la consola para más detalles.",
-          duration: 8000,
+        toast.error("Error inesperado", {
+          description: msg || "Ocurrió un error durante la generación. Revisa la consola para más detalles.",
+          duration: 10000
         });
       }
     } finally {
@@ -368,7 +382,7 @@ export default function NewProjectPage() {
   );
 }
 
-function StepRequisitos({ data, onChange }: any) {
+function StepRequisitos({ data, onChange }: StepProps) {
   return (
     <motion.div 
       initial={{ opacity: 0, x: 20 }}
@@ -448,7 +462,7 @@ function StepRequisitos({ data, onChange }: any) {
   );
 }
 
-function StepEstructura({ data, onChange }: any) {
+function StepEstructura({ data, onChange }: StepProps) {
   const norms = ['APA 7', 'IEEE', 'Vancouver', 'Chicago'];
   const chapters = [
     'Introducción',
@@ -511,7 +525,7 @@ function StepEstructura({ data, onChange }: any) {
   );
 }
 
-function StepContenido({ data, onChange }: any) {
+function StepContenido({ data, onChange }: StepProps) {
   return (
     <motion.div 
       initial={{ opacity: 0, x: 20 }}
@@ -570,7 +584,7 @@ function StepContenido({ data, onChange }: any) {
   );
 }
 
-function StepRevision({ data, onChange }: any) {
+function StepRevision({ data, onChange }: StepProps) {
   return (
     <motion.div 
       initial={{ opacity: 0, x: 20 }}
@@ -592,9 +606,10 @@ function StepRevision({ data, onChange }: any) {
               onChange={(e) => onChange('aiModel', e.target.value)}
               className="academic-input border-accent/30 text-accent font-black bg-accent/5 h-16"
             >
-              <option value="gemini" className="bg-slate-900 text-white">Google Gemini 2.0 Flash</option>
-              <option value="groq" className="bg-slate-900 text-white">Llama 3 70B (Ultra-Veloz)</option>
-              <option value="openrouter" className="bg-slate-900 text-white">Claude 3 Haiku (OpenRouter)</option>
+              <option value="openrouter" className="bg-slate-900 text-white">Llama 3.3 70B (OpenRouter - RECOMENDADO)</option>
+              <option value="groq" className="bg-slate-900 text-white">Llama 3 70B (Groq - Ultra Veloz)</option>
+              <option value="ollama" className="bg-slate-900 text-white">Llama 3.1 70B (Ollama - Local)</option>
+              <option value="gemini" className="bg-slate-900 text-white">Google Gemini 1.5 Flash (Backup)</option>
             </select>
           </div>
           <div className="space-y-3">
@@ -638,7 +653,17 @@ function StepRevision({ data, onChange }: any) {
   );
 }
 
-function InputGroup({ label, placeholder, required = false, fullWidth = false, icon = null, value, onChange }: any) {
+interface InputGroupProps {
+  label: string;
+  placeholder: string;
+  required?: boolean;
+  fullWidth?: boolean;
+  icon?: React.ReactNode;
+  value: string;
+  onChange: (val: string) => void;
+}
+
+function InputGroup({ label, placeholder, required = false, fullWidth = false, icon = null, value, onChange }: InputGroupProps) {
   return (
     <div className={`space-y-3 ${fullWidth ? 'md:col-span-2' : ''}`}>
       <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">
@@ -658,7 +683,14 @@ function InputGroup({ label, placeholder, required = false, fullWidth = false, i
   );
 }
 
-function NormCard({ title, desc, selected = false, onClick }: any) {
+interface NormCardProps {
+  title: string;
+  desc: string;
+  selected?: boolean;
+  onClick: () => void;
+}
+
+function NormCard({ title, desc, selected = false, onClick }: NormCardProps) {
   return (
     <div 
       onClick={onClick}
@@ -676,7 +708,13 @@ function NormCard({ title, desc, selected = false, onClick }: any) {
   );
 }
 
-function ChapterItem({ title, checked = false, onClick }: any) {
+interface ChapterItemProps {
+  title: string;
+  checked?: boolean;
+  onClick: () => void;
+}
+
+function ChapterItem({ title, checked = false, onClick }: ChapterItemProps) {
   return (
     <div 
       onClick={onClick}
