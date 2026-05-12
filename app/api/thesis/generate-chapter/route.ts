@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const projectRef = adminDb.collection("projects").doc(projectId);
     
     try {
-      let result: any = { success: true };
+      let result: Record<string, unknown> = { success: true };
       
       // Step 1: Research
       if (step === 'all' || step === 'research') {
@@ -82,16 +82,17 @@ export async function POST(req: NextRequest) {
       }
 
       return NextResponse.json(result);
-    } catch (aiError: any) {
+    } catch (aiError: unknown) {
       console.error(`[${projectId}] Chapter API Failure:`, aiError);
-      const aiMsg: string = aiError?.message || "";
+      const aiMsg: string = aiError instanceof Error ? aiError.message : String(aiError);
       const isRateLimit = aiMsg.includes("CUOTA_DIARIA_AGOTADA") || aiMsg.includes("LIMITE_ALCANZADO") || aiMsg.includes("429");
       return NextResponse.json({ 
         error: aiMsg || `Error en motor de IA durante ${chapter} (${step})`,
         timeElapsed: Date.now() - startTime
       }, { status: isRateLimit ? 429 : 500 });
     }
-  } catch (error: any) {
-    return NextResponse.json({ error: "Error fatal: " + error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    return NextResponse.json({ error: "Error fatal: " + errMsg }, { status: 500 });
   }
 }
