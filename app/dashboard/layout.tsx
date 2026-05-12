@@ -78,29 +78,24 @@ export default function DashboardLayout({
       <div className="absolute inset-0 bg-dot-pattern pointer-events-none opacity-20"></div>
 
 {/* Sidebar */}
-        <aside className="w-80 glass border-r border-white/5 hidden lg:flex flex-col sticky top-0 h-screen z-20">
-          <div className="p-6 md:p-10 flex items-center gap-4">
-            <div className="p-2 bg-white/5 rounded-2xl shadow-xl shadow-primary/20 border border-white/10 backdrop-blur-md">
-              <Logo className="w-8 h-8 md:w-10 md:h-10" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-black text-xl md:text-2xl text-white tracking-tighter academic-text">OBELISCO</span>
-              <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-accent">Forja de Tesis</span>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <span className="font-black text-2xl text-white tracking-tighter academic-text drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">OBELISCO</span>
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">Forja de Tesis</span>
-          </div>
-        </div>
+         <aside className="w-80 glass border-r border-white/5 hidden lg:flex flex-col sticky top-0 h-screen z-20">
+           <div className="p-6 md:p-10 flex items-center gap-4">
+             <div className="p-2 bg-white/5 rounded-2xl shadow-xl shadow-primary/20 border border-white/10 backdrop-blur-md">
+               <Logo className="w-8 h-8 md:w-10 md:h-10" />
+             </div>
+             <div className="flex flex-col">
+               <span className="font-black text-xl md:text-2xl text-white tracking-tighter academic-text">OBELISCO</span>
+               <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-accent">Forja de Tesis</span>
+             </div>
+           </div>
 
-        <nav className="flex-grow px-6 space-y-4 pt-4">
-          <NavItem 
-            icon={<LayoutDashboard size={22} />} 
-            label="Panel Principal" 
-            href="/dashboard" 
-            active={pathname === "/dashboard"} 
-          />
+         <nav className="flex-grow px-6 space-y-4 pt-4">
+           <NavItem 
+             icon={<LayoutDashboard size={22} />} 
+             label="Panel Principal" 
+             href="/dashboard" 
+             active={pathname === "/dashboard"} 
+           />
           <NavItem 
             icon={<PlusCircle size={22} />} 
             label="Nueva Tesis" 
