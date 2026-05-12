@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthContext } from '@/contexts/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 
 // ─── Tipos ────────────────────────────────────────────────────
@@ -121,7 +121,7 @@ async function callApiWithRetry(
 // ─────────────────────────────────────────────────────────────
 export default function NewProjectPage() {
   const router = useRouter();
-  const { user } = useAuthContext();
+  const { user } = useAuth();
 
   const [step, setStep] = useState(1);
   const [generating, setGenerating] = useState(false);
