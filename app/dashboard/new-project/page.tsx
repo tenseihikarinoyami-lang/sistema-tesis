@@ -52,7 +52,7 @@ export default function NewProjectPage() {
     description: '',
     keywords: '',
     language: 'Español',
-    aiModel: 'gemini',
+    aiModel: 'groq',
     tone: 'Académico Formal'
   });
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
