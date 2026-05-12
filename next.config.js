@@ -15,13 +15,7 @@ const nextConfig = {
       allowedOrigins: ['localhost:3000']
     }
   },
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': __dirname,
-    };
-    return config;
-  },
+  turbopack: {}
 }
 
 module.exports = nextConfig
