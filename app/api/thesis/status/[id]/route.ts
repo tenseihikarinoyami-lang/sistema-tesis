@@ -17,8 +17,9 @@ export async function GET(
       id: doc.id,
       ...doc.data()
     });
-  } catch (error: any) {
-    console.error("Error fetching project status:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("Error fetching project status:", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

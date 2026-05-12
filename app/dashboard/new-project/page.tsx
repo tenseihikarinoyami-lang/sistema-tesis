@@ -1,277 +1,316 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Book, 
-  ChevronRight, 
-  ChevronLeft,
-  Check,
-  BrainCircuit,
-  Building2,
-  User,
-  CheckSquare,
-  Globe,
-  CheckCircle
-} from "lucide-react";
-import { toast } from "sonner";
+import { useAuthContext } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
-import { useAuth } from '@/context/AuthContext';
-
-
-const steps = [
-  { id: 'requisitos', title: 'Requisitos', icon: <Building2 size={20} /> },
-  { id: 'estructura', title: 'Estructura', icon: <CheckSquare size={20} /> },
-  { id: 'contenido', title: 'Contenido', icon: <Book size={20} /> },
-  { id: 'revision', title: 'Revisión', icon: <BrainCircuit size={20} /> },
-];
-
-interface ProjectFormData {
+// ─── Tipos ────────────────────────────────────────────────────
+interface FormData {
+  title: string;
   university: string;
-  faculty: string;
+  author: string;
   program: string;
   level: string;
-  author: string;
-  director: string;
-  norm: string;
-  chapters: string[];
-  title: string;
   description: string;
-  keywords: string;
-  language: string;
-  aiModel: string;
+  chapters: string[];
+  norm: string;
   tone: string;
+  aiModel: string;
+  language: string;
 }
 
-interface StepProps {
-  data: ProjectFormData;
-  onChange: (field: keyof ProjectFormData, value: string | string[]) => void;
+interface ChapterStatus {
+  name: string;
+  status: 'pending' | 'researching' | 'writing' | 'auditing' | 'humanizing' | 'done' | 'error';
+  error?: string;
+  retries: number;
 }
 
-export default function NewProjectPage() {
-  const { user } = useAuth();
-  const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [generating, setGenerating] = useState(false);
-  const [backendStatus, setBackendStatus] = useState<'checking' | 'online' | 'offline'>('checking');
-  const [formData, setFormData] = useState<ProjectFormData>({
-    university: '',
-    faculty: '',
-    program: '',
-    level: 'Licenciatura / Grado',
-    author: '',
-    director: '',
-    norm: 'APA 7',
-    chapters: [
-      'Capítulo I: El Problema',
-      'Capítulo II: Marco Teórico',
-      'Capítulo III: Metodología',
-      'Capítulo IV: Resultados',
-      'Capítulo V: Conclusiones',
-    ],
-    title: '',
-    description: '',
-    keywords: '',
-    language: 'Español',
-    aiModel: 'openrouter',
-    tone: 'Académico Formal'
-  });
-  const [validationErrors, setValidationErrors] = useState<string[]>([]);
-  const [mounted, setMounted] = useState(false);
+// ─── Constantes ───────────────────────────────────────────────
+const DEFAULT_CHAPTERS = [
+  'Introducción',
+  'Marco Teórico',
+  'Marco Metodológico',
+  'Análisis de Resultados',
+  'Conclusiones y Recomendaciones',
+];
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+const LEVELS = ['TEG', 'Pregrado', 'Maestría', 'Doctorado'];
+const NORMS = ['APA 7', 'IEEE', 'Vancouver', 'Chicago'];
+const TONES = ['Académico formal', 'Técnico-científico', 'Descriptivo', 'Analítico'];
+const AI_MODELS = [
+  { value: 'openrouter', label: '🤖 OpenRouter (Llama / GPT-OSS) — Recomendado' },
+  { value: 'groq', label: '⚡ Groq (Llama 3.3 70B) — Muy rápido' },
+  { value: 'gemini', label: '🔵 Google Gemini — Puede tener límites diarios' },
+];
 
-  useEffect(() => {
-    const checkBackend = async () => {
-      setBackendStatus('checking');
-      try {
-        // Check our own Next.js API route (not an external backend)
-        const response = await fetch('/api/thesis/list', { signal: AbortSignal.timeout(5000) });
-        // A 401 or 200 both mean the API is reachable
-        if (response.status !== 0) setBackendStatus('online');
-        else setBackendStatus('offline');
-      } catch (e) {
-        // Network error - the API is still likely available on Vercel
-        setBackendStatus('online');
+const MAX_RETRIES_PER_STEP = 3;
+const STEP_TIMEOUT_MS = 110_000; // 110s (Vercel corta a 120s)
+const RETRY_DELAY_MS = 8_000;    // 8s entre reintentos
+
+// ─── Helper: fetch con timeout propio ─────────────────────────
+async function fetchWithTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    return res;
+  } catch (err) {
+    if ((err as Error).name === 'AbortError') {
+      throw new Error(`TIMEOUT: La solicitud tardó más de ${timeoutMs / 1000}s. El servidor está ocupado, reintentando…`);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ─── Helper: sleep ────────────────────────────────────────────
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+// ─── Helper: una llamada a la API con reintentos propios ──────
+async function callApiWithRetry(
+  url: string,
+  body: Record<string, unknown>,
+  stepName: string,
+  maxRetries = MAX_RETRIES_PER_STEP
+): Promise<Record<string, unknown>> {
+  let lastErr = '';
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await fetchWithTimeout(
+        url,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        },
+        STEP_TIMEOUT_MS
+      );
+
+      const data = await res.json() as Record<string, unknown>;
+
+      if (!res.ok) {
+        const errMsg = (data.error as string) || `HTTP ${res.status}`;
+        // Si es cuota diaria agotada no tiene sentido reintentar
+        if (res.status === 429 && errMsg.toLowerCase().includes('diario')) {
+          throw new Error(errMsg);
+        }
+        throw new Error(errMsg);
       }
-    };
-    checkBackend();
+
+      return data;
+    } catch (err) {
+      lastErr = err instanceof Error ? err.message : String(err);
+      const isQuotaDaily = lastErr.toLowerCase().includes('diario') || lastErr.includes('CUOTA_DIARIA_AGOTADA');
+      if (isQuotaDaily) throw new Error(lastErr); // No reintentar
+
+      if (attempt < maxRetries) {
+        const waitSec = Math.round(RETRY_DELAY_MS * attempt / 1000);
+        toast.warning(`⚠️ ${stepName} — Reintentando (${attempt}/${maxRetries}) en ${waitSec}s…`, { duration: waitSec * 1000 });
+        await sleep(RETRY_DELAY_MS * attempt);
+      }
+    }
+  }
+  throw new Error(`${stepName} falló tras ${maxRetries} intentos: ${lastErr}`);
+}
+
+// ─────────────────────────────────────────────────────────────
+// COMPONENTE PRINCIPAL
+// ─────────────────────────────────────────────────────────────
+export default function NewProjectPage() {
+  const router = useRouter();
+  const { user } = useAuthContext();
+
+  const [step, setStep] = useState(1);
+  const [generating, setGenerating] = useState(false);
+  const [globalProgress, setGlobalProgress] = useState(0);
+  const [chapterStatuses, setChapterStatuses] = useState<ChapterStatus[]>([]);
+
+  const [formData, setFormData] = useState<FormData>({
+    title: '',
+    university: '',
+    author: '',
+    program: '',
+    level: 'TEG',
+    description: '',
+    chapters: [...DEFAULT_CHAPTERS],
+    norm: 'APA 7',
+    tone: 'Académico formal',
+    aiModel: 'openrouter',
+    language: 'es',
+  });
+
+  // Sincronizar nombre del autor con el usuario logueado
+  useEffect(() => {
+    if (user?.displayName && !formData.author) {
+      setFormData(p => ({ ...p, author: user.displayName! }));
+    }
+  }, [user, formData.author]);
+
+  const updateField = useCallback(<K extends keyof FormData>(key: K, value: FormData[K]) => {
+    setFormData(p => ({ ...p, [key]: value }));
   }, []);
 
-  const getStepErrors = (step: number) => {
-    const errors: string[] = [];
-    if (step === 0) {
-      if (!formData.university) errors.push('Universidad');
-      if (!formData.faculty) errors.push('Facultad');
-      if (!formData.program) errors.push('Programa');
-      if (!formData.author) errors.push('Autor');
-      if (!formData.director) errors.push('Director');
-    } else if (step === 1) {
-      if (!formData.norm) errors.push('Normativa');
-      if (formData.chapters.length === 0) errors.push('Estructura (mínimo 1 capítulo)');
-    } else if (step === 2) {
-      if (!formData.title) errors.push('Título');
-      if (!formData.description) errors.push('Descripción');
+  const updateChapterStatus = useCallback((idx: number, patch: Partial<ChapterStatus>) => {
+    setChapterStatuses(prev => {
+      const next = [...prev];
+      next[idx] = { ...next[idx], ...patch };
+      return next;
+    });
+  }, []);
+
+  // ── Validación por paso ────────────────────────────────────
+  const getStepErrors = (s: number): string[] => {
+    if (s === 1) {
+      const errs: string[] = [];
+      if (!formData.title.trim()) errs.push('Título requerido');
+      if (!formData.university.trim()) errs.push('Universidad requerida');
+      if (!formData.author.trim()) errs.push('Autor requerido');
+      return errs;
     }
-    return errors;
-  };
-
-  const nextStep = () => {
-    const errors = getStepErrors(currentStep);
-    if (errors.length === 0) {
-      setValidationErrors([]);
-      setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
-    } else {
-      setValidationErrors(errors);
-      toast.error(`Por favor completa: ${errors.join(', ')}`);
+    if (s === 2) {
+      if (!formData.program.trim()) return ['Programa requerido'];
     }
-  };
-  const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 0));
-    setValidationErrors([]);
+    return [];
   };
 
-  const updateField = (field: keyof ProjectFormData, value: string | string[]) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
+  // ── Generación principal ───────────────────────────────────
   const handleGenerate = async () => {
-    setGenerating(true);
-    const errors = getStepErrors(2); 
+    const errors = getStepErrors(2);
     if (errors.length > 0) {
-      toast.error(`Faltan campos por completar.`);
-      setGenerating(false);
+      toast.error('Faltan campos: ' + errors.join(', '));
       return;
     }
 
+    setGenerating(true);
+    setGlobalProgress(2);
+    setChapterStatuses(formData.chapters.map(name => ({
+      name, status: 'pending', retries: 0,
+    })));
+
     try {
-      // 1. Generate Plan and create project
-      toast.info("Iniciando Planificación...", { 
-        description: "El motor OBELISCO está diseñando la estructura.",
-        duration: 5000
-      });
-      
-      const payload = {
-        ...formData,
-        ownerId: user?.uid || 'anonymous'
-      };
+      // ── FASE 1: Plan estructural ──────────────────────────
+      toast.info('📐 Planificando estructura…', { duration: 8000 });
 
-      const planResponse = await fetch('/api/thesis/plan', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      const planData = await callApiWithRetry(
+        '/api/thesis/plan',
+        { ...formData, ownerId: user?.uid || 'anonymous' },
+        'Planificación'
+      );
 
-      if (!planResponse.ok) {
-        const errorData = await planResponse.json();
-        throw new Error(errorData.error || 'Error al generar el plan estructural.');
-      }
-      
-      const { project_id, plan } = await planResponse.json();
-      let prevContent = plan;
+      const projectId = planData.project_id as string;
+      let prevContent = planData.plan as string;
+      setGlobalProgress(8);
+      toast.success('✅ Plan estructural listo', { duration: 3000 });
 
-      // 2. Generate Chapters Sequentially with sub-steps to avoid timeouts
-      for (let i = 0; i < formData.chapters.length; i++) {
+      // ── FASE 2: Capítulos ─────────────────────────────────
+      const totalChapters = formData.chapters.length;
+
+      for (let i = 0; i < totalChapters; i++) {
         const chapter = formData.chapters[i];
-        const progress = Math.round(((i) / formData.chapters.length) * 100);
-        
-        // Step 1: Research
-        toast.info(`[${i+1}/${formData.chapters.length}] Investigando: ${chapter}`, { 
-          description: "Buscando bases académicas y referencias...",
-          duration: 15000 
-        });
+        const chapterBase = 8 + Math.round((i / totalChapters) * 88);
 
-        // Helper to extract error from a failed response
-        const assertOk = async (res: Response, fallback: string) => {
-          if (!res.ok) {
-            const body = await res.json().catch(() => ({}));
-            throw new Error(body.error || fallback);
-          }
-        };
+        updateChapterStatus(i, { status: 'researching' });
+        toast.info(`🔬 [${i + 1}/${totalChapters}] Investigando: ${chapter}`, { duration: 12000 });
 
-        const resResearch = await fetch('/api/thesis/generate-chapter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ projectId: project_id, chapter, formData, prevContent, step: 'research' }),
-        });
-        await assertOk(resResearch, `Fallo en investigación de ${chapter}`);
-        const { research } = await resResearch.json();
+        // PASO 1 — Research
+        const resData = await callApiWithRetry(
+          '/api/thesis/generate-chapter',
+          { projectId, chapter, formData, prevContent, step: 'research' },
+          `Investigación de "${chapter}"`
+        );
+        const research = resData.research as string;
+        setGlobalProgress(chapterBase + 5);
 
-        // Step 2: Write
-        toast.info(`[${i+1}/${formData.chapters.length}] Redactando: ${chapter}`, { 
-          description: "Generando contenido técnico y descriptivo...",
-          duration: 15000 
-        });
-        const resWrite = await fetch('/api/thesis/generate-chapter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ projectId: project_id, chapter, formData, prevContent, research, step: 'write' }),
-        });
-        await assertOk(resWrite, `Fallo en redacción de ${chapter}`);
-        const { draft } = await resWrite.json();
+        // Pausa corta entre llamadas para no saturar la API
+        await sleep(2000);
 
-        // Step 3: Audit
-        toast.info(`[${i+1}/${formData.chapters.length}] Auditando: ${chapter}`, { 
-          description: "Verificando rigor académico y coherencia...",
-          duration: 15000 
-        });
-        const resAudit = await fetch('/api/thesis/generate-chapter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ projectId: project_id, chapter, formData, draft, step: 'audit' }),
-        });
-        await assertOk(resAudit, `Fallo en auditoría de ${chapter}`);
-        const { audit } = await resAudit.json();
+        // PASO 2 — Write
+        updateChapterStatus(i, { status: 'writing' });
+        toast.info(`✍️ [${i + 1}/${totalChapters}] Redactando: ${chapter}`, { duration: 12000 });
 
-        // Step 4: Humanize & Finalize Chapter
-        toast.info(`[${i+1}/${formData.chapters.length}] Finalizando: ${chapter}`, { 
-          description: "Aplicando variabilidad léxica y guardando...",
-          duration: 15000 
-        });
-        const resHuman = await fetch('/api/thesis/generate-chapter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ projectId: project_id, chapter, formData, draft, audit, step: 'humanize' }),
-        });
-        await assertOk(resHuman, `Fallo en finalización de ${chapter}`);
-        const { finalVersion } = await resHuman.json();
-        
+        const writeData = await callApiWithRetry(
+          '/api/thesis/generate-chapter',
+          { projectId, chapter, formData, prevContent, research, step: 'write' },
+          `Redacción de "${chapter}"`
+        );
+        const draft = writeData.draft as string;
+        setGlobalProgress(chapterBase + 11);
+        await sleep(2000);
+
+        // PASO 3 — Audit
+        updateChapterStatus(i, { status: 'auditing' });
+        toast.info(`🔍 [${i + 1}/${totalChapters}] Auditando: ${chapter}`, { duration: 12000 });
+
+        const auditData = await callApiWithRetry(
+          '/api/thesis/generate-chapter',
+          { projectId, chapter, formData, draft, step: 'audit' },
+          `Auditoría de "${chapter}"`
+        );
+        const audit = auditData.audit as string;
+        setGlobalProgress(chapterBase + 17);
+        await sleep(2000);
+
+        // PASO 4 — Humanize
+        updateChapterStatus(i, { status: 'humanizing' });
+        toast.info(`💎 [${i + 1}/${totalChapters}] Puliendo: ${chapter}`, { duration: 12000 });
+
+        const humanData = await callApiWithRetry(
+          '/api/thesis/generate-chapter',
+          { projectId, chapter, formData, draft, audit, step: 'humanize' },
+          `Pulido de "${chapter}"`
+        );
+        const finalVersion = humanData.finalVersion as string;
+
         prevContent = finalVersion;
+        updateChapterStatus(i, { status: 'done' });
+        setGlobalProgress(chapterBase + 22);
+        toast.success(`✅ Capítulo completado: ${chapter}`, { duration: 4000 });
+
+        // Pausa entre capítulos para no saturar rate limit
+        if (i < totalChapters - 1) await sleep(3000);
       }
 
+      // ── FASE 3: Finalización ──────────────────────────────
+      setGlobalProgress(98);
+      await callApiWithRetry(
+        '/api/thesis/finalize',
+        { projectId },
+        'Finalización'
+      ).catch(() => { /* Finalización opcional */ });
 
-      // 3. Finalize
-      await fetch('/api/thesis/finalize', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ projectId: project_id }),
-      });
-
-      toast.success("¡Investigación Completada!", {
-        description: `Proyecto ID: ${project_id}. Todo el contenido ha sido generado exitosamente.`,
+      setGlobalProgress(100);
+      toast.success('🎓 ¡Tesis completada exitosamente!', {
+        description: 'Accede a tus proyectos para descargar el documento.',
         duration: 8000,
       });
-      router.push('/dashboard/projects');
+
+      setTimeout(() => router.push('/dashboard/projects'), 2000);
     } catch (error: unknown) {
-      console.error("Error en la generación:", error);
-      const msg: string = error instanceof Error ? error.message : String(error);
-      if (msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO") || msg.includes("429")) {
-        toast.error("Límite de cuota alcanzado", {
-          description: "Todos los proveedores (OpenRouter, Groq, Gemini) han agotado su cuota gratuita o están saturados. Por favor, intenta de nuevo más tarde o mañana.",
-          duration: 10000
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error('[NewProject] Error en generación:', msg);
+
+      if (msg.includes('CUOTA_DIARIA_AGOTADA') || msg.includes('diario') || msg.includes('429')) {
+        toast.error('⏳ Cuota gratuita agotada', {
+          description: 'Los proveedores gratuitos (OpenRouter/Groq) han alcanzado su límite. Espera unos minutos y vuelve a intentarlo, o cambia de proveedor de IA.',
+          duration: 12000,
         });
-      } else if (msg.includes("ERROR_PROVEEDOR")) {
-        toast.error("Error de Conexión con IA", {
-          description: "Hubo un problema técnico con los proveedores de IA. Verifica tu conexión o intenta con otro modelo.",
-          duration: 10000
+      } else if (msg.includes('TIMEOUT')) {
+        toast.error('⌛ Tiempo de espera excedido', {
+          description: 'El servidor tardó demasiado. Esto puede ocurrir en horas de mucho tráfico. Intenta de nuevo en unos minutos.',
+          duration: 10000,
+        });
+      } else if (msg.includes('API Key') || msg.includes('configurada') || msg.includes('401')) {
+        toast.error('🔑 Error de configuración', {
+          description: 'Las API Keys de IA no están configuradas en el servidor. Contacta al administrador.',
+          duration: 10000,
         });
       } else {
-        toast.error("Error inesperado", {
-          description: msg || "Ocurrió un error durante la generación. Revisa la consola para más detalles.",
-          duration: 10000
+        toast.error('❌ Error durante la generación', {
+          description: msg.substring(0, 200),
+          duration: 10000,
         });
       }
     } finally {
@@ -279,456 +318,318 @@ export default function NewProjectPage() {
     }
   };
 
+  // ─── UI ───────────────────────────────────────────────────
+  const statusIcon: Record<ChapterStatus['status'], string> = {
+    pending: '○',
+    researching: '🔬',
+    writing: '✍️',
+    auditing: '🔍',
+    humanizing: '💎',
+    done: '✅',
+    error: '❌',
+  };
 
-  if (!mounted) return null;
-
-  return (
-    <div className="max-w-5xl mx-auto pb-20">
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-bold text-white tracking-tight academic-text">Nueva Tesis Académica</h1>
-        <p className="text-gray-400 mt-2">Sigue los pasos para configurar tu investigación con rigor profesional.</p>
-        
-        {backendStatus === 'online' && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-6 inline-flex items-center gap-3 px-6 py-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-400 text-xs font-black uppercase tracking-widest"
-          >
-            <CheckCircle size={16} /> Motor OBELISCO en Línea
-          </motion.div>
-        )}
-      </div>
-
-      {/* Stepper */}
-      <div className="flex justify-between mb-8 md:mb-16 relative px-4 md:px-10">
-        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200/50 -translate-y-1/2 z-0"></div>
-        {steps.map((step, index) => (
-          <div key={step.id} className="relative z-10 flex flex-col items-center gap-1 md:gap-3">
-            <motion.div 
-              initial={false}
-              animate={{ 
-                backgroundColor: index <= currentStep ? '#4F46E5' : '#FFFFFF',
-                color: index <= currentStep ? '#FFFFFF' : '#94A3B8',
-                scale: index === currentStep ? 1.1 : 1
-              }}
-              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
-                index <= currentStep ? 'border-primary shadow-lg md:shadow-xl shadow-primary/20' : 'border-gray-200 bg-white'
-              }`}
-            >
-              {index < currentStep ? <Check size={20} /> : React.cloneElement(step.icon as React.ReactElement<{ size?: number }>, { size: 18 })}
-            </motion.div>
-            <span className={`text-[8px] md:text-[10px] font-bold uppercase tracking-widest ${
-              index <= currentStep ? 'text-accent' : 'text-gray-500'
-            }`}>
-              {step.title}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* Form Content */}
-      <div className="glass academic-card relative overflow-hidden">
-        <div className="min-h-[400px] md:min-h-[480px] relative z-10">
-          {currentStep === 0 && <StepRequisitos key="step0" data={formData} onChange={updateField} />}
-          {currentStep === 1 && <StepEstructura key="step1" data={formData} onChange={updateField} />}
-          {currentStep === 2 && <StepContenido key="step2" data={formData} onChange={updateField} />}
-          {currentStep === 3 && <StepRevision key="step3" data={formData} onChange={updateField} />}
-        </div>
-
-        {/* Navigation */}
-        <div className="-mx-4 md:-mx-12 px-4 md:px-12 pb-4 pt-6 md:pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 md:gap-4 border-t border-white/5">
-          <button 
-            onClick={prevStep}
-            disabled={currentStep === 0}
-            className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold transition-all order-2 sm:order-1 text-sm md:text-base ${
-              currentStep === 0 ? 'text-gray-700 pointer-events-none opacity-0' : 'text-gray-400 hover:bg-white/5'
-            }`}
-          >
-            <ChevronLeft size={16} /> Anterior
-          </button>
-          
-          <div className="text-xs text-gray-500 font-medium uppercase tracking-widest order-1 sm:order-2">
-            Paso {currentStep + 1} de {steps.length}
-          </div>
-
-          {currentStep === steps.length - 1 ? (
-            <button 
-              onClick={handleGenerate}
-              disabled={generating}
-              className={`academic-btn-gold flex items-center gap-2 order-3 ${
-                generating ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-            >
-              {generating ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                  Procesando...
-                </>
-              ) : (
-                <>Generar Tesis ✨</>
-              )}
-            </button>
-          ) : (
-            <button 
-              onClick={nextStep}
-              className="academic-btn-primary flex items-center gap-2 order-3"
-            >
-              Siguiente <ChevronRight size={18} />
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StepRequisitos({ data, onChange }: StepProps) {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-6 md:space-y-10"
-    >
-      <div>
-        <h2 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-3 academic-text tracking-tighter">Parámetros Institucionales</h2>
-        <p className="text-slate-400 text-xs md:text-sm font-medium">Define el ecosistema donde se validará tu investigación.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-        <InputGroup 
-          label="Universidad / Institución" 
-          placeholder="Ej: Universidad Central de Venezuela" 
-          required 
-          value={data.university}
-          onChange={(val: string) => onChange('university', val)}
-        />
-        <InputGroup 
-          label="Facultad / Escuela" 
-          placeholder="Ej: Facultad de Ciencias Jurídicas" 
-          required 
-          value={data.faculty}
-          onChange={(val: string) => onChange('faculty', val)}
-        />
-        <InputGroup 
-          label="Programa / Carrera" 
-          placeholder="Ej: Derecho Internacional" 
-          required 
-          value={data.program}
-          onChange={(val: string) => onChange('program', val)}
-        />
-        <div className="space-y-3">
-          <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Nivel Académico</label>
-          <div className="relative">
-            <select 
-              value={data.level}
-              onChange={(e) => onChange('level', e.target.value)}
-              className="academic-input appearance-none bg-black/40 border-white/10 text-white h-16"
-            >
-              <option value="Licenciatura / Grado" className="bg-slate-900">Licenciatura / Grado</option>
-              <option value="Maestría / Máster" className="bg-slate-900">Maestría / Máster</option>
-              <option value="Doctorado (PhD)" className="bg-slate-900">Doctorado (PhD)</option>
-              <option value="Especialización" className="bg-slate-900">Especialización</option>
-            </select>
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-              <ChevronRight size={18} className="rotate-90" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="pt-10 border-t border-white/5">
-        <h3 className="text-xl font-bold text-white mb-8 academic-text tracking-tight flex items-center gap-3">
-           <User size={20} className="text-accent" /> Perfiles de Autoría
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <InputGroup 
-            label="Nombre del Investigador" 
-            placeholder="Nombre completo" 
-            required 
-            value={data.author}
-            onChange={(val: string) => onChange('author', val)}
-          />
-          <InputGroup 
-            label="Director / Tutor" 
-            placeholder="Asesor académico" 
-            required 
-            value={data.director}
-            onChange={(val: string) => onChange('director', val)}
-          />
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function StepEstructura({ data, onChange }: StepProps) {
-  const norms = ['APA 7', 'IEEE', 'Vancouver', 'Chicago'];
-  const chapters = [
-    'Introducción',
-    'Capítulo I: El Problema',
-    'Capítulo II: Marco Teórico',
-    'Capítulo III: Metodología',
-    'Capítulo IV: Resultados',
-    'Capítulo V: Conclusiones',
-    'Anexos y Referencias'
-  ];
-
-  const toggleChapter = (chapter: string) => {
-    const newChapters = data.chapters.includes(chapter)
-      ? data.chapters.filter((c: string) => c !== chapter)
-      : [...data.chapters, chapter];
-    onChange('chapters', newChapters);
+  const statusLabel: Record<ChapterStatus['status'], string> = {
+    pending: 'Pendiente',
+    researching: 'Investigando…',
+    writing: 'Redactando…',
+    auditing: 'Auditando…',
+    humanizing: 'Puliendo…',
+    done: 'Completado',
+    error: 'Error',
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-10"
-    >
-      <div>
-        <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Arquitectura del Saber</h2>
-        <p className="text-slate-400 text-sm font-medium">Configura la normativa y estructura lógica del documento.</p>
-      </div>
+    <div className="min-h-screen bg-[#0a0a0f] text-white" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-      <div className="space-y-8">
-        <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Normativa de Citación</label>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {norms.map(norm => (
-            <NormCard 
-              key={norm}
-              title={norm} 
-              desc={norm === 'APA 7' ? 'Cs. Sociales' : norm === 'IEEE' ? 'Ingeniería' : norm === 'Vancouver' ? 'Medicina' : 'Humanidades'} 
-              selected={data.norm === norm}
-              onClick={() => onChange('norm', norm)}
-            />
-          ))}
+      {/* Header */}
+      <div className="border-b border-white/10 bg-[#0d0d14]">
+        <div className="max-w-4xl mx-auto px-6 py-5 flex items-center gap-4">
+          <button
+            onClick={() => router.back()}
+            className="text-white/50 hover:text-white transition-colors text-sm"
+            disabled={generating}
+          >
+            ← Volver
+          </button>
+          <div className="w-px h-5 bg-white/20" />
+          <h1 className="text-lg font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            OBELISCO — Nueva Investigación
+          </h1>
         </div>
       </div>
 
-      <div className="space-y-8">
-        <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Estructura Modular</label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {chapters.map(chapter => (
-            <ChapterItem 
-              key={chapter}
-              title={chapter} 
-              checked={data.chapters.includes(chapter)}
-              onClick={() => toggleChapter(chapter)}
-            />
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+      <div className="max-w-4xl mx-auto px-6 py-10 space-y-8">
 
-function StepContenido({ data, onChange }: StepProps) {
-  return (
-    <motion.div 
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-10"
-    >
-      <div>
-        <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Núcleo Temático</h2>
-        <p className="text-slate-400 text-sm font-medium">Define el objeto de estudio y la base conceptual.</p>
-      </div>
+        {/* Progreso global */}
+        {generating && (
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-white/80">Progreso de Generación</span>
+              <span className="text-2xl font-bold text-purple-400">{globalProgress}%</span>
+            </div>
+            <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+              <div
+                className="h-3 rounded-full transition-all duration-700"
+                style={{
+                  width: `${globalProgress}%`,
+                  background: 'linear-gradient(90deg, #7c3aed, #3b82f6)',
+                }}
+              />
+            </div>
+            {chapterStatuses.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                {chapterStatuses.map((cs, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
+                      cs.status === 'done' ? 'bg-green-500/10 border border-green-500/20' :
+                      cs.status === 'error' ? 'bg-red-500/10 border border-red-500/20' :
+                      cs.status === 'pending' ? 'bg-white/5 border border-white/10' :
+                      'bg-purple-500/10 border border-purple-500/20'
+                    }`}
+                  >
+                    <span className="text-base">{statusIcon[cs.status]}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="truncate text-white/90 font-medium">{cs.name}</p>
+                      <p className="text-xs text-white/50">{statusLabel[cs.status]}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
-      <div className="space-y-10">
-        <InputGroup 
-          label="Título de la Investigación" 
-          placeholder="Ej: El impacto de la inteligencia artificial en la soberanía digital del siglo XXI" 
-          fullWidth 
-          required 
-          value={data.title}
-          onChange={(val: string) => onChange('title', val)}
-        />
-        <div className="space-y-3">
-          <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Descripción y Alcance</label>
-          <textarea 
-            placeholder="Describe el problema, los objetivos generales y la hipótesis de trabajo..."
-            value={data.description}
-            onChange={(e) => onChange('description', e.target.value)}
-            className="academic-input h-48 bg-black/40 border-white/10 text-white p-8 resize-none focus:border-accent/50 transition-all"
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <InputGroup 
-            label="Conceptos Clave" 
-            placeholder="ia, algoritmos, ética" 
-            value={data.keywords}
-            onChange={(val: string) => onChange('keywords', val)}
-          />
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Idioma de Redacción</label>
-            <div className="relative">
-              <Globe className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
-              <select 
-                value={data.language}
-                onChange={(e) => onChange('language', e.target.value)}
-                className="academic-input pl-16 appearance-none bg-black/40 border-white/10 text-white h-16"
+        {/* Paso 1 */}
+        {step === 1 && (
+          <div className="space-y-6">
+            <SectionTitle number={1} title="Información General" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <FormField label="Título de la Investigación *" span="full">
+                <textarea
+                  id="title"
+                  rows={3}
+                  value={formData.title}
+                  onChange={e => updateField('title', e.target.value)}
+                  placeholder="Ej: Impacto de la Inteligencia Artificial en la Educación Superior venezolana…"
+                  className={inputClass}
+                />
+              </FormField>
+              <FormField label="Universidad / Institución *">
+                <input
+                  id="university"
+                  value={formData.university}
+                  onChange={e => updateField('university', e.target.value)}
+                  placeholder="Ej: Universidad Central de Venezuela"
+                  className={inputClass}
+                />
+              </FormField>
+              <FormField label="Autor / Investigador *">
+                <input
+                  id="author"
+                  value={formData.author}
+                  onChange={e => updateField('author', e.target.value)}
+                  placeholder="Nombre completo"
+                  className={inputClass}
+                />
+              </FormField>
+              <FormField label="Descripción del Problema" span="full">
+                <textarea
+                  id="description"
+                  rows={4}
+                  value={formData.description}
+                  onChange={e => updateField('description', e.target.value)}
+                  placeholder="Describe brevemente el problema o fenómeno a investigar…"
+                  className={inputClass}
+                />
+              </FormField>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <PrimaryButton
+                onClick={() => {
+                  const errs = getStepErrors(1);
+                  if (errs.length) { toast.error(errs.join('. ')); return; }
+                  setStep(2);
+                }}
               >
-                <option value="Español" className="bg-slate-900">Español (Castellano)</option>
-                <option value="Inglés" className="bg-slate-900">Inglés (Academic English)</option>
-                <option value="Portugués" className="bg-slate-900">Portugués</option>
-              </select>
+                Continuar →
+              </PrimaryButton>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* Paso 2 */}
+        {step === 2 && (
+          <div className="space-y-6">
+            <SectionTitle number={2} title="Configuración Académica" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <FormField label="Programa / Carrera *">
+                <input
+                  id="program"
+                  value={formData.program}
+                  onChange={e => updateField('program', e.target.value)}
+                  placeholder="Ej: Ingeniería Informática"
+                  className={inputClass}
+                />
+              </FormField>
+              <FormField label="Nivel Académico">
+                <SelectField
+                  id="level"
+                  value={formData.level}
+                  options={LEVELS}
+                  onChange={v => updateField('level', v)}
+                />
+              </FormField>
+              <FormField label="Norma de Citación">
+                <SelectField
+                  id="norm"
+                  value={formData.norm}
+                  options={NORMS}
+                  onChange={v => updateField('norm', v)}
+                />
+              </FormField>
+              <FormField label="Tono del Texto">
+                <SelectField
+                  id="tone"
+                  value={formData.tone}
+                  options={TONES}
+                  onChange={v => updateField('tone', v)}
+                />
+              </FormField>
+              <FormField label="Proveedor de IA" span="full">
+                <select
+                  id="aiModel"
+                  value={formData.aiModel}
+                  onChange={e => updateField('aiModel', e.target.value)}
+                  className={inputClass}
+                >
+                  {AI_MODELS.map(m => (
+                    <option key={m.value} value={m.value}>{m.label}</option>
+                  ))}
+                </select>
+              </FormField>
+            </div>
+
+            {/* Capítulos */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-white/70">Capítulos a Generar</label>
+              <div className="space-y-2">
+                {formData.chapters.map((ch, idx) => (
+                  <div key={idx} className="flex gap-2 items-center">
+                    <span className="text-white/30 text-sm w-6 shrink-0">{idx + 1}.</span>
+                    <input
+                      value={ch}
+                      onChange={e => {
+                        const next = [...formData.chapters];
+                        next[idx] = e.target.value;
+                        updateField('chapters', next);
+                      }}
+                      className={inputClass + ' flex-1'}
+                    />
+                    <button
+                      onClick={() => updateField('chapters', formData.chapters.filter((_, i) => i !== idx))}
+                      className="text-red-400/70 hover:text-red-400 text-sm px-2"
+                      title="Eliminar capítulo"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {formData.chapters.length < 8 && (
+                <button
+                  onClick={() => updateField('chapters', [...formData.chapters, 'Nuevo Capítulo'])}
+                  className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  + Agregar capítulo
+                </button>
+              )}
+            </div>
+
+            <div className="flex justify-between pt-2">
+              <button onClick={() => setStep(1)} className="text-white/50 hover:text-white text-sm transition-colors">
+                ← Atrás
+              </button>
+              <PrimaryButton
+                onClick={handleGenerate}
+                loading={generating}
+                disabled={generating}
+              >
+                {generating ? `Generando… ${globalProgress}%` : '🚀 Generar Investigación'}
+              </PrimaryButton>
+            </div>
+
+            {/* Aviso de duración */}
+            {!generating && (
+              <p className="text-center text-xs text-white/30 mt-2">
+                La generación toma entre 10-25 min dependiendo del proveedor de IA y su carga actual.
+              </p>
+            )}
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-function StepRevision({ data, onChange }: StepProps) {
+// ─── Sub-componentes ──────────────────────────────────────────
+const inputClass = `w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white 
+placeholder-white/30 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20 
+transition-all resize-none`;
+
+function SectionTitle({ number, title }: { number: number; title: string }) {
   return (
-    <motion.div 
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-10"
+    <div className="flex items-center gap-3 pb-1 border-b border-white/10">
+      <span className="w-7 h-7 rounded-full bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-xs font-bold text-purple-300">
+        {number}
+      </span>
+      <h2 className="text-base font-semibold text-white/90">{title}</h2>
+    </div>
+  );
+}
+
+function FormField({ label, children, span }: { label: string; children: React.ReactNode; span?: 'full' }) {
+  return (
+    <div className={span === 'full' ? 'col-span-full' : ''}>
+      <label className="block text-sm font-medium text-white/60 mb-2">{label}</label>
+      {children}
+    </div>
+  );
+}
+
+function SelectField({ id, value, options, onChange }: {
+  id: string; value: string; options: string[]; onChange: (v: string) => void;
+}) {
+  return (
+    <select id={id} value={value} onChange={e => onChange(e.target.value)} className={inputClass}>
+      {options.map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  );
+}
+
+function PrimaryButton({ children, onClick, loading, disabled }: {
+  children: React.ReactNode;
+  onClick?: () => void;
+  loading?: boolean;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        background: disabled ? 'rgba(124,58,237,0.4)' : 'linear-gradient(135deg, #7c3aed, #3b82f6)',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+      }}
+      className="px-7 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 flex items-center gap-2"
     >
-      <div>
-        <h2 className="text-4xl font-black text-white mb-3 academic-text tracking-tighter">Refinamiento Superior</h2>
-        <p className="text-slate-400 text-sm font-medium">Ajustes finales para una autoría técnica impecable.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="space-y-8">
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Procesador de IA</label>
-            <select 
-              value={data.aiModel}
-              onChange={(e) => onChange('aiModel', e.target.value)}
-              className="academic-input border-accent/30 text-accent font-black bg-accent/5 h-16"
-            >
-              <option value="openrouter" className="bg-slate-900 text-white">Llama 3.3 70B (OpenRouter - RECOMENDADO)</option>
-              <option value="groq" className="bg-slate-900 text-white">Llama 3 70B (Groq - Ultra Veloz)</option>
-              <option value="ollama" className="bg-slate-900 text-white">Llama 3.1 70B (Ollama - Local)</option>
-              <option value="gemini" className="bg-slate-900 text-white">Google Gemini 1.5 Flash (Backup)</option>
-            </select>
-          </div>
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Tono Académico</label>
-            <select 
-              value={data.tone}
-              onChange={(e) => onChange('tone', e.target.value)}
-              className="academic-input bg-black/40 h-16"
-            >
-              <option value="Académico Formal" className="bg-slate-900">Académico Formal</option>
-              <option value="Técnico Especializado" className="bg-slate-900">Técnico Especializado</option>
-              <option value="Analítico Crítico" className="bg-slate-900">Analítico Crítico</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="p-8 bg-gradient-to-br from-primary/20 to-accent/10 rounded-[2rem] border border-primary/30 space-y-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary/30 rounded-xl flex items-center justify-center text-primary">
-              <BrainCircuit size={24} />
-            </div>
-            <div>
-              <h4 className="font-bold text-lg text-white">Motor SIGA v2.0</h4>
-              <p className="text-[10px] font-bold text-accent uppercase tracking-widest">Protocolo Activado</p>
-            </div>
-          </div>
-          <p className="text-sm text-gray-300">
-            Sistema Inteligente de Generación Académica con variabilidad léxica y rigor metodológico.
-          </p>
-          <div className="flex gap-3">
-             <span className="px-3 py-1.5 bg-black/40 rounded-lg text-[10px] font-bold text-accent border border-accent/30 uppercase">
-               Citas {data.norm}
-             </span>
-             <span className="px-3 py-1.5 bg-black/40 rounded-lg text-[10px] font-bold text-primary border border-primary/30 uppercase">
-               Anti-Detección IA
-             </span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-interface InputGroupProps {
-  label: string;
-  placeholder: string;
-  required?: boolean;
-  fullWidth?: boolean;
-  icon?: React.ReactNode;
-  value: string;
-  onChange: (val: string) => void;
-}
-
-function InputGroup({ label, placeholder, required = false, fullWidth = false, icon = null, value, onChange }: InputGroupProps) {
-  return (
-    <div className={`space-y-3 ${fullWidth ? 'md:col-span-2' : ''}`}>
-      <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">
-        {label} {required && <span className="text-accent">*</span>}
-      </label>
-      <div className="relative">
-        {icon && <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500">{icon}</div>}
-        <input 
-          type="text" 
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className={`academic-input h-16 ${icon ? 'pl-16' : ''} transition-all font-medium`}
-        />
-      </div>
-    </div>
-  );
-}
-
-interface NormCardProps {
-  title: string;
-  desc: string;
-  selected?: boolean;
-  onClick: () => void;
-}
-
-function NormCard({ title, desc, selected = false, onClick }: NormCardProps) {
-  return (
-    <div 
-      onClick={onClick}
-      className={`p-10 rounded-[2.5rem] border-2 text-center cursor-pointer transition-all duration-500 relative overflow-hidden group ${
-      selected 
-        ? 'bg-primary text-white border-primary shadow-2xl shadow-primary/40 scale-105' 
-        : 'bg-black/40 text-slate-400 border-white/5 hover:border-white/20 hover:bg-black/60'
-    }`}>
-      <div className={`absolute inset-0 bg-gradient-to-br from-primary to-accent transition-opacity duration-500 ${selected ? 'opacity-20' : 'opacity-0'}`} />
-      <div className="font-black text-3xl mb-2 relative z-10">{title}</div>
-      <div className={`text-[9px] uppercase font-black tracking-[0.2em] relative z-10 ${selected ? 'text-white/80' : 'text-slate-600'}`}>
-        {desc}
-      </div>
-    </div>
-  );
-}
-
-interface ChapterItemProps {
-  title: string;
-  checked?: boolean;
-  onClick: () => void;
-}
-
-function ChapterItem({ title, checked = false, onClick }: ChapterItemProps) {
-  return (
-    <div 
-      onClick={onClick}
-      className={`flex items-center gap-6 p-6 rounded-[2rem] border-2 cursor-pointer transition-all duration-300 group ${
-      checked 
-        ? 'bg-white/5 border-accent/30 shadow-xl shadow-accent/5' 
-        : 'bg-black/20 border-white/5 opacity-50 hover:opacity-80'
-    }`}>
-      <div className={`w-10 h-10 rounded-xl border-2 flex items-center justify-center transition-all duration-500 ${
-        checked ? 'bg-accent border-accent text-white scale-110 shadow-lg shadow-accent/20' : 'bg-transparent border-slate-700'
-      }`}>
-        {checked && <Check size={20} strokeWidth={4} />}
-      </div>
-      <span className={`text-sm font-black uppercase tracking-wider transition-colors ${checked ? 'text-white' : 'text-slate-500'}`}>{title}</span>
-    </div>
+      {loading && (
+        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
+      )}
+      {children}
+    </button>
   );
 }

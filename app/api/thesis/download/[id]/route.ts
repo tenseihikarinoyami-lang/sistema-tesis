@@ -60,8 +60,9 @@ export async function GET(
         'Content-Disposition': `attachment; filename="Tesis_${projectId}.docx"`,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error generating DOCX:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errMsg = error instanceof Error ? error.message : String(error);
+    return NextResponse.json({ error: errMsg }, { status: 500 });
   }
 }

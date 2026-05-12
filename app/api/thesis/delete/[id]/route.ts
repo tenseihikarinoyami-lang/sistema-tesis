@@ -9,8 +9,9 @@ export async function DELETE(
   try {
     await adminDb.collection("projects").doc(id).delete();
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error("Error deleting project:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("Error deleting project:", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

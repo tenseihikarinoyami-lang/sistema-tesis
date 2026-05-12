@@ -10,8 +10,9 @@ export async function GET(req: NextRequest) {
     }));
     
     return NextResponse.json(projects);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error listing projects:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errMsg = error instanceof Error ? error.message : String(error);
+    return NextResponse.json({ error: errMsg }, { status: 500 });
   }
 }

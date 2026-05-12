@@ -206,11 +206,11 @@ class OpenRouterClient implements BaseClient {
   private apiKey: string;
   // IMPORTANTE: Lista actualizada con modelos VERIFICADOS activos
   private readonly MODELS = [
-    "openai/gpt-oss-20b:free",               // ✅ Verificado funcionando
-    "meta-llama/llama-3.3-70b-instruct:free", // ✅ Disponible (rate-limited)
-    "nousresearch/hermes-3-llama-3.1-405b:free", // ✅ Disponible
-    "meta-llama/llama-3.2-3b-instruct:free",  // ✅ Disponible (rápido)
-    "google/gemma-4-31b-it:free",             // ✅ Disponible
+    "meta-llama/llama-3.3-70b-instruct:free", // ✅ Muy potente, gratuito
+    "meta-llama/llama-3.1-8b-instruct:free",  // ✅ Estable
+    "google/gemma-2-9b-it:free",              // ✅ Rápido
+    "mistralai/mistral-7b-instruct:free",     // ✅ Confiable
+    "openrouter/auto:free",                    // 🔄 Fallback automático universal
   ];
 
   constructor(apiKey: string) {
