@@ -25,9 +25,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Configuración de IA faltante." }, { status: 500 });
     }
 
+    const preferredModel = formData.aiModel || 'groq';
+
     const engine = new AcademicEngine(
       process.env.GEMINI_API_KEY,
-      process.env.GROQ_API_KEY
+      process.env.GROQ_API_KEY,
+      preferredModel
     );
     const projectRef = adminDb.collection("projects").doc(projectId);
     

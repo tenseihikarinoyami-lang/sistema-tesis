@@ -237,21 +237,23 @@ export default function NewProjectPage() {
       console.error("Error en la generación:", error);
       const msg: string = error?.message || "";
 
-      if (msg.includes("CUOTA_DIARIA_AGOTADA")) {
-        toast.error("Cuota Diaria Agotada", {
-          description:
-            "La API de Gemini gratuita alcanzó su límite diario. " +
-            "El servicio se restablecerá automáticamente mañana, o puedes " +
-            "activar un plan de pago en Google AI Studio (ai.google.dev).",
-          duration: 12000,
-        });
-      } else if (msg.includes("LIMITE_ALCANZADO")) {
-        toast.error("Límite de Solicitudes", {
-          description:
-            "Se superó el límite por minuto de la API. " +
-            "Espera unos minutos y vuelve a intentarlo.",
-          duration: 10000,
-        });
+      if (msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO")) {
+        let title = "Límite de Solicitudes";
+        let desc = "Se superó el límite de la API. Espera unos minutos y vuelve a intentarlo.";
+
+        if (msg.includes("CUOTA_DIARIA_AGOTADA")) {
+          title = "Cuota Diaria Agotada";
+          desc = "La API ha alcanzado su límite diario. Intenta con otro modelo de IA en el panel anterior o espera hasta mañana.";
+          if (msg.includes("[ambos]")) {
+             desc = "Todos los modelos (Groq y Gemini) han agotado su cuota gratuita. Por favor, espera hasta mañana para generar más contenido.";
+          } else if (msg.toLowerCase().includes("gemini")) {
+             desc = "La API de Gemini agotó su límite diario. Intenta seleccionando Groq o espera hasta mañana.";
+          } else if (msg.toLowerCase().includes("groq")) {
+             desc = "La API de Groq agotó su límite diario. Intenta seleccionando Gemini o espera hasta mañana.";
+          }
+        }
+        
+        toast.error(title, { description: desc, duration: 12000 });
       } else {
         toast.error("Error en el Motor OBELISCO", {
           description: msg || "No se pudo completar la generación. Revisa la consola para más detalles.",

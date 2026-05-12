@@ -28,9 +28,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Configuración de IA faltante (API Key)." }, { status: 500 });
     }
 
+    const preferredModel = data.aiModel || 'groq';
+
     const engine = new AcademicEngine(
       process.env.GEMINI_API_KEY,
-      process.env.GROQ_API_KEY
+      process.env.GROQ_API_KEY,
+      preferredModel
     );
     
     console.log("Plan API: Generating structural plan...");

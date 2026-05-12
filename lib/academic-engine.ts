@@ -136,18 +136,21 @@ class GeminiClient {
 }
 
 // ─────────────────────────────────────────────────────────────
-// AcademicEngine — Groq primary, Gemini fallback
+// AcademicEngine — Soporta selección y fallback
 // ─────────────────────────────────────────────────────────────
 export class AcademicEngine {
   private groq: GroqClient | null = null;
   private gemini: GeminiClient | null = null;
+  private preferredModel: string;
 
   constructor(
     geminiKey?: string,
-    groqKey?: string
+    groqKey?: string,
+    preferredModel: string = "groq"
   ) {
     if (groqKey) this.groq = new GroqClient(groqKey);
     if (geminiKey) this.gemini = new GeminiClient(geminiKey);
+    this.preferredModel = preferredModel;
 
     if (!this.groq && !this.gemini) {
       throw new Error("Se requiere al menos una API key (GROQ o GEMINI).");
@@ -155,48 +158,57 @@ export class AcademicEngine {
   }
 
   /**
-   * Try Groq first (10x more free quota, fastest).
-   * If Groq fails with daily exhaustion → fallback to Gemini.
-   * If both fail → throw the last error.
+   * Intenta usar el modelo preferido. Si se agota, intenta el fallback.
    */
   private async safeGenerate(prompt: string, agentName: string): Promise<string> {
-    // 1. Try Groq
-    if (this.groq) {
+    const isGroqPreferred = this.preferredModel === "groq" || this.preferredModel === "openrouter";
+    
+    // Definir orden de proveedores: [primario, secundario]
+    const order: Array<{ name: string, client: GroqClient | GeminiClient | null }> = isGroqPreferred 
+      ? [{ name: 'groq', client: this.groq }, { name: 'gemini', client: this.gemini }]
+      : [{ name: 'gemini', client: this.gemini }, { name: 'groq', client: this.groq }];
+
+    let lastError: any = null;
+
+    for (let i = 0; i < order.length; i++) {
+      const provider = order[i];
+      if (!provider.client) continue;
+
       try {
-        const result = await this.groq.generate(prompt, agentName);
+        const result = await provider.client.generate(prompt, agentName);
         return result;
-      } catch (groqError: any) {
-        const msg: string = groqError?.message || "";
+      } catch (error: any) {
+        lastError = error;
+        const msg: string = error?.message || "";
         const isExhausted = msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO");
 
-        if (!isExhausted) throw groqError; // Unexpected error → propagate
-
-        console.warn(
-          `[${agentName}] Groq quota exhausted. ` +
-          (this.gemini ? "Switching to Gemini fallback..." : "No fallback available.")
-        );
-
-        // 2. Fallback to Gemini
-        if (this.gemini) {
-          try {
-            return await this.gemini.generate(prompt, agentName);
-          } catch (geminiError: any) {
-            const gMsg: string = geminiError?.message || "";
-            // Both exhausted → throw user-friendly error
-            throw new Error(
-              `CUOTA_DIARIA_AGOTADA[ambos]: Tanto Groq como Gemini han agotado su cuota diaria. ` +
-              `Espera hasta mañana o activa un plan de pago. (Agente: ${agentName})`
-            );
-          }
+        if (!isExhausted) {
+          // Si es otro tipo de error, propagarlo directamente sin intentar fallback
+          throw error; 
         }
 
-        throw groqError;
+        const nextProvider = (i < order.length - 1 && order[i+1].client) ? order[i+1] : null;
+        console.warn(
+          `[${agentName}] ${provider.name} agotó su cuota. ` +
+          (nextProvider ? `Haciendo fallback a ${nextProvider.name}...` : "No hay fallback disponible.")
+        );
+        // Continuar el ciclo para intentar con el siguiente
       }
     }
 
-    // Groq not configured → use Gemini directly
-    if (this.gemini) {
-      return this.gemini.generate(prompt, agentName);
+    if (lastError) {
+      // Si llegamos acá, significa que todos los disponibles fallaron por cuota
+      const msg: string = lastError?.message || "";
+      // Extraemos el tag del último error
+      const isDailyExhausted = msg.includes("CUOTA_DIARIA_AGOTADA");
+      const tag = isDailyExhausted ? "CUOTA_DIARIA_AGOTADA" : "LIMITE_ALCANZADO";
+      
+      const failedProviders = order.filter(p => p.client).map(p => p.name).join(' y ');
+      
+      throw new Error(
+        `${tag}[ambos]: Los proveedores (${failedProviders}) han agotado su cuota. ` +
+        `Intenta con otro modelo o espera hasta mañana.`
+      );
     }
 
     throw new Error("No hay proveedores de IA disponibles.");
