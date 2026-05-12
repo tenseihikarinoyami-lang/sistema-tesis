@@ -11,8 +11,8 @@ type Provider = "groq" | "gemini";
 // ─────────────────────────────────────────────────────────────
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-function isRateLimitError(error: any): boolean {
-  const msg: string = error?.message || error?.toString() || "";
+function isRateLimitError(error: unknown): boolean {
+  const msg: string = error instanceof Error ? error.message : String(error);
   return (
     msg.includes("429") ||
     msg.includes("Too Many Requests") ||
@@ -20,16 +20,20 @@ function isRateLimitError(error: any): boolean {
     msg.includes("rate_limit") ||
     msg.includes("rate limit") ||
     msg.includes("CUOTA_DIARIA_AGOTADA") ||
-    msg.includes("LIMITE_ALCANZADO")
+    msg.includes("LIMITE_ALCANZADO") ||
+    msg.includes("límite diario") ||
+    msg.includes("quota")
   );
 }
 
-function isDailyExhausted(error: any): boolean {
-  const msg: string = error?.message || error?.toString() || "";
+function isDailyExhausted(error: unknown): boolean {
+  const msg: string = error instanceof Error ? error.message : String(error);
   return (
     (msg.includes("FreeTier") && (msg.includes("PerDay") || msg.includes("generate_content_free_tier_requests"))) ||
     msg.includes("tokens_per_day") ||
-    msg.includes("requests_per_day")
+    msg.includes("requests_per_day") ||
+    msg.includes("alcanzó su límite diario") ||
+    msg.includes("límite diario")
   );
 }
 
@@ -37,27 +41,28 @@ async function withRetry<T>(
   fn: () => Promise<T>,
   agentName: string,
   provider: Provider,
-  maxRetries = 2
+  maxRetries = 3
 ): Promise<T> {
-  let lastError: any;
+  let lastError: unknown;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
-    } catch (error: any) {
+    } catch (error: unknown) {
       lastError = error;
 
       if (!isRateLimitError(error)) throw error; // Propagate non-quota errors immediately
 
       if (isDailyExhausted(error) || attempt >= maxRetries) {
         const tag = isDailyExhausted(error) ? "CUOTA_DIARIA_AGOTADA" : "LIMITE_ALCANZADO";
+        const errMsg = error instanceof Error ? error.message : "Rate limit exceeded";
         throw new Error(
-          `${tag}[${provider}]: ${error?.message || "Rate limit exceeded"} (Agente: ${agentName})`
+          `${tag}[${provider}]: ${errMsg} (Agente: ${agentName})`
         );
       }
 
-      // Backoff: 4s → 12s → 30s
-      const waitMs = Math.min(4000 * Math.pow(3, attempt), 35000);
+      // Backoff: 5s → 10s → 20s → 40s (Max 45s wait, enough to clear Groq's 1-min limits)
+      const waitMs = Math.min(5000 * Math.pow(2, attempt), 45000);
       console.warn(
         `[${agentName}][${provider}] Rate limit (attempt ${attempt + 1}/${maxRetries + 1}). ` +
         `Retrying in ${waitMs / 1000}s...`
@@ -96,8 +101,43 @@ class GroqClient {
   }
 }
 
+class OpenRouterClient {
+  private apiKey: string;
+  private readonly MODEL = "meta-llama/llama-3.3-70b-instruct";
+
+  constructor(apiKey: string) {
+    this.apiKey = apiKey;
+  }
+
+  async generate(prompt: string, agentName: string): Promise<string> {
+    return withRetry(async () => {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: this.MODEL,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.4,
+          max_tokens: 4096,
+        })
+      });
+      if (!res.ok) {
+        const errBody = await res.text();
+        throw new Error(`OpenRouter Error: ${res.status} ${errBody}`);
+      }
+      const data = await res.json();
+      const text = data.choices?.[0]?.message?.content;
+      if (!text) throw new Error(`Empty response from OpenRouter (${agentName})`);
+      return text;
+    }, agentName, "openrouter");
+  }
+}
+
 class GeminiClient {
-  private model: any;
+  private model: ReturnType<GoogleGenerativeAI['getGenerativeModel']>;
 
   constructor(apiKey: string) {
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -141,19 +181,22 @@ class GeminiClient {
 export class AcademicEngine {
   private groq: GroqClient | null = null;
   private gemini: GeminiClient | null = null;
+  private openrouter: OpenRouterClient | null = null;
   private preferredModel: string;
 
   constructor(
     geminiKey?: string,
     groqKey?: string,
-    preferredModel: string = "groq"
+    openRouterKey?: string,
+    preferredModel: string = "openrouter"
   ) {
     if (groqKey) this.groq = new GroqClient(groqKey);
     if (geminiKey) this.gemini = new GeminiClient(geminiKey);
+    if (openRouterKey) this.openrouter = new OpenRouterClient(openRouterKey);
     this.preferredModel = preferredModel;
 
-    if (!this.groq && !this.gemini) {
-      throw new Error("Se requiere al menos una API key (GROQ o GEMINI).");
+    if (!this.groq && !this.gemini && !this.openrouter) {
+      throw new Error("Se requiere al menos una API key (GROQ, GEMINI u OPENROUTER).");
     }
   }
 
@@ -161,14 +204,18 @@ export class AcademicEngine {
    * Intenta usar el modelo preferido. Si se agota, intenta el fallback.
    */
   private async safeGenerate(prompt: string, agentName: string): Promise<string> {
-    const isGroqPreferred = this.preferredModel === "groq" || this.preferredModel === "openrouter";
+    // Definir orden de proveedores: [primario, secundario, terciario]
+    let order: Array<{ name: string, client: GroqClient | GeminiClient | OpenRouterClient | null }> = [];
     
-    // Definir orden de proveedores: [primario, secundario]
-    const order: Array<{ name: string, client: GroqClient | GeminiClient | null }> = isGroqPreferred 
-      ? [{ name: 'groq', client: this.groq }, { name: 'gemini', client: this.gemini }]
-      : [{ name: 'gemini', client: this.gemini }, { name: 'groq', client: this.groq }];
+    if (this.preferredModel === "groq") {
+      order = [{ name: 'groq', client: this.groq }, { name: 'openrouter', client: this.openrouter }, { name: 'gemini', client: this.gemini }];
+    } else if (this.preferredModel === "gemini") {
+      order = [{ name: 'gemini', client: this.gemini }, { name: 'openrouter', client: this.openrouter }, { name: 'groq', client: this.groq }];
+    } else {
+      order = [{ name: 'openrouter', client: this.openrouter }, { name: 'groq', client: this.groq }, { name: 'gemini', client: this.gemini }];
+    }
 
-    let lastError: any = null;
+    let lastError: unknown = null;
 
     for (let i = 0; i < order.length; i++) {
       const provider = order[i];
@@ -177,38 +224,28 @@ export class AcademicEngine {
       try {
         const result = await provider.client.generate(prompt, agentName);
         return result;
-      } catch (error: any) {
+      } catch (error: unknown) {
         lastError = error;
-        const msg: string = error?.message || "";
-        const isExhausted = msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO");
-
-        if (!isExhausted) {
-          // Si es otro tipo de error, propagarlo directamente sin intentar fallback
-          throw error; 
+        const msg: string = error instanceof Error ? error.message : String(error);
+        
+        // Determinar si es un error de cuota para el mensaje final, pero siempre intentar fallback
+        const isExhausted = msg.includes("CUOTA_DIARIA_AGOTADA") || msg.includes("LIMITE_ALCANZADO") || msg.includes("429");
+        if (isExhausted) {
+            lastError = new Error(`CUOTA_DIARIA_AGOTADA[${provider.name}]: ${msg}`);
         }
 
         const nextProvider = (i < order.length - 1 && order[i+1].client) ? order[i+1] : null;
         console.warn(
-          `[${agentName}] ${provider.name} agotó su cuota. ` +
+          `[${agentName}] ${provider.name} falló (Error: ${msg.substring(0, 50)}...). ` +
           (nextProvider ? `Haciendo fallback a ${nextProvider.name}...` : "No hay fallback disponible.")
         );
-        // Continuar el ciclo para intentar con el siguiente
+        // Continuar el ciclo para intentar con el siguiente proveedor
       }
     }
 
     if (lastError) {
-      // Si llegamos acá, significa que todos los disponibles fallaron por cuota
-      const msg: string = lastError?.message || "";
-      // Extraemos el tag del último error
-      const isDailyExhausted = msg.includes("CUOTA_DIARIA_AGOTADA");
-      const tag = isDailyExhausted ? "CUOTA_DIARIA_AGOTADA" : "LIMITE_ALCANZADO";
-      
-      const failedProviders = order.filter(p => p.client).map(p => p.name).join(' y ');
-      
-      throw new Error(
-        `${tag}[ambos]: Los proveedores (${failedProviders}) han agotado su cuota. ` +
-        `Intenta con otro modelo o espera hasta mañana.`
-      );
+      // Si llegamos acá, significa que todos los disponibles fallaron
+      throw lastError;
     }
 
     throw new Error("No hay proveedores de IA disponibles.");
@@ -228,9 +265,11 @@ export class AcademicEngine {
     return this.safeGenerate(prompt, "ResearcherAgent");
   }
 
-  async writerAgent(section: string, researchData: string, data: any, context: string): Promise<string> {
-    const tono = data.tone || "Académico Formal";
-    const programa = data.program || "Investigación Científica";
+  async writerAgent(section: string, researchData: string, data: Record<string, unknown>, context: string): Promise<string> {
+    const tono = typeof data.tone === 'string' ? data.tone : "Académico Formal";
+    const programa = typeof data.program === 'string' ? data.program : "Investigación Científica";
+    const description = typeof data.description === 'string' ? data.description : "";
+    const title = typeof data.title === 'string' ? data.title : "";
 
     const prompt = `
       Eres el Agente Redactor de OBELISCO. Tu objetivo es transformar datos de investigación en prosa académica impecable.
@@ -244,8 +283,8 @@ export class AcademicEngine {
 
       Sección: ${section}
       Datos de Investigación: ${researchData}
-      Contexto del Proyecto: ${data.description || ""}
-      Título de la Tesis: ${data.title || ""}
+      Contexto del Proyecto: ${description}
+      Título de la Tesis: ${title}
       Contenido Previo (para coherencia): ${context || "N/A"}
       
       Redacta el contenido exhaustivo y académico para esta sección.
@@ -284,8 +323,9 @@ export class AcademicEngine {
     return this.safeGenerate(prompt, "HumanizerAgent");
   }
 
-  async generateStructuralPlan(data: any): Promise<string> {
-    const nivel = (data.level || "TEG").toUpperCase();
+  async generateStructuralPlan(data: Record<string, unknown>): Promise<string> {
+    const levelStr = typeof data.level === 'string' ? data.level : "TEG";
+    const nivel = levelStr.toUpperCase();
 
     const baseStructure = nivel.includes("PNF")
       ? `

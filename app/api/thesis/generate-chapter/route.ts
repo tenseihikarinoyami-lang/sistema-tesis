@@ -21,15 +21,17 @@ export async function POST(req: NextRequest) {
     const { projectId, chapter, formData, prevContent, step = 'all' } = body;
     console.log(`[${projectId}] Chapter API: Starting step "${step}" for "${chapter}"`);
     
-    if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
+    if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY && !process.env.OPENROUTER_API_KEY) {
       return NextResponse.json({ error: "Configuración de IA faltante." }, { status: 500 });
     }
 
-    const preferredModel = formData.aiModel || 'groq';
+    // Usar openrouter por defecto, tal como lo pide el usuario (Llama 3 70B)
+    const preferredModel = formData.aiModel || 'openrouter';
 
     const engine = new AcademicEngine(
       process.env.GEMINI_API_KEY,
       process.env.GROQ_API_KEY,
+      process.env.OPENROUTER_API_KEY,
       preferredModel
     );
     const projectRef = adminDb.collection("projects").doc(projectId);

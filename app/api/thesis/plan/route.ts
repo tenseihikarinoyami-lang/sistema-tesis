@@ -23,16 +23,17 @@ export async function POST(req: NextRequest) {
     
     console.log("Plan API: Received request data:", { ...data, author: "REDACTED" });
     
-    if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
+    if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY && !process.env.OPENROUTER_API_KEY) {
       console.error("Plan API: No AI API keys configured!");
       return NextResponse.json({ error: "Configuración de IA faltante (API Key)." }, { status: 500 });
     }
 
-    const preferredModel = data.aiModel || 'groq';
+    const preferredModel = data.aiModel || 'openrouter';
 
     const engine = new AcademicEngine(
       process.env.GEMINI_API_KEY,
       process.env.GROQ_API_KEY,
+      process.env.OPENROUTER_API_KEY,
       preferredModel
     );
     

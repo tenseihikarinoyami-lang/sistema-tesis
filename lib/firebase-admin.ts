@@ -43,14 +43,14 @@ function lazyProxy<T extends object>(getInstance: () => T): T {
   return new Proxy({} as T, {
     get(_target, prop) {
       const instance = getInstance();
-      const value = (instance as any)[prop];
+      const value = (instance as Record<string | symbol, unknown>)[prop];
       if (typeof value === 'function') {
         return value.bind(instance);
       }
       return value;
     },
     set(_target, prop, value) {
-      (getInstance() as any)[prop] = value;
+      (getInstance() as Record<string | symbol, unknown>)[prop] = value;
       return true;
     },
   });
