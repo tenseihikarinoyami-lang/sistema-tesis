@@ -169,7 +169,7 @@ class GroqClient implements BaseClient {
               model,
               messages: [{ role: "user", content: prompt }],
               temperature: 0.3,
-              max_tokens: 4096,
+              max_tokens: 8192,
             });
             const content = completion.choices[0]?.message?.content;
             if (!content) throw new Error("Groq devolvió respuesta vacía");
@@ -241,7 +241,7 @@ class OpenRouterClient implements BaseClient {
                   model,
                   messages: [{ role: "user", content: prompt }],
                   temperature: 0.4,
-                  max_tokens: 4096,
+                  max_tokens: 8192,
                 }),
               }
             );
@@ -535,7 +535,7 @@ export class AcademicEngine {
       `Actúa como un investigador académico experto. ` +
       `Investiga bibliografía APA 7 actualizada y conceptos clave para el tema: "${topic}". ` +
       `Contexto institucional: ${context}. ` +
-      `Incluye al menos 5 referencias académicas reales (autores conocidos, revistas indexadas). ` +
+      `Incluye al menos 8 referencias académicas reales con autores, años y títulos de publicaciones. ` +
       `Responde en ESPAÑOL académico formal.`;
     return this.safeGenerate(prompt, "Investigador");
   }
@@ -547,47 +547,106 @@ export class AcademicEngine {
     context: string
   ): Promise<string> {
     const prompt =
-      `Redacta la sección "${section}" para una tesis de "${data.program}" ` +
-      `(nivel: ${data.level}) titulada "${data.title}". ` +
-      `Universidad: ${data.university}. ` +
-      `Usa esta investigación de base: ${research.substring(0, 2000)}. ` +
-      `Contexto previo del documento: ${(context || "N/A").substring(0, 500)}. ` +
-      `REGLAS ESTRICTAS: Tercera persona impersonal, mínimo 400 palabras, ` +
-      `citas en formato ${data.norm || "APA 7"}, tono ${data.tone || "académico formal"}, ` +
-      `SOLO en ESPAÑOL. NO uses primera persona ("yo", "nosotros").`;
+      `Actúa como un Redactor de Tesis Doctoral de élite. ` +
+      `Redacta la sección específica: "${section}" ` +
+      `dentro de una tesis titulada "${data.title}". ` +
+      `Programa: ${data.program} (${data.level}). Universidad: ${data.university}. ` +
+      `INVESTIGACIÓN DE BASE: ${research.substring(0, 3000)}. ` +
+      `CONTEXTO PREVIO (Storyline): ${(context || "N/A").substring(0, 800)}. ` +
+      `REGLAS CRÍTICAS: ` +
+      `1. MÍNIMO 800-1000 PALABRAS para esta sección específica. ` +
+      `2. PROFUNDIDAD ACADÉMICA: No seas genérico. Analiza, compara autores de la investigación, desarrolla argumentos complejos. ` +
+      `3. TONO: ${data.tone || "académico formal"}, tercera persona impersonal. ` +
+      `4. CITAS: Usa citas format ${data.norm || "APA 7"} integradas en el texto. ` +
+      `5. ESTRUCTURA: Usa subtítulos internos si es necesario para organizar las 1000 palabras. ` +
+      `RESPONDE SOLO EL TEXTO DE LA SECCIÓN EN ESPAÑOL.`;
     return this.safeGenerate(prompt, "Redactor");
+  }
+
+  async visualsAgent(content: string, topic: string): Promise<string> {
+    const prompt =
+      `Analiza el siguiente contenido de tesis y genera un elemento visual complementario (Tabla o Diagrama): ` +
+      `CONTENIDO: ${content.substring(0, 3000)}. ` +
+      `REGLAS: ` +
+      `1. Si hay comparaciones o datos, genera una TABLA en Markdown profesional. ` +
+      `2. Si hay procesos o flujos, genera un diagrama MERMAID.JS (usando \`\`\`mermaid ... \`\`\`). ` +
+      `3. Si no amerita visual, responde "SIN_VISUAL". ` +
+      `Responde SOLO el código del elemento visual o "SIN_VISUAL" en ESPAÑOL.`;
+    return this.safeGenerate(prompt, "Visualizador");
   }
 
   async auditorAgent(content: string, type: string): Promise<string> {
     const prompt =
-      `Audita este texto de tesis (tipo: ${type}): ` +
-      `${content.substring(0, 3000)}. ` +
-      `Verifica: uso de tercera persona, citas APA presentes, coherencia académica. ` +
-      `Si el texto cumple todos los criterios, responde solo: "APROBADO". ` +
-      `Si no, lista las correcciones necesarias de forma concisa en ESPAÑOL.`;
+      `Audita este texto de tesis doctoral/maestría (tipo: ${type}): ` +
+      `${content.substring(0, 4000)}. ` +
+      `Verifica: rigor científico, suficiencia de extensión (debe ser largo y detallado), citas correctas. ` +
+      `Si el texto es excelente, responde solo: "APROBADO". ` +
+      `Si es mediocre o corto, lista correcciones críticas en ESPAÑOL.`;
     return this.safeGenerate(prompt, "Auditor");
   }
 
   async humanizerAgent(content: string): Promise<string> {
     const prompt =
-      `Reescribe este texto académico mejorando su naturalidad y fluidez, ` +
-      `eliminando patrones repetitivos de IA pero manteniendo el rigor académico y la extensión: ` +
-      `${content.substring(0, 3500)}. ` +
-      `Usa conectores variados, sinónimos técnicos, y mantén la tercera persona. ` +
-      `NO reduzcas el contenido. Responde SOLO el texto mejorado en ESPAÑOL.`;
+      `Actúa como un corrector de estilo editorial académico. ` +
+      `Mejora la fluidez y naturalidad de este texto, eliminando el "vibe" de IA (como listas excesivas o conclusiones repetitivas), ` +
+      `pero MANTÉN TODA LA EXTENSIÓN Y DETALLE TÉCNICO: ` +
+      `${content.substring(0, 5000)}. ` +
+      `Usa transiciones elegantes y vocabulario sofisticado. ` +
+      `Responde SOLO el texto pulido en ESPAÑOL.`;
     return this.safeGenerate(prompt, "Humanizador");
   }
 
   async generateStructuralPlan(data: Record<string, string>): Promise<string> {
     const prompt =
-      `Crea un índice detallado en Markdown para una tesis de ${data.level} ` +
-      `en el programa "${data.program}" de la Universidad "${data.university}". ` +
-      `Título de la investigación: "${data.title}". ` +
-      `Descripción del problema: ${(data.description || "").substring(0, 500)}. ` +
-      `Capítulos a incluir: ${(data.chapters as unknown as string[])?.join(", ") || "estándar"}. ` +
-      `Normativa de citación: ${data.norm || "APA 7"}. ` +
-      `El índice debe incluir subcapítulos detallados para cada sección. ` +
-      `Responde en ESPAÑOL con rigor académico.`;
+      `Genera un ÍNDICE TÉCNICO DETALLADO para una tesis de ${data.level} titulada "${data.title}". ` +
+      `Descripción: ${data.description}. Programa: ${data.program}. ` +
+      `REGLAS DEL ÍNDICE: ` +
+      `1. Debe tener una estructura jerárquica de 3 o 4 niveles (ej. 1.1., 1.1.1., 1.1.1.1.). ` +
+      `2. Cada capítulo debe tener al menos 4 sub-secciones detalladas. ` +
+      `3. El índice debe estar en formato Markdown limpio. ` +
+      `4. Añade una etiqueta [TYPE:SECTION] al final de cada línea que represente una unidad de redacción. ` +
+      `Responde SOLO el índice en ESPAÑOL.`;
     return this.safeGenerate(prompt, "Planificador");
+  }
+
+  /**
+   * Parsea el plan en Markdown para extraer las secciones individuales.
+   */
+  static parsePlan(markdownPlan: string): Array<{ id: string; title: string; level: number }> {
+    const lines = markdownPlan.split('\n');
+    const sections: Array<{ id: string; title: string; level: number }> = [];
+    
+    const sectionRegex = /^#*\s*(\d+(?:\.\d+)*)\.?\s+(.*?)(\[TYPE:SECTION\])?$/;
+
+    for (const line of lines) {
+      const match = line.trim().match(sectionRegex);
+      if (match) {
+        const id = match[1];
+        const title = match[2].trim();
+        const isSection = !!match[3] || id.split('.').length >= 2; // Si tiene nivel 2 o más, es unidad de redacción
+        
+        if (isSection) {
+          sections.push({
+            id,
+            title: `${id} ${title}`,
+            level: id.split('.').length
+          });
+        }
+      }
+    }
+    
+    // Si no detectó nada con el regex específico, intentar uno más genérico
+    if (sections.length === 0) {
+      const genericRegex = /^\s*[\-\*]\s*(.*)$|^\s*(\d+\..*)$/;
+      for (const line of lines) {
+        const m = line.trim().match(genericRegex);
+        if (m) {
+          const content = (m[1] || m[2]).trim();
+          sections.push({ id: 'gen', title: content, level: 2 });
+        }
+      }
+    }
+
+    return sections;
   }
 }

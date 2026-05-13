@@ -66,6 +66,8 @@ export async function POST(req: NextRequest) {
       console.warn("Plan API: ownerId is missing, using 'anonymous' for now.");
     }
     
+    const sections = AcademicEngine.parsePlan(plan);
+    
     const projectData = {
       id: project_id,
       ownerId: data.ownerId || 'anonymous',
@@ -77,6 +79,7 @@ export async function POST(req: NextRequest) {
       current_phase: "Planificación Estructural",
       created_at: new Date().toISOString(),
       plan: plan,
+      sections: sections, // Guardamos las secciones para la orquestación
       content: { "Plan de Investigación": plan }
     };
 
@@ -96,7 +99,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ 
       project_id, 
       plan,
-      message: "Plan estructural generado." 
+      sections,
+      message: "Plan estructural generado con " + sections.length + " secciones." 
     });
   } catch (error: unknown) {
     console.error("Plan API: Unexpected error:", error);

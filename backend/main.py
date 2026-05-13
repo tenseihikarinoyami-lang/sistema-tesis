@@ -92,6 +92,8 @@ async def list_projects():
 
 from fastapi.responses import FileResponse
 from docx import Document
+from docx.shared import Cm, Pt
+from docx.enum.text import WD_LINE_SPACING
 import io
 import os
 
@@ -107,6 +109,28 @@ async def download_thesis(project_id: str, background_tasks: BackgroundTasks):
             
     # Create DOCX
     doc = Document()
+    
+    # Apply APA 7 formatting to the document
+    for section in doc.sections:
+        section.top_margin = Cm(2.54)
+        section.bottom_margin = Cm(2.54)
+        section.left_margin = Cm(2.54)
+        section.right_margin = Cm(2.54)
+        
+    # Normal Style (Paragraphs)
+    style = doc.styles['Normal']
+    font = style.font
+    font.name = 'Times New Roman'
+    font.size = Pt(12)
+    style.paragraph_format.line_spacing_rule = WD_LINE_SPACING.DOUBLE
+    
+    # Heading 1 Style
+    h1_style = doc.styles['Heading 1']
+    h1_style.font.name = 'Times New Roman'
+    h1_style.font.size = Pt(12)
+    h1_style.font.bold = True
+    h1_style.paragraph_format.line_spacing_rule = WD_LINE_SPACING.DOUBLE
+    
     doc.add_heading(project['title'], 0)
     doc.add_paragraph(f"Universidad: {project['university']}")
     doc.add_paragraph(f"Autor: {project['author']}")

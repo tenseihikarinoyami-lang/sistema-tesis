@@ -25,6 +25,7 @@ interface ChapterStatus {
   status: 'pending' | 'researching' | 'writing' | 'auditing' | 'humanizing' | 'done' | 'error';
   error?: string;
   retries: number;
+  isSection?: boolean;
 }
 
 // ─── Constantes ───────────────────────────────────────────────
@@ -186,9 +187,6 @@ export default function NewProjectPage() {
 
     setGenerating(true);
     setGlobalProgress(2);
-    setChapterStatuses(formData.chapters.map(name => ({
-      name, status: 'pending', retries: 0,
-    })));
 
     try {
       // ── FASE 1: Plan estructural ──────────────────────────
@@ -205,72 +203,76 @@ export default function NewProjectPage() {
       setGlobalProgress(8);
       toast.success('✅ Plan estructural listo', { duration: 3000 });
 
-      // ── FASE 2: Capítulos ─────────────────────────────────
-      const totalChapters = formData.chapters.length;
+      // ── FASE 2: Secciones Detalladas ──────────────────────
+      const sections = (planData.sections as any[]) || [];
+      const totalSteps = sections.length;
+      
+      // Actualizar estados para mostrar secciones
+      setChapterStatuses(sections.map(s => ({
+        name: s.title,
+        status: 'pending',
+        retries: 0,
+        isSection: true
+      })));
 
-      for (let i = 0; i < totalChapters; i++) {
-        const chapter = formData.chapters[i];
-        const chapterBase = 8 + Math.round((i / totalChapters) * 88);
+      for (let i = 0; i < totalSteps; i++) {
+        const section = sections[i];
+        const sectionTitle = section.title;
+        const progressBase = 8 + Math.round((i / totalSteps) * 90);
 
         updateChapterStatus(i, { status: 'researching' });
-        toast.info(`🔬 [${i + 1}/${totalChapters}] Investigando: ${chapter}`, { duration: 12000 });
+        toast.info(`🔬 [${i + 1}/${totalSteps}] Investigando: ${sectionTitle}`, { duration: 10000 });
 
         // PASO 1 — Research
         const resData = await callApiWithRetry(
           '/api/thesis/generate-chapter',
-          { projectId, chapter, formData, prevContent, step: 'research' },
-          `Investigación de "${chapter}"`
+          { projectId, sectionTitle, formData, prevContent, step: 'research' },
+          `Investigación de "${sectionTitle}"`
         );
         const research = resData.research as string;
-        setGlobalProgress(chapterBase + 5);
-
-        // Pausa corta entre llamadas para no saturar la API
-        await sleep(2000);
+        setGlobalProgress(progressBase + 2);
+        await sleep(1500);
 
         // PASO 2 — Write
         updateChapterStatus(i, { status: 'writing' });
-        toast.info(`✍️ [${i + 1}/${totalChapters}] Redactando: ${chapter}`, { duration: 12000 });
+        toast.info(`✍️ [${i + 1}/${totalSteps}] Redactando: ${sectionTitle}`, { duration: 15000 });
 
         const writeData = await callApiWithRetry(
           '/api/thesis/generate-chapter',
-          { projectId, chapter, formData, prevContent, research, step: 'write' },
-          `Redacción de "${chapter}"`
+          { projectId, sectionTitle, formData, prevContent, research, step: 'write' },
+          `Redacción de "${sectionTitle}"`
         );
         const draft = writeData.draft as string;
-        setGlobalProgress(chapterBase + 11);
-        await sleep(2000);
+        setGlobalProgress(progressBase + 5);
+        await sleep(1500);
 
         // PASO 3 — Audit
         updateChapterStatus(i, { status: 'auditing' });
-        toast.info(`🔍 [${i + 1}/${totalChapters}] Auditando: ${chapter}`, { duration: 12000 });
-
         const auditData = await callApiWithRetry(
           '/api/thesis/generate-chapter',
-          { projectId, chapter, formData, draft, step: 'audit' },
-          `Auditoría de "${chapter}"`
+          { projectId, sectionTitle, formData, draft, step: 'audit' },
+          `Auditoría de "${sectionTitle}"`
         );
         const audit = auditData.audit as string;
-        setGlobalProgress(chapterBase + 17);
-        await sleep(2000);
 
         // PASO 4 — Humanize
         updateChapterStatus(i, { status: 'humanizing' });
-        toast.info(`💎 [${i + 1}/${totalChapters}] Puliendo: ${chapter}`, { duration: 12000 });
+        toast.info(`💎 [${i + 1}/${totalSteps}] Puliendo: ${sectionTitle}`, { duration: 12000 });
 
         const humanData = await callApiWithRetry(
           '/api/thesis/generate-chapter',
-          { projectId, chapter, formData, draft, audit, step: 'humanize' },
-          `Pulido de "${chapter}"`
+          { projectId, sectionTitle, formData, draft, audit, step: 'humanize' },
+          `Pulido de "${sectionTitle}"`
         );
         const finalVersion = humanData.finalVersion as string;
 
         prevContent = finalVersion;
         updateChapterStatus(i, { status: 'done' });
-        setGlobalProgress(chapterBase + 22);
-        toast.success(`✅ Capítulo completado: ${chapter}`, { duration: 4000 });
+        setGlobalProgress(progressBase + 15);
+        toast.success(`✅ Sección completada: ${sectionTitle}`, { duration: 4000 });
 
-        // Pausa entre capítulos para no saturar rate limit
-        if (i < totalChapters - 1) await sleep(3000);
+        // Pausa entre secciones para no saturar rate limit
+        if (i < totalSteps - 1) await sleep(3000);
       }
 
       // ── FASE 3: Finalización ──────────────────────────────
@@ -379,7 +381,7 @@ export default function NewProjectPage() {
               />
             </div>
             {chapterStatuses.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                 {chapterStatuses.map((cs, idx) => (
                   <div
                     key={idx}

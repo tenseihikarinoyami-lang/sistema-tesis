@@ -18,8 +18,9 @@ export async function POST(req: NextRequest) {
   const startTime = Date.now();
   try {
     const body = await req.json();
-    const { projectId, chapter, formData, prevContent, step = 'all' } = body;
-    console.log(`[${projectId}] Chapter API: Starting step "${step}" for "${chapter}"`);
+    const { projectId, chapter, sectionTitle, formData, prevContent, step = 'all' } = body;
+    const taskName = sectionTitle || chapter;
+    console.log(`[${projectId}] Chapter API: Starting step "${step}" for "${taskName}"`);
     
     if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY && !process.env.OPENROUTER_API_KEY) {
       return NextResponse.json({ error: "Configuración de IA faltante." }, { status: 500 });
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest) {
       // Step 1: Research
       if (step === 'all' || step === 'research') {
         console.log(`[${projectId}] [1/4] Researching...`);
-        result.research = await engine.researcherAgent(`${chapter} sobre: ${formData.title}`, formData.university);
+        result.research = await engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university);
         if (step === 'research') return NextResponse.json(result);
       }
       
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
       if (step === 'all' || step === 'write') {
         const researchData = step === 'write' ? body.research : result.research;
         console.log(`[${projectId}] [2/4] Writing draft...`);
-        result.draft = await engine.writerAgent(chapter, researchData || "", formData, prevContent);
+        result.draft = await engine.writerAgent(taskName, researchData || "", formData, prevContent);
         if (step === 'write') return NextResponse.json(result);
       }
       
@@ -71,13 +72,18 @@ export async function POST(req: NextRequest) {
         const finalVersion = await engine.humanizerAgent(
           audit?.includes("APROBADO") ? draft : `${draft}\n\nNota de Auditoría: ${audit}`
         );
-        result.finalVersion = finalVersion;
+        
+        // Step 5: Visuals (Opcional pero recomendado)
+        console.log(`[${projectId}] [5/5] Generating Visuals...`);
+        const visuals = await engine.visualsAgent(finalVersion, taskName);
+        
+        result.finalVersion = visuals !== "SIN_VISUAL" ? `${finalVersion}\n\n${visuals}` : finalVersion;
 
         // Final step updates Firestore
         await projectRef.update({
-          [`content.${chapter}`]: finalVersion,
-          current_phase: `Completado: ${chapter}`,
-          progress: FieldValue.increment(5)
+          [`content.${taskName.replace(/\./g, '_')}`]: result.finalVersion,
+          current_phase: `Completado: ${taskName}`,
+          progress: FieldValue.increment(0.5) // Incremento pequeño por sección
         });
       }
 
