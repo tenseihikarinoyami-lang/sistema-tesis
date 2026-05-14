@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
         const aiPromise = engine.auditorAgent(draftData || "", formData.level || "TEG");
         result.audit = await Promise.race([
           aiPromise,
-          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La auditoría tardó más de 45 segundos.")), 45000))
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La auditoría tardó más de 50 segundos.")), 50000))
         ]);
         if (step === 'audit') return NextResponse.json(result);
       }
