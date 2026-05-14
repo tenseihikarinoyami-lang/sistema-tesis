@@ -30,50 +30,81 @@ export async function POST(req: NextRequest) {
     const preferredModel = formData.aiModel || 'openrouter';
 
     const engine = new AcademicEngine(
-      process.env.GEMINI_API_KEY,
-      process.env.GROQ_API_KEY,
-      process.env.OPENROUTER_API_KEY,
+      undefined,
+      undefined,
+      undefined,
       preferredModel
     );
     const projectRef = adminDb.collection("projects").doc(projectId);
     
+    // Initialize result object to avoid ReferenceError
+    const result: any = {
+      research: '',
+      draft: '',
+      audit: '',
+      finalVersion: '',
+      visuals: ''
+    };
+
     try {
-      let result: Record<string, unknown> = { success: true };
-      console.log(`[${projectId}] Chapter API: Using provider order for "${taskName}"`);
+      // Function to persist result and return
+      const persistAndReturn = async (currentStep: string) => {
+        try {
+          const updateData: Record<string, any> = {
+            last_updated: FieldValue.serverTimestamp(),
+            [`steps.${taskName.replace(/\./g, '_')}`]: currentStep,
+          };
+
+          if (result.research) updateData[`research.${taskName.replace(/\./g, '_')}`] = result.research;
+          if (result.draft) updateData[`drafts.${taskName.replace(/\./g, '_')}`] = result.draft;
+          if (result.audit) updateData[`audits.${taskName.replace(/\./g, '_')}`] = result.audit;
+          if (result.finalVersion) {
+            updateData[`content.${taskName.replace(/\./g, '_')}`] = result.finalVersion;
+            updateData.current_phase = `Completado: ${taskName}`;
+          } else {
+            updateData.current_phase = `Generando ${currentStep}: ${taskName}`;
+          }
+
+          await projectRef.update(updateData);
+        } catch (dbError) {
+          console.error(`[${projectId}] Database update failed (non-critical):`, dbError);
+        }
+        return NextResponse.json(result);
+      };
       
       // Step 1: Research
       if (step === 'all' || step === 'research') {
-        console.log(`[${projectId}] [1/4] Researching...`);
-        const aiPromise = engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university);
+        console.log(`[${projectId}] [1/5] Researching...`);
+        const aiPromise = engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university || "Institución Académica");
         result.research = await Promise.race([
           aiPromise,
           new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La investigación tardó más de 90 segundos.")), 90000))
         ]);
-        if (step === 'research') return NextResponse.json(result);
+        if (step === 'research') return await persistAndReturn('research');
       }
       
       // Step 2: Write
       if (step === 'all' || step === 'write') {
         const researchData = step === 'write' ? body.research : result.research;
-        console.log(`[${projectId}] [2/4] Writing draft...`);
-        const aiPromise = engine.writerAgent(taskName, researchData || "", formData, prevContent);
+        console.log(`[${projectId}] [2/5] Writing draft with RAG context...`);
+        const aiPromise = engine.writerAgent(taskName, researchData || "", formData, prevContent || "", projectId);
         result.draft = await Promise.race([
           aiPromise,
           new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La redacción tardó más de 90 segundos.")), 90000))
         ]);
-        if (step === 'write') return NextResponse.json(result);
+        if (step === 'write') return await persistAndReturn('write');
       }
       
       // Step 3: Audit
       if (step === 'all' || step === 'audit') {
         const draftData = step === 'audit' ? body.draft : result.draft;
-        console.log(`[${projectId}] [3/4] Auditing...`);
+        console.log(`[${projectId}] [3/5] Auditing...`);
         const aiPromise = engine.auditorAgent(draftData || "", formData.level || "TEG");
         result.audit = await Promise.race([
           aiPromise,
           new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La auditoría tardó más de 90 segundos.")), 90000))
         ]);
-        if (step === 'audit') return NextResponse.json(result);
+        if (step === 'audit') return await persistAndReturn('audit');
       }
       
       // Step 4: Humanize
@@ -81,7 +112,7 @@ export async function POST(req: NextRequest) {
         const draft = step === 'humanize' ? body.draft : result.draft;
         const audit = step === 'humanize' ? body.audit : result.audit;
         
-        console.log(`[${projectId}] [4/4] Humanizing...`);
+        console.log(`[${projectId}] [4/5] Humanizing "${taskName}"...`);
         const aiPromise = engine.humanizerAgent(
           audit?.includes("APROBADO") ? draft : `${draft}\n\nNota de Auditoría: ${audit}`
         );
@@ -90,29 +121,32 @@ export async function POST(req: NextRequest) {
           new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: El pulido tardó más de 90 segundos.")), 90000))
         ]);
         
-        // Step 5: Visuals (Opcional pero recomendado)
-        console.log(`[${projectId}] [5/5] Generating Visuals...`);
-        const visualsPromise = engine.visualsAgent(finalVersion, taskName);
+        result.finalVersion = finalVersion;
+        if (step === 'humanize') return await persistAndReturn('humanize');
+      }
+
+      // Step 5: Visuals
+      if (step === 'all' || step === 'visuals') {
+        const contentForVisuals = step === 'visuals' ? body.content : result.finalVersion;
+        console.log(`[${projectId}] [5/5] Generating Visuals for "${taskName}"...`);
+        const visualsPromise = engine.visualsAgent(contentForVisuals || "", taskName);
         const visuals = await Promise.race([
           visualsPromise,
           new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: Los visuales tardaron más de 45 segundos.")), 45000))
         ]);
         
-        result.finalVersion = visuals !== "SIN_VISUAL" ? `${finalVersion}\n\n${visuals}` : finalVersion;
-
-        // Final step updates Firestore
-        const dbPromise = projectRef.update({
-          [`content.${taskName.replace(/\./g, '_')}`]: result.finalVersion,
-          current_phase: `Completado: ${taskName}`,
-          progress: FieldValue.increment(0.5) // Incremento pequeño por sección
-        });
-        await Promise.race([
-          dbPromise,
-          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_DB: Firestore no respondió en 10 segundos.")), 10000))
-        ]);
+        result.visuals = visuals;
+        if (visuals !== "SIN_VISUAL") {
+          result.finalVersion = `${contentForVisuals}\n\n${visuals}`;
+        } else {
+          result.finalVersion = contentForVisuals;
+        }
+        
+        if (step === 'visuals') return await persistAndReturn('visuals');
       }
 
-      return NextResponse.json(result);
+      // PERSISTENCIA FINAL (para step === 'all')
+      return await persistAndReturn('done');
     } catch (aiError: unknown) {
       console.error(`[${projectId}] Chapter API Failure:`, aiError);
       const aiMsg: string = aiError instanceof Error ? aiError.message : String(aiError);

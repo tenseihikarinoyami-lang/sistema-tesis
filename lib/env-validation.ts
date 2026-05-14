@@ -11,6 +11,10 @@ export function validateEnv(): EnvConfig {
   const requiredKeys = [
     'GEMINI_API_KEY',
     'GROQ_API_KEY',
+    'OPENROUTER_API_KEY',
+    'COHERE_API_KEY',
+    'HUGGINGFACE_API_KEY',
+    'REPLICATE_API_KEY',
     'FIREBASE_SERVICE_ACCOUNT',
     'NEXT_PUBLIC_FIREBASE_PROJECT_ID',
     'NEXT_PUBLIC_FIREBASE_APP_ID',
@@ -25,9 +29,10 @@ export function validateEnv(): EnvConfig {
     }
   }
 
-  const hasAI = !!(process.env.GEMINI_API_KEY && process.env.GROQ_API_KEY) 
+  const hasAI = !!(process.env.GEMINI_API_KEY && process.env.GROQ_API_KEY && process.env.COHERE_API_KEY) 
     && !missingKeys.includes('GEMINI_API_KEY') 
-    && !missingKeys.includes('GROQ_API_KEY');
+    && !missingKeys.includes('GROQ_API_KEY') 
+    && !missingKeys.includes('COHERE_API_KEY');
 
   const hasFirebase = !!(process.env.FIREBASE_SERVICE_ACCOUNT) 
     && !missingKeys.includes('FIREBASE_SERVICE_ACCOUNT');

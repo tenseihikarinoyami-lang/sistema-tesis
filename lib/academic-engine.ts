@@ -1,569 +1,54 @@
-import Groq from "groq-sdk";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generateWithFallback, AIROptions } from "./ai-router";
+import { searchAcademicPapers, validateCitation, AcademicMetadata } from "./academic-validator";
+import { storeThesisChunk, retrieveRelevantContext } from "./vector-memory";
 
 // ─────────────────────────────────────────────────────────────
-// Tipos
+// Motor OBELISCO v2.0 - Unified Orchestrator
 // ─────────────────────────────────────────────────────────────
-type Provider = "groq" | "gemini" | "openrouter" | "ollama";
 
-// Blacklist con TTL de 30 minutos por proveedor
-const BLACKLIST_TTL_MS = 30 * 60 * 1000;
-
-interface GlobalAIState {
-  blacklist: Map<string, number>;
-  modelCooldowns: Map<string, number>;
-}
-
-const getGlobalState = (): GlobalAIState => {
-  const g = global as Record<string, unknown>;
-  if (!g.AI_STATE) {
-    g.AI_STATE = {
-      blacklist: new Map<string, number>(),
-      modelCooldowns: new Map<string, number>(),
-    } satisfies GlobalAIState;
-  }
-  return g.AI_STATE as GlobalAIState;
-};
-
-const isBlacklisted = (state: GlobalAIState, provider: string): boolean => {
-  const ts = state.blacklist.get(provider);
-  if (!ts) return false;
-  if (Date.now() - ts > BLACKLIST_TTL_MS) {
-    state.blacklist.delete(provider);
-    return false;
-  }
-  return true;
-};
-
-interface AIResponse {
-  choices?: Array<{
-    message?: { content?: string };
-  }>;
-  error?: { message?: string; code?: number };
-}
-
-interface BaseClient {
-  generate(prompt: string, agentName: string): Promise<string>;
-}
-
-// ─────────────────────────────────────────────────────────────
-// Ayudantes
-// ─────────────────────────────────────────────────────────────
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-function isRateLimitError(error: unknown): boolean {
-  const msg = error instanceof Error ? error.message : String(error);
-  if (
-    msg.includes("403") ||
-    msg.includes("Access denied") ||
-    msg.includes("401") ||
-    msg.includes("Unauthorized")
-  )
-    return false;
-  const statusMatch = msg.match(/\b(429|500|502|503|504|402)\b/);
-  return (
-    statusMatch !== null ||
-    msg.toLowerCase().includes("too many requests") ||
-    msg.includes("RESOURCE_EXHAUSTED") ||
-    msg.includes("rate_limit") ||
-    msg.includes("rate-limited") ||
-    msg.includes("CUOTA_DIARIA_AGOTADA") ||
-    msg.includes("LIMITE_ALCANZADO") ||
-    msg.includes("límite diario") ||
-    msg.includes("quota") ||
-    msg.includes("overloaded") ||
-    msg.includes("payment_required")
-  );
-}
-
-function isDailyExhausted(error: unknown): boolean {
-  const msg = (
-    error instanceof Error ? error.message : String(error)
-  ).toLowerCase();
-  return (
-    msg.includes("daily") ||
-    msg.includes("diario") ||
-    msg.includes("quota") ||
-    msg.includes("cuota") ||
-    msg.includes("limit reached") ||
-    msg.includes("límite alcanzado") ||
-    msg.includes("free_tier") ||
-    msg.includes("exhausted")
-  );
-}
-
-function isNetworkError(error: unknown): boolean {
-  const msg = error instanceof Error ? error.message : String(error);
-  return (
-    msg.includes("fetch failed") ||
-    msg.includes("ECONNREFUSED") ||
-    msg.includes("ENOTFOUND") ||
-    msg.includes("ETIMEDOUT") ||
-    msg.includes("network error") ||
-    msg.includes("Failed to fetch")
-  );
-}
-
-async function withRetry<T>(
-  fn: () => Promise<T>,
-  agentName: string,
-  provider: Provider,
-  maxRetries = 1
-): Promise<T> {
-  let lastError: unknown;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await fn();
-    } catch (error: unknown) {
-      lastError = error;
-      // Errores de red: propagar inmediatamente para activar fallback
-      if (isNetworkError(error)) throw error;
-      if (!isRateLimitError(error)) throw error;
-      if (isDailyExhausted(error) || attempt >= maxRetries) {
-        const tag = isDailyExhausted(error)
-          ? "CUOTA_DIARIA_AGOTADA"
-          : "LIMITE_ALCANZADO";
-        const errMsg =
-          error instanceof Error ? error.message : "Error de límite de tasa";
-        throw new Error(`${tag}[${provider}]: ${errMsg} (Agente: ${agentName})`);
-      }
-      const waitMs = Math.min(3000 * Math.pow(2, attempt), 15000);
-      console.warn(
-        `[${agentName}][${provider}] Reintentando en ${waitMs / 1000}s... (intento ${attempt + 1})`
-      );
-      await sleep(waitMs);
-    }
-  }
-  throw lastError;
-}
-
-// ─────────────────────────────────────────────────────────────
-// Groq Client
-// ─────────────────────────────────────────────────────────────
-class GroqClient implements BaseClient {
-  private client: Groq;
-  // Modelos Groq activos (verificados mayo 2026)
-  private readonly MODELS = [
-    "llama-3.3-70b-versatile",
-    "llama-3.1-70b-versatile",
-    "llama-3.2-90b-vision-preview",
-    "llama-3.2-11b-vision-preview",
-    "llama3-70b-8192",
-    "mixtral-8x7b-32768",
-  ];
-
-  constructor(apiKey: string) {
-    this.client = new Groq({ apiKey });
-  }
-
-  async generate(prompt: string, agentName: string): Promise<string> {
-    let lastError: Error | null = null;
-    const state = getGlobalState();
-
-    for (const model of this.MODELS) {
-      if (state.modelCooldowns.has(`groq:${model}`)) continue;
-      try {
-        console.log(`[Groq] Probando modelo: ${model}`);
-        return await withRetry(
-          async () => {
-            const completion = await this.client.chat.completions.create({
-              model,
-              messages: [{ role: "user", content: prompt }],
-              temperature: 0.3,
-              max_tokens: 8192,
-            });
-            const content = completion.choices[0]?.message?.content;
-            if (!content) throw new Error("Groq devolvió respuesta vacía");
-            return content;
-          },
-          agentName,
-          "groq"
-        );
-      } catch (error: unknown) {
-        lastError =
-          error instanceof Error ? error : new Error(String(error));
-        const msg = lastError.message;
-        console.warn(`[Groq] Modelo ${model} falló: ${msg.substring(0, 100)}`);
-        if (msg.includes("403") || msg.includes("401")) {
-          state.blacklist.set("groq", Date.now());
-          break;
-        }
-        if (msg.includes("404") || msg.includes("not found") || msg.includes("does not exist")) {
-          state.modelCooldowns.set(`groq:${model}`, Date.now());
-        }
-      }
-    }
-    throw (
-      lastError || new Error(`Groq: todos los modelos fallaron para ${agentName}`)
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
-// OpenRouter Client  
-// Modelos verificados con API key actual (12 Mayo 2026)
-// ─────────────────────────────────────────────────────────────
-class OpenRouterClient implements BaseClient {
-  private apiKey: string;
-  // IMPORTANTE: Lista actualizada con modelos VERIFICADOS activos
-  private readonly MODELS = [
-    "meta-llama/llama-3.3-70b-instruct:free", // ✅ Muy potente, gratuito
-    "meta-llama/llama-3.1-405b-instruct",     // 🔥 El más potente (no free, pero útil si se configura)
-    "google/gemini-2.0-flash-exp:free",       // ✅ Nuevo y rápido
-    "google/gemma-2-9b-it:free",              // ✅ Rápido
-    "mistralai/mistral-7b-instruct:free",     // ✅ Confiable
-    "openrouter/auto:free",                    // 🔄 Fallback automático universal
-  ];
-
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
-  }
-
-  async generate(prompt: string, agentName: string): Promise<string> {
-    let lastError: Error | null = null;
-    const state = getGlobalState();
-
-    for (const model of this.MODELS) {
-      if (state.modelCooldowns.has(`openrouter:${model}`)) continue;
-      try {
-        console.log(`[OpenRouter] Probando modelo: ${model}`);
-        return await withRetry(
-          async () => {
-            const res = await fetch(
-              "https://openrouter.ai/api/v1/chat/completions",
-              {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${this.apiKey}`,
-                  "Content-Type": "application/json",
-                  "HTTP-Referer": "https://obelisco-ai.vercel.app",
-                  "X-Title": "Obelisco Academic AI",
-                },
-                body: JSON.stringify({
-                  model,
-                  messages: [{ role: "user", content: prompt }],
-                  temperature: 0.4,
-                  max_tokens: 8192,
-                }),
-              }
-            );
-
-            const data = (await res.json()) as AIResponse;
-
-            // Manejar errores de la API que vienen en JSON con status 200
-            if (data.error) {
-              const code = data.error.code ?? 0;
-              const errMsg = data.error.message ?? "Error desconocido de OpenRouter";
-              throw new Error(`OpenRouter Error ${code}: ${errMsg}`);
-            }
-
-            if (!res.ok) {
-              throw new Error(`OpenRouter HTTP ${res.status}`);
-            }
-
-            const content = data.choices?.[0]?.message?.content;
-            if (!content) throw new Error("OpenRouter devolvió respuesta vacía");
-            return content;
-          },
-          agentName,
-          "openrouter"
-        );
-      } catch (error: unknown) {
-        lastError =
-          error instanceof Error ? error : new Error(String(error));
-        const msg = lastError.message;
-        console.warn(
-          `[OpenRouter] Modelo ${model} falló: ${msg.substring(0, 120)}`
-        );
-
-        if (msg.includes("401") || msg.includes("Invalid API key")) {
-          state.blacklist.set("openrouter", Date.now());
-          break;
-        }
-        // Modelo no disponible → cooldown para este modelo específico
-        if (
-          msg.includes("404") ||
-          msg.includes("not found") ||
-          msg.includes("not a valid model") ||
-          msg.includes("No endpoints found")
-        ) {
-          state.modelCooldowns.set(`openrouter:${model}`, Date.now());
-          continue; // Seguir con el siguiente modelo
-        }
-        // Rate limit → esperar y seguir con siguiente
-        if (
-          msg.includes("429") ||
-          msg.includes("rate-limited") ||
-          msg.includes("temporarily")
-        ) {
-          state.modelCooldowns.set(`openrouter:${model}`, Date.now());
-          continue;
-        }
-      }
-    }
-    throw (
-      lastError ||
-      new Error(`OpenRouter: todos los modelos fallaron para ${agentName}`)
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
-// Gemini Client (backup, puede estar bloqueado por cuota)
-// ─────────────────────────────────────────────────────────────
-class GeminiClient implements BaseClient {
-  private genAI: GoogleGenerativeAI;
-  private readonly MODELS = ["gemini-1.5-flash", "gemini-1.5-pro"];
-
-  constructor(apiKey: string) {
-    this.genAI = new GoogleGenerativeAI(apiKey);
-  }
-
-  async generate(prompt: string, agentName: string): Promise<string> {
-    let lastError: Error | null = null;
-    const state = getGlobalState();
-
-    for (const modelName of this.MODELS) {
-      if (state.modelCooldowns.has(`gemini:${modelName}`)) continue;
-      try {
-        console.log(`[Gemini] Probando modelo: ${modelName}`);
-        return await withRetry(
-          async () => {
-            const model = this.genAI.getGenerativeModel({ model: modelName });
-            const result = await model.generateContent(prompt);
-            const text = result.response.text();
-            if (!text) throw new Error("Gemini devolvió respuesta vacía");
-            return text;
-          },
-          agentName,
-          "gemini",
-          1
-        );
-      } catch (error: unknown) {
-        lastError =
-          error instanceof Error ? error : new Error(String(error));
-        const msg = lastError.message;
-        console.warn(
-          `[Gemini] Modelo ${modelName} falló: ${msg.substring(0, 100)}`
-        );
-        // Solo añadir a blacklist si es cuota diaria real (no errores de red)
-        if (isDailyExhausted(error) && !isNetworkError(error)) {
-          state.blacklist.set("gemini", Date.now());
-          break; // No tiene caso intentar el siguiente si la cuota está agotada
-        }
-        if (msg.includes("403") || msg.includes("401")) {
-          state.blacklist.set("gemini", Date.now());
-          break;
-        }
-      }
-    }
-    throw (
-      lastError ||
-      new Error(`Gemini: todos los modelos fallaron para ${agentName}`)
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
-// Ollama Client (solo funciona en local)
-// ─────────────────────────────────────────────────────────────
-class OllamaClient implements BaseClient {
-  private baseUrl: string;
-  private readonly MODELS = ["llama3.3", "llama3.1", "llama3", "mistral", "phi3"];
-
-  constructor(url = "http://localhost:11434") {
-    this.baseUrl = url;
-  }
-
-  async generate(prompt: string, agentName: string): Promise<string> {
-    let lastError: Error | null = null;
-
-    for (const model of this.MODELS) {
-      try {
-        console.log(`[Ollama] Probando modelo: ${model}`);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-        const res = await fetch(`${this.baseUrl}/api/generate`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model, prompt, stream: false }),
-          signal: controller.signal,
-        });
-
-        clearTimeout(timeoutId);
-
-        if (!res.ok) throw new Error(`Ollama HTTP ${res.status}`);
-        const data = await res.json() as { response?: string };
-        return data.response || "";
-      } catch (error: unknown) {
-        lastError =
-          error instanceof Error ? error : new Error(String(error));
-        const isOffline =
-          lastError.name === "AbortError" ||
-          lastError.message.includes("fetch failed") ||
-          lastError.message.includes("ECONNREFUSED");
-
-        if (isOffline) {
-          throw new Error(
-            "OLLAMA_NOT_RUNNING: El servicio local de Ollama no está activo."
-          );
-        }
-        console.warn(`[Ollama] Modelo ${model} no disponible.`);
-      }
-    }
-    throw lastError || new Error("Ollama: sin modelos disponibles");
-  }
-}
-
-// ─────────────────────────────────────────────────────────────
-// AcademicEngine — Motor Principal
-// ─────────────────────────────────────────────────────────────
 export class AcademicEngine {
-  private clients: Partial<Record<Provider, BaseClient>> = {};
-  private preferred: Provider;
+  private preferred: string;
 
   constructor(
     geminiKey?: string,
     groqKey?: string,
     openRouterKey?: string,
-    preferred = "openrouter",
-    ollamaUrl = "http://localhost:11434"
+    preferred = "gemini"
   ) {
-    const clean = (k?: string) => k?.trim().replace(/^["']|["']$/g, "").replace(/\s+/g, "");
-
-    const gKey = clean(geminiKey);
-    const grKey = clean(groqKey);
-    const orKey = clean(openRouterKey);
-
-    if (orKey) {
-      this.clients.openrouter = new OpenRouterClient(orKey);
-      console.log("[AcademicEngine] ✅ OpenRouter configurado");
-    } else {
-      console.warn("[AcademicEngine] ⚠️ OPENROUTER_API_KEY no configurada");
-    }
-
-    if (grKey) {
-      this.clients.groq = new GroqClient(grKey);
-      console.log("[AcademicEngine] ✅ Groq configurado");
-    } else {
-      console.warn("[AcademicEngine] ⚠️ GROQ_API_KEY no configurada");
-    }
-
-    if (gKey) {
-      this.clients.gemini = new GeminiClient(gKey);
-      console.log("[AcademicEngine] ✅ Gemini configurado");
-    } else {
-      console.warn("[AcademicEngine] ⚠️ GEMINI_API_KEY no configurada");
-    }
-
-    this.clients.ollama = new OllamaClient(ollamaUrl);
-
-    // Determinar proveedor preferido (validar que tenga clave)
-    const pref = preferred as Provider;
-    this.preferred = this.clients[pref] ? pref : "openrouter";
-    console.log(`[AcademicEngine] Proveedor preferido: ${this.preferred}`);
+    this.preferred = preferred;
+    console.log(`[AcademicEngine] Motor inicializado con preferencia: ${this.preferred}`);
   }
 
-  private async safeGenerate(prompt: string, agentName: string): Promise<string> {
-    const state = getGlobalState();
-
-    // Orden de prioridad: preferido → groq → openrouter → gemini → ollama
-    // Eliminamos duplicados y priorizamos Groq como primer fallback por su velocidad
-    const order: Provider[] = Array.from(new Set([
-      this.preferred,
-      "groq",
-      "openrouter",
-      "gemini",
-      "ollama",
-    ]));
-
-    const failures: string[] = [];
-
-    for (const pName of order) {
-      // Omitir Ollama en producción salvo que sea el preferido
-      if (
-        pName === "ollama" &&
-        process.env.NODE_ENV === "production" &&
-        this.preferred !== "ollama"
-      )
-        continue;
-
-      const client = this.clients[pName];
-      if (!client) {
-        failures.push(`${pName}: Sin API Key`);
-        continue;
-      }
-
-      if (isBlacklisted(state, pName)) {
-        failures.push(`${pName}: En cuarentena`);
-        continue;
-      }
-
-      try {
-        console.log(`[AcademicEngine] [${agentName}] Intentando con: ${pName}`);
-        
-        // Timeout interno por proveedor para no agotar el tiempo total de la ruta
-        const providerPromise = client.generate(prompt, agentName);
-        const result = await Promise.race([
-          providerPromise,
-          new Promise<string>((_, reject) => 
-            setTimeout(() => reject(new Error(`TIMEOUT_PROVIDER: ${pName} tardó más de 45s`)), 45000)
-          )
-        ]);
-
-        if (result && result.trim().length > 20) {
-          console.log(`[AcademicEngine] [${agentName}] ✅ Éxito con: ${pName}`);
-          return result;
-        }
-        throw new Error(`Respuesta vacía o muy corta de ${pName}`);
-      } catch (error: unknown) {
-        const msg = error instanceof Error ? error.message : String(error);
-        failures.push(`${pName}: ${msg.substring(0, 100)}`);
-        console.error(`[AcademicEngine] [${agentName}] ❌ Fallo en ${pName}: ${msg.substring(0, 150)}`);
-        
-        // Si es un error de cuota agotada, marcar para blacklist
-        if (isDailyExhausted(error)) {
-          state.blacklist.set(pName, Date.now());
-        }
-      }
-    }
-
-    const details = failures.map((f) => `• ${f}`).join("\n");
-    throw new Error(
-      `No se pudo completar la tarea "${agentName}" con ningún proveedor de IA.\n\n` +
-      `ESTADO DE PROVEEDORES:\n${details}\n\n` +
-      `RECOMENDACIÓN: Verifica tus API Keys y cuotas. Groq es la opción más rápida para evitar Timeouts.`
-    );
+  private async safeGenerate(prompt: string, agentName: string, options: AIROptions = {}): Promise<string> {
+    const result = await generateWithFallback(prompt, {
+      ...options,
+      model: options.model || (this.preferred === "groq" ? "llama-3.3-70b-versatile" : undefined)
+    });
+    return result.content;
   }
 
-  // ── Citations (Semantic Scholar) ───────────────────────────
+
+  // ── Citations (Multi-Source Validator) ───────────────────────────
   private async fetchRealCitations(topic: string): Promise<string> {
     try {
-      console.log(`[Semantic Scholar] Buscando citas para: ${topic}`);
-      const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(topic)}&limit=8&fields=title,authors,year,abstract,url`;
+      console.log(`[AcademicEngine] Buscando fuentes académicas para: ${topic}`);
+      const papers = await searchAcademicPapers(topic, 8);
       
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2000); // MAX 2s para evitar timeout de Vercel
+      if (papers.length === 0) return "";
       
-      const res = await fetch(url, { signal: controller.signal });
-      clearTimeout(timeoutId);
-      
-      if (!res.ok) return "";
-      const data = await res.json() as { data?: Array<{ title?: string; authors?: Array<{ name?: string }>; year?: number; abstract?: string; url?: string }> };
-      if (!data.data || data.data.length === 0) return "";
-      
-      let citations = "REFERENCIAS VERIFICADAS EXTRAÍDAS DE SEMANTIC SCHOLAR:\n\n";
-      for (const paper of data.data) {
-        const authors = paper.authors?.map(a => a.name).join(", ") || "Autores desconocidos";
+      let citations = "REFERENCIAS VERIFICADAS (Semantic Scholar & Crossref):\n\n";
+      for (const paper of papers) {
+        const authors = paper.authors.join(", ") || "Autores desconocidos";
         const year = paper.year || "s.f.";
         const title = paper.title || "Sin título";
         const url = paper.url ? ` URL: ${paper.url}` : "";
-        citations += `- ${authors} (${year}). ${title}. Abstract: ${paper.abstract?.substring(0, 300) || "Sin abstract"}.${url}\n`;
+        const oa = paper.isOpenAccess ? " [Open Access]" : "";
+        const cit = paper.citationCount ? ` (Citado por: ${paper.citationCount})` : "";
+        citations += `- ${authors} (${year}). ${title}.${oa}${cit} Venue: ${paper.journal || "N/A"}. Abstract: ${paper.abstract?.substring(0, 300) || "N/A"}.${url}\n`;
       }
       return citations;
     } catch (e) {
-      console.error("[Semantic Scholar] Error fetching citations:", e);
+      console.error("[AcademicEngine] Error fetching citations:", e);
       return "";
     }
   }
@@ -588,26 +73,40 @@ export class AcademicEngine {
     section: string,
     research: string,
     data: Record<string, any>,
-    context: string
+    prevContent: string,
+    projectId: string
   ): Promise<string> {
     const estimatedPages = Number(data.estimatedPages) || 50;
     
+    // Recuperar contexto relevante de la memoria vectorial
+    const vectorContext = await retrieveRelevantContext(projectId, section);
+    const contextStr = vectorContext.map(c => `[Contexto de ${c.chapter}]: ${c.content.substring(0, 500)}`).join("\n\n");
+
     const prompt =
       `Actúa como un Redactor de Tesis Doctoral de élite. ` +
-      `Redacta la sección específica: "${section}" ` +
-      `dentro de una tesis titulada "${data.title}" que tendrá un total estimado de ${estimatedPages} páginas. ` +
-      `Programa: ${data.program} (${data.level}). Universidad: ${data.university}. ` +
-      `INVESTIGACIÓN DE BASE: ${research.substring(0, 3000)}. ` +
-      `CONTEXTO PREVIO (Storyline): ${(context || "N/A").substring(0, 800)}. ` +
-      `REGLAS CRÍTICAS: ` +
-      `1. EXTENSIÓN: Dado el objetivo de ${estimatedPages} páginas para toda la tesis, esta sección debe ser exhaustiva y profunda (MÍNIMO 800-1200 palabras). ` +
-      `2. PROFUNDIDAD ACADÉMICA: No seas genérico. Analiza, compara autores de la investigación, desarrolla argumentos complejos. ` +
-      `3. TONO: ${data.tone || "académico formal"}, tercera persona impersonal. ` +
-      `4. CITAS: Usa citas format ${data.norm || "APA 7"} integradas en el texto. ` +
-      `5. ESTRUCTURA: Usa subtítulos internos (###) obligatoriamente para organizar el contenido extenso. ` +
-      `6. DETALLE: Si la tesis es de ${estimatedPages} páginas, cada sub-sección debe ser extremadamente minuciosa, cubriendo antecedentes, debates actuales y aplicaciones prácticas. ` +
-      `RESPONDE SOLO EL TEXTO DE LA SECCIÓN EN ESPAÑOL.`;
-    return this.safeGenerate(prompt, "Redactor");
+      `Redacta la sección: "${section}" ` +
+      `para la tesis titulada "${data.title}" (${data.level}). ` +
+      `meta total: ${estimatedPages} páginas. ` +
+      `CONTEXTO DE MEMORIA (RAG): ${contextStr || "No hay contexto previo aún."} ` +
+      `CONTEXTO INMEDIATO (Secciones anteriores): ${prevContent.substring(Math.max(0, prevContent.length - 2000))}. ` +
+      `INVESTIGACIÓN BASE: ${research.substring(0, 4000)}. ` +
+      `REGLAS DE ORO: ` +
+      `1. CONTINUIDAD: Conecta suavemente con el contexto de memoria e inmediato. No repitas lo ya dicho. ` +
+      `2. EXTENSIÓN: Esta sección es un SUB-PUNTO específico. Escribe entre 800 a 1200 palabras de alto valor académico. ` +
+      `3. PROFUNDIDAD: Desarrolla el tema con rigor científico. Cita fuentes de la investigación base. ` +
+      `4. ESTRUCTURA: Usa subtítulos (###) para dividir el contenido si es extenso. ` +
+      `5. TONO: ${data.tone || 'Académico formal'}. Norma: ${data.norm || 'APA 7'}. ` +
+      `Responde ÚNICAMENTE con el contenido redactado en ESPAÑOL.`;
+
+    const content = await this.safeGenerate(prompt, "Redactor", { 
+      temperature: section.toLowerCase().includes("metodolog") ? 0.2 : 0.4,
+      section 
+    });
+
+    // Almacenar en memoria vectorial para futura coherencia
+    await storeThesisChunk(projectId, section, content);
+
+    return content;
   }
 
   async visualsAgent(content: string, topic: string): Promise<string> {
@@ -615,10 +114,11 @@ export class AcademicEngine {
       `Analiza el siguiente contenido de tesis y genera un elemento visual complementario (Tabla o Diagrama): ` +
       `CONTENIDO: ${content.substring(0, 3000)}. ` +
       `REGLAS: ` +
-      `1. Si hay comparaciones o datos, genera una TABLA en Markdown profesional. ` +
-      `2. Si hay procesos o flujos, genera un diagrama MERMAID.JS (usando \`\`\`mermaid ... \`\`\`). ` +
-      `3. Si no amerita visual, responde "SIN_VISUAL". ` +
-      `Responde SOLO el código del elemento visual o "SIN_VISUAL" en ESPAÑOL.`;
+      `1. TABLA: Si hay comparaciones o datos, genera una TABLA Markdown. ` +
+      `2. DIAGRAMA: Si hay flujos o procesos, genera un diagrama MERMAID (ej: graph TD, sequenceDiagram, classDiagram). ` +
+      `3. FORMATO: Responde EXCLUSIVAMENTE con el código del elemento. Si es Mermaid, usa bloques \`\`\`mermaid. ` +
+      `4. SI NO ES NECESARIO: Responde "SIN_VISUAL". ` +
+      `Responde SOLO el código o "SIN_VISUAL" en ESPAÑOL.`;
     return this.safeGenerate(prompt, "Visualizador");
   }
 
@@ -627,9 +127,10 @@ export class AcademicEngine {
       `Audita este texto de tesis doctoral/maestría (tipo: ${type}): ` +
       `${content.substring(0, 4000)}. ` +
       `Verifica: rigor científico, suficiencia de extensión (debe ser largo y detallado), citas correctas. ` +
+      `Usa datos de validación externa (Semantic Scholar/Crossref/arXiv) si están disponibles para confirmar que las afirmaciones tienen sustento. ` +
       `Si el texto es excelente, responde solo: "APROBADO". ` +
       `Si es mediocre o corto, lista correcciones críticas en ESPAÑOL.`;
-    return this.safeGenerate(prompt, "Auditor");
+    return this.safeGenerate(prompt, "Auditor", { temperature: 0.1 });
   }
 
   async humanizerAgent(content: string): Promise<string> {
@@ -640,7 +141,12 @@ export class AcademicEngine {
       `${content.substring(0, 5000)}. ` +
       `Usa transiciones elegantes y vocabulario sofisticado. ` +
       `Responde SOLO el texto pulido en ESPAÑOL.`;
-    return this.safeGenerate(prompt, "Humanizador");
+    
+    // Cohere es excelente para parafraseo académico
+    return this.safeGenerate(prompt, "Humanizador", { 
+      model: process.env.COHERE_API_KEY ? "command-r-plus" : undefined,
+      temperature: 0.3 
+    });
   }
 
   async bibliographyAgent(fullContent: string): Promise<string> {
@@ -661,15 +167,15 @@ export class AcademicEngine {
     const subSections = isShort ? "2 a 3 sub-secciones" : "3 a 4 sub-secciones";
 
     const prompt =
-      `Genera un ÍNDICE TÉCNICO DETALLADO para una tesis de ${data.level} titulada "${data.title}". ` +
+      `Genera un ÍNDICE TÉCNICO EXHAUSTIVO para una tesis de ${data.level} titulada "${data.title}". ` +
       `Descripción: ${data.description}. Programa: ${data.program}. ` +
-      `Páginas estimadas: ${estimatedPages}. ` +
-      `REGLAS DEL ÍNDICE: ` +
-      `1. Debe tener una estructura jerárquica de ${levels} (ej. 1.1., 1.1.1.). ` +
-      `2. Cada capítulo debe tener ${subSections} detalladas para adecuarse a la meta de ${estimatedPages} páginas. ` +
-      `3. El índice debe estar en formato Markdown limpio. ` +
-      `4. Añade una etiqueta [TYPE:SECTION] al final de cada línea que represente una unidad de redacción. ` +
-      `Responde SOLO el índice en ESPAÑOL y sin introducciones.`;
+      `META DE EXTENSIÓN: ${estimatedPages} páginas. ` +
+      `REGLAS DEL ÍNDICE PARA TESIS LARGAS: ` +
+      `1. GRANULARIDAD: Debes generar muchísimas sub-secciones. Si la meta es >80 págs, genera al menos 30 a 40 secciones individuales. ` +
+      `2. TIPO DE SECCIÓN: Cada línea que deba ser redactada individualmente DEBE terminar con [TYPE:SECTION]. ` +
+      `3. ESTRUCTURA: Usa niveles jerárquicos (1.1, 1.1.1, 1.1.1.1). ` +
+      `4. COHERENCIA: Asegura que el flujo sea lógico para una tesis de ${data.level}. ` +
+      `5. IDIOMA: Responde ÚNICAMENTE el índice en Markdown en ESPAÑOL.`;
     return this.safeGenerate(prompt, "Planificador");
   }
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@qdrant/js-client-rest": "^1.18.0",
     "@stripe/stripe-js": "^9.5.0",
     "@tiptap/pm": "^3.23.2",
     "@tiptap/react": "^3.23.2",

@@ -86,8 +86,10 @@ export async function POST(req: NextRequest) {
       current_phase: "Planificación Estructural",
       created_at: new Date().toISOString(),
       plan: plan,
-      sections: sections, // Guardamos las secciones para la orquestación
-      content: { "Plan de Investigación": plan }
+      sections: sections, 
+      formData: data, // Guardar todo para poder reanudar
+      content: { "Plan de Investigación": plan },
+      steps: { plan: 'done' }
     };
 
     console.log("Plan API: Saving project to Firestore...", project_id);

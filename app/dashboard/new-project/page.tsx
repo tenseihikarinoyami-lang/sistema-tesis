@@ -21,9 +21,12 @@ interface FormData {
   estimatedPages: number;
 }
 
+type SubStep = 'idle' | 'research' | 'write' | 'audit' | 'humanize' | 'visuals' | 'done';
+
 interface ChapterStatus {
   name: string;
   status: 'pending' | 'researching' | 'writing' | 'auditing' | 'humanizing' | 'done' | 'error';
+  subStep: SubStep;
   error?: string;
   retries: number;
   isSection?: boolean;
@@ -163,9 +166,27 @@ export default function NewProjectPage() {
 
   const [projectId, setProjectId] = useState<string>('');
 
-  // Generar ID único una sola vez al cargar
+  // Generar ID único una sola vez al cargar o recuperar del localStorage
+  const [existingProject, setExistingProject] = useState<{ id: string; title: string } | null>(null);
+
   useEffect(() => {
-    setProjectId(`proj_${Math.floor(Math.random() * 90000) + 10000}`);
+    const savedId = localStorage.getItem('active_thesis_project_id');
+    if (savedId) {
+      setProjectId(savedId);
+      // Verificar si el proyecto existe en el servidor para ofrecer reanudar
+      fetch(`/api/thesis/resume?projectId=${savedId}`)
+        .then(r => r.json())
+        .then(res => {
+          if (res.success && res.data?.title) {
+            setExistingProject({ id: savedId, title: res.data.title });
+          }
+        })
+        .catch(err => console.error("Error al verificar proyecto previo:", err));
+    } else {
+      const newId = `proj_${Math.floor(Math.random() * 90000) + 10000}`;
+      setProjectId(newId);
+      localStorage.setItem('active_thesis_project_id', newId);
+    }
   }, []);
 
   // Sincronizar nombre del autor con el usuario logueado
@@ -203,152 +224,224 @@ export default function NewProjectPage() {
   };
 
   // ── Generación principal ───────────────────────────────────
-  const handleGenerate = async () => {
+  // ── Generación principal ───────────────────────────────────
+  const handleGenerate = async (isResume = false) => {
     const errors = getStepErrors(2);
-    if (errors.length > 0) {
+    if (errors.length > 0 && !isResume) {
       toast.error('Faltan campos: ' + errors.join(', '));
       return;
     }
 
     setGenerating(true);
-    setGlobalProgress(2);
+    setGlobalProgress(p => (p > 0 ? p : 2));
 
     try {
-      // Usar el ID estable generado al inicio
+      // ── FASE 0: Verificar/Recuperar estado ──
+      toast.info('🔍 Sincronizando con el servidor...', { duration: 3000 });
+      const resumeRes = await fetch(`/api/thesis/resume?projectId=${projectId}`).then(r => r.json()).catch(() => ({}));
+      let existingData = resumeRes.success ? resumeRes.data : null;
+      
+      if (existingData && !isResume) {
+        // Si no venimos de un clic en "Reanudar" pero hay datos, preguntamos internamente o simplemente seguimos
+        console.log("Datos encontrados en el servidor. Sincronizando...");
+      }
+      
+      // Sincronizar formData si es un resume
+      if (existingData?.formData) {
+        setFormData(prev => ({ ...prev, ...existingData.formData }));
+      }
       
       // ── FASE 1: Plan estructural ──────────────────────────
-      toast.info('📐 Planificando estructura…', { duration: 8000 });
+      let sections = [];
+      let prevContent = "";
 
-      const planData = await callApiWithRetry(
-        '/api/thesis/plan',
-        { ...formData, projectId, ownerId: user?.uid || 'anonymous' },
-        'Planificación'
-      );
-      let prevContent = planData.plan as string;
-      setGlobalProgress(8);
-      toast.success('✅ Plan estructural listo', { duration: 3000 });
+      if (existingData && existingData.steps?.plan === 'done') {
+        sections = existingData.sections || [];
+        prevContent = existingData.plan || "";
+        console.log("Reanudando con plan existente:", sections.length, "secciones");
+        toast.success(`📑 Reanudando: ${sections.length} secciones encontradas.`);
+      } else {
+        toast.info('📐 Planificando estructura de la tesis…', { duration: 8000 });
+        const planData = await callApiWithRetry(
+          '/api/thesis/plan',
+          { ...formData, projectId, ownerId: user?.uid || 'anonymous' },
+          'Planificación'
+        );
+        prevContent = planData.plan as string;
+        sections = (planData.sections as any[]) || [];
+        // Actualizar existingData localmente para que el bucle lo vea
+        if (!existingData) existingData = { content: {}, research: {}, drafts: {}, audits: {}, steps: {} };
+      }
 
-      // ── FASE 2: Secciones Detalladas ──────────────────────
-      const baseSections = (planData.sections as any[]) || [];
-      const sections = [...baseSections, { title: "Referencias Bibliográficas", id: "ref" }];
-      const totalSteps = sections.length;
+      if (!sections || sections.length === 0) {
+        throw new Error("No se pudo generar el plan estructural. Intenta con otro modelo de IA (ej. Groq).");
+      }
       
-      // Actualizar estados para mostrar secciones
-      setChapterStatuses(sections.map(s => ({
-        name: s.title,
-        status: 'pending',
-        retries: 0,
-        isSection: true
-      })));
+      // ── FASE 2: Secciones Detalladas ──────────────────────
+      const fullSections = [...sections, { title: "Referencias Bibliográficas", id: "ref" }];
+      const totalSteps = fullSections.length;
+      
+      // Actualizar estados para mostrar secciones y marcar las completadas
+      const initialStatuses = fullSections.map(s => {
+        const sId = s.title.replace(/\./g, '_');
+        const isDone = !!existingData?.content?.[sId];
+        return {
+          name: s.title,
+          status: isDone ? 'done' as const : 'pending' as const,
+          subStep: (isDone ? 'done' : 'idle') as SubStep,
+          retries: 0,
+          isSection: true
+        };
+      });
+      setChapterStatuses(initialStatuses);
+
+      // Calcular progreso inicial basado en secciones hechas
+      const completedCount = initialStatuses.filter(s => s.status === 'done').length;
+      const progressBaseStart = Math.round(8 + (completedCount / totalSteps) * 85);
+      setGlobalProgress(progressBaseStart);
 
       for (let i = 0; i < totalSteps; i++) {
-        const section = sections[i];
+        const section = fullSections[i];
         const sectionTitle = section.title;
-        const progressBase = 8 + Math.round((i / totalSteps) * 90);
+        const sectionId = sectionTitle.replace(/\./g, '_');
+        const progressForThisSection = Math.round(8 + (i / totalSteps) * 85);
 
-        updateChapterStatus(i, { status: 'researching' });
-        toast.info(`🔬 [${i + 1}/${totalSteps}] Investigando: ${sectionTitle}`, { duration: 10000 });
+        // Si ya está terminado en el backup, saltar y actualizar prevContent
+        if (existingData?.content?.[sectionId]) {
+          console.log(`Section "${sectionTitle}" already exists in DB. Skipping...`);
+          prevContent = existingData.content[sectionId];
+          updateChapterStatus(i, { status: 'done' });
+          continue;
+        }
 
-        // PASO 1 — Research
-        const resData = await callApiWithRetry(
-          '/api/thesis/generate-chapter',
-          { projectId, sectionTitle, formData, prevContent, step: 'research' },
-          `Investigación de "${sectionTitle}"`
-        );
-        const research = resData.research as string;
-        setGlobalProgress(progressBase + 2);
-        await sleep(1500);
+        // --- PASO 1: Research ---
+        let research = existingData?.research?.[sectionId];
+        if (!research) {
+          updateChapterStatus(i, { status: 'researching', subStep: 'research' });
+          toast.info(`🔬 [${i + 1}/${totalSteps}] Investigando: ${sectionTitle}`, { duration: 5000 });
 
-        // PASO 2 — Write
-        updateChapterStatus(i, { status: 'writing' });
-        toast.info(`✍️ [${i + 1}/${totalSteps}] Redactando: ${sectionTitle}`, { duration: 15000 });
+          const resData = await callApiWithRetry(
+            '/api/thesis/generate-chapter',
+            { projectId, sectionTitle, formData, prevContent, step: 'research' },
+            `Investigación de "${sectionTitle}"`
+          );
+          research = resData.research as string;
+        }
+        setGlobalProgress(progressForThisSection + 2);
 
-        const writeData = await callApiWithRetry(
-          '/api/thesis/generate-chapter',
-          { projectId, sectionTitle, formData, prevContent, research, step: 'write' },
-          `Redacción de "${sectionTitle}"`
-        );
-        const draft = writeData.draft as string;
-        setGlobalProgress(progressBase + 5);
-        await sleep(1500);
+        // --- PASO 2: Write ---
+        let draft = existingData?.drafts?.[sectionId];
+        if (!draft) {
+          updateChapterStatus(i, { status: 'writing', subStep: 'write' });
+          toast.info(`✍️ [${i + 1}/${totalSteps}] Redactando contenido: ${sectionTitle}`, { duration: 8000 });
 
-        // PASO 3 — Audit
-        updateChapterStatus(i, { status: 'auditing' });
-        const auditData = await callApiWithRetry(
-          '/api/thesis/generate-chapter',
-          { projectId, sectionTitle, formData, draft, step: 'audit' },
-          `Auditoría de "${sectionTitle}"`
-        );
-        const audit = auditData.audit as string;
+          const writeData = await callApiWithRetry(
+            '/api/thesis/generate-chapter',
+            { projectId, sectionTitle, formData, prevContent, research, step: 'write' },
+            `Redacción de "${sectionTitle}"`
+          );
+          draft = writeData.draft as string;
+        } else {
+          console.log(`Borrador para "${sectionTitle}" ya existe. Usando existente.`);
+        }
+        setGlobalProgress(progressForThisSection + 5);
 
-        // PASO 4 — Humanize
-        updateChapterStatus(i, { status: 'humanizing' });
-        toast.info(`💎 [${i + 1}/${totalSteps}] Puliendo: ${sectionTitle}`, { duration: 12000 });
+        // --- PASO 3: Audit ---
+        let audit = existingData?.audits?.[sectionId];
+        if (!audit) {
+          updateChapterStatus(i, { status: 'auditing', subStep: 'audit' });
+          const auditData = await callApiWithRetry(
+            '/api/thesis/generate-chapter',
+            { projectId, sectionTitle, formData, draft, step: 'audit' },
+            `Auditoría de "${sectionTitle}"`
+          );
+          audit = auditData.audit as string;
+        }
+
+        // --- PASO 4: Humanize ---
+        updateChapterStatus(i, { status: 'humanizing', subStep: 'humanize' });
+        toast.info(`💎 [${i + 1}/${totalSteps}] Optimizando escritura: ${sectionTitle}`, { duration: 6000 });
 
         const humanData = await callApiWithRetry(
           '/api/thesis/generate-chapter',
           { projectId, sectionTitle, formData, draft, audit, step: 'humanize' },
-          `Pulido de "${sectionTitle}"`
+          `Humanización de "${sectionTitle}"`
         );
-        const finalVersion = humanData.finalVersion as string;
+        let finalVersion = humanData.finalVersion as string;
+        setGlobalProgress(progressForThisSection + 10);
+
+        // --- PASO 5: Visuals (Opcional) ---
+        if (sectionTitle !== "Referencias Bibliográficas") {
+          try {
+            updateChapterStatus(i, { status: 'humanizing', subStep: 'visuals' });
+            const visualsData = await callApiWithRetry(
+              '/api/thesis/generate-chapter',
+              { projectId, sectionTitle, formData, content: finalVersion, step: 'visuals' },
+              `Visuales de "${sectionTitle}"`,
+              1 // Solo 1 reintento para visuales ya que son secundarios
+            );
+            finalVersion = visualsData.finalVersion as string;
+          } catch (vErr) {
+            console.warn("Visuals failed for section, skipping visuals:", vErr);
+            // No fallamos el proceso por los visuales
+          }
+        }
 
         prevContent = finalVersion;
-        updateChapterStatus(i, { status: 'done' });
-        setGlobalProgress(progressBase + 15);
-        toast.success(`✅ Sección completada: ${sectionTitle}`, { duration: 4000 });
+        updateChapterStatus(i, { status: 'done', subStep: 'done' });
+        setGlobalProgress(progressForThisSection + 15);
+        toast.success(`✅ Sección lista: ${sectionTitle.substring(0, 30)}...`, { duration: 3000 });
 
-        // Pausa entre secciones para no saturar rate limit
-        if (i < totalSteps - 1) await sleep(3000);
+        // Pequeño respiro para evitar saturar APIs
+        await sleep(1500);
       }
 
       // ── FASE 3: Finalización ──────────────────────────────
       setGlobalProgress(98);
+      toast.info('🏁 Finalizando documento...', { duration: 5000 });
       await callApiWithRetry(
         '/api/thesis/finalize',
         { projectId },
         'Finalización'
-      ).catch(() => { /* Finalización opcional */ });
+      );
 
       setGlobalProgress(100);
-      toast.success('🎓 ¡Tesis completada exitosamente!', {
-        description: 'Accede a tus proyectos para descargar el documento.',
-        duration: 8000,
+      toast.success('🎓 ¡Tesis generada al 100%!', {
+        description: 'Ya puedes revisar y descargar tu proyecto.',
+        duration: 10000,
       });
 
+      localStorage.removeItem('active_thesis_project_id');
       setTimeout(() => router.push('/dashboard/projects'), 2000);
+
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : String(error);
-      console.error('[NewProject] Error en generación:', msg);
+      console.error('[Generate] Error crítico:', msg);
 
-      if (msg.includes('CUOTA_DIARIA_AGOTADA') || msg.includes('diario') || msg.includes('429')) {
-        toast.error('⏳ Cuota gratuita agotada', {
-          description: 'Los proveedores gratuitos (OpenRouter/Groq) han alcanzado su límite. Espera unos minutos y vuelve a intentarlo, o cambia de proveedor de IA.',
-          duration: 12000,
-        });
-      } else if (msg.includes('Vercel') || msg.includes('504')) {
-        toast.error('⏳ Límite de Vercel excedido (504)', {
-          description: 'El plan gratuito de Vercel corta las conexiones a los 10s. La IA o Base de datos tardó demasiado. Solución: Usa el modelo "⚡ Groq", verifica Firebase, o actualiza Vercel a Pro.',
+      // Marcar la sección actual con error si es posible
+      setChapterStatuses(prev => {
+        const next = [...prev];
+        const currentIdx = next.findIndex(s => s.status !== 'done' && s.status !== 'pending');
+        if (currentIdx !== -1) {
+          next[currentIdx].status = 'error';
+          next[currentIdx].error = msg;
+        }
+        return next;
+      });
+
+      if (msg.includes('CUOTA') || msg.includes('429')) {
+        toast.error('⏳ Límite de API alcanzado', {
+          description: 'Se ha agotado la cuota de la IA. Espera unos minutos y haz clic en "Reanudar".',
           duration: 15000,
-        });
-      } else if (msg.includes('TIMEOUT_DB')) {
-        toast.error('🗄️ Error de Base de Datos', {
-          description: 'Firebase no respondió a tiempo. Verifica que FIREBASE_SERVICE_ACCOUNT esté correctamente configurado en las variables de entorno de Vercel.',
-          duration: 15000,
-        });
-      } else if (msg.includes('TIMEOUT_AI') || msg.includes('TIMEOUT')) {
-        toast.error('⌛ Tiempo de IA excedido', {
-          description: 'La Inteligencia Artificial tardó demasiado en generar el contenido. Intenta seleccionar un modelo más rápido como Groq.',
-          duration: 10000,
-        });
-      } else if (msg.includes('API Key') || msg.includes('configurada') || msg.includes('401')) {
-        toast.error('🔑 Error de configuración', {
-          description: 'Las API Keys de IA no están configuradas en el servidor. Contacta al administrador.',
-          duration: 10000,
         });
       } else {
-        toast.error('❌ Error durante la generación', {
-          description: msg.substring(0, 200),
-          duration: 10000,
+        toast.error('❌ Error en la generación', {
+          description: msg.substring(0, 150) + '...',
+          duration: 15000,
+          action: {
+            label: 'Reanudar',
+            onClick: () => handleGenerate(true)
+          }
         });
       }
     } finally {
@@ -399,6 +492,38 @@ export default function NewProjectPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-8">
+        
+        {/* Aviso de Proyecto en Curso */}
+        {existingProject && !generating && step === 1 && (
+          <div className="bg-purple-500/10 border border-purple-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl">
+                ⏳
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-purple-300">Proyecto en curso detectado</h3>
+                <p className="text-sm text-white/60 italic">"{existingProject.title}"</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <button 
+                onClick={() => {
+                  localStorage.removeItem('active_thesis_project_id');
+                  setExistingProject(null);
+                  const newId = `proj_${Math.floor(Math.random() * 90000) + 10000}`;
+                  setProjectId(newId);
+                  localStorage.setItem('active_thesis_project_id', newId);
+                }}
+                className="px-4 py-2 rounded-xl text-sm font-medium text-white/40 hover:text-white transition-colors"
+              >
+                Descartar
+              </button>
+              <PrimaryButton onClick={() => handleGenerate(true)}>
+                Reanudar →
+              </PrimaryButton>
+            </div>
+          </div>
+        )}
 
         {/* Progreso global */}
         {generating && (
@@ -417,24 +542,74 @@ export default function NewProjectPage() {
               />
             </div>
             {chapterStatuses.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                {chapterStatuses.map((cs, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
-                      cs.status === 'done' ? 'bg-green-500/10 border border-green-500/20' :
-                      cs.status === 'error' ? 'bg-red-500/10 border border-red-500/20' :
-                      cs.status === 'pending' ? 'bg-white/5 border border-white/10' :
-                      'bg-purple-500/10 border border-purple-500/20'
-                    }`}
-                  >
-                    <span className="text-base">{statusIcon[cs.status]}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="truncate text-white/90 font-medium">{cs.name}</p>
-                      <p className="text-xs text-white/50">{statusLabel[cs.status]}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 max-h-72 overflow-y-auto pr-2 custom-scrollbar">
+                {chapterStatuses.map((cs, idx) => {
+                  const PIPELINE: { key: SubStep; icon: string; label: string }[] = [
+                    { key: 'research',  icon: '🔬', label: 'Investigar' },
+                    { key: 'write',     icon: '✍️', label: 'Redactar'  },
+                    { key: 'audit',     icon: '🛡️', label: 'Auditar'   },
+                    { key: 'humanize',  icon: '💎', label: 'Pulir'     },
+                    { key: 'visuals',   icon: '🎨', label: 'Visuales'  },
+                  ];
+                  const pipelineOrder: SubStep[] = ['research','write','audit','humanize','visuals'];
+                  const activeIdx = pipelineOrder.indexOf(cs.subStep);
+                  const isActive = cs.status !== 'pending' && cs.status !== 'done' && cs.status !== 'error';
+                  return (
+                    <div
+                      key={idx}
+                      className={`flex flex-col gap-1.5 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                        cs.status === 'done'    ? 'bg-green-500/10 border border-green-500/20' :
+                        cs.status === 'error'   ? 'bg-red-500/10 border border-red-500/20' :
+                        cs.status === 'pending' ? 'bg-white/5 border border-white/10' :
+                        'bg-purple-500/10 border border-purple-500/30 shadow-lg shadow-purple-900/10'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-base shrink-0">{statusIcon[cs.status]}</span>
+                        <p className="truncate text-white/90 font-medium flex-1">{cs.name}</p>
+                        {cs.status !== 'pending' && cs.status !== 'done' && cs.status !== 'error' && (
+                          <span className="text-xs text-purple-400 font-mono animate-pulse shrink-0">
+                            {PIPELINE.find(p => p.key === cs.subStep)?.label ?? '…'}
+                          </span>
+                        )}
+                      </div>
+                      {/* 5-step mini pipeline — only shown while active or on error */}
+                      {(isActive || cs.status === 'error') && (
+                        <div className="flex items-center gap-1 pt-0.5">
+                          {PIPELINE.map((p, pi) => {
+                            const isPast    = activeIdx > pi;
+                            const isCurrent = activeIdx === pi;
+                            return (
+                              <div key={p.key} className="flex items-center gap-1 flex-1">
+                                <div
+                                  title={p.label}
+                                  className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                                    isPast    ? 'bg-green-500' :
+                                    isCurrent ? 'bg-purple-400 animate-pulse' :
+                                    'bg-white/10'
+                                  }`}
+                                />
+                                {pi < PIPELINE.length - 1 && (
+                                  <div className="w-0.5 h-0.5 rounded-full bg-white/20" />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {cs.status === 'done' && (
+                        <div className="flex gap-1">
+                          {PIPELINE.map(p => (
+                            <div key={p.key} className="h-1 flex-1 rounded-full bg-green-500/50" />
+                          ))}
+                        </div>
+                      )}
+                      {cs.error && (
+                        <p className="text-xs text-red-400 truncate" title={cs.error}>{cs.error.substring(0,60)}…</p>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -482,6 +657,45 @@ export default function NewProjectPage() {
                   placeholder="Describe brevemente el problema o fenómeno a investigar…"
                   className={inputClass}
                 />
+              </FormField>
+
+              {/* Extensión del Documento - Ahora en Paso 1 por petición del usuario */}
+              <FormField label="Extensión del Documento" span="full">
+                <div className="bg-purple-500/5 border border-purple-500/20 rounded-xl p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-purple-300">Páginas Estimadas</p>
+                      <p className="text-xs text-white/50">Determina la profundidad y detalle de cada sección.</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <input
+                        id="estimatedPages"
+                        type="number"
+                        min="10"
+                        max="250"
+                        value={formData.estimatedPages}
+                        onChange={e => updateField('estimatedPages', parseInt(e.target.value) || 50)}
+                        className="w-20 bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-center text-lg font-bold text-purple-400 focus:outline-none focus:border-purple-500"
+                      />
+                      <span className="text-sm text-white/40">págs.</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {[30, 50, 80, 120].map(val => (
+                      <button
+                        key={val}
+                        onClick={() => updateField('estimatedPages', val)}
+                        className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
+                          formData.estimatedPages === val 
+                            ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/20' 
+                            : 'bg-white/5 text-white/40 hover:bg-white/10'
+                        }`}
+                      >
+                        {val} pág.
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </FormField>
             </div>
 
@@ -537,43 +751,7 @@ export default function NewProjectPage() {
                   onChange={v => updateField('tone', v)}
                 />
               </FormField>
-              <FormField label="Extensión del Documento" span="full">
-                <div className="bg-purple-500/5 border border-purple-500/20 rounded-xl p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-purple-300">Páginas Estimadas</p>
-                      <p className="text-xs text-white/50">Determina la profundidad y detalle de cada sección.</p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <input
-                        id="estimatedPages"
-                        type="number"
-                        min="10"
-                        max="250"
-                        value={formData.estimatedPages}
-                        onChange={e => updateField('estimatedPages', parseInt(e.target.value) || 50)}
-                        className="w-20 bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-center text-lg font-bold text-purple-400 focus:outline-none focus:border-purple-500"
-                      />
-                      <span className="text-sm text-white/40">págs.</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    {[30, 50, 80, 120].map(val => (
-                      <button
-                        key={val}
-                        onClick={() => updateField('estimatedPages', val)}
-                        className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
-                          formData.estimatedPages === val 
-                            ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/20' 
-                            : 'bg-white/5 text-white/40 hover:bg-white/10'
-                        }`}
-                      >
-                        {val}p
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </FormField>
+
               <FormField label="Proveedor de IA" span="full">
                 <select
                   id="aiModel"

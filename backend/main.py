@@ -537,6 +537,10 @@ async def download_thesis(project_id: str, background_tasks: BackgroundTasks):
             p = document.add_paragraph()
             add_formatted_text(p, line_stripped)
 
+        # Flush any table still open at end of content
+        if in_table and table_lines:
+            add_table_to_doc(document, table_lines)
+
     # Portada
     for _ in range(5):
         doc.add_paragraph()
@@ -642,6 +646,10 @@ async def download_thesis(project_id: str, background_tasks: BackgroundTasks):
 
 from fpdf import FPDF
 
+def safe_pdf_text(text: str) -> str:
+    """Encode text to latin-1 safely for fpdf, replacing unmappable chars."""
+    return text.encode('latin-1', errors='replace').decode('latin-1')
+
 class APA7PDF(FPDF):
     def header(self):
         # Page number top right
@@ -681,21 +689,21 @@ async def download_pdf(project_id: str, background_tasks: BackgroundTasks):
     # --- Portada ---
     pdf.set_font('Times', 'B', 16)
     pdf.ln(40)
-    pdf.multi_cell(0, 10, project.get('university', 'Universidad').upper(), 0, 'C')
+    pdf.multi_cell(0, 10, safe_pdf_text(project.get('university', 'Universidad').upper()), 0, 'C')
     
     if project.get('faculty'):
         pdf.set_font('Times', 'B', 12)
-        pdf.multi_cell(0, 10, project['faculty'].upper(), 0, 'C')
+        pdf.multi_cell(0, 10, safe_pdf_text(project['faculty'].upper()), 0, 'C')
         
     pdf.ln(40)
     pdf.set_font('Times', 'B', 18)
-    pdf.multi_cell(0, 12, project.get('title', 'Tesis').upper(), 0, 'C')
+    pdf.multi_cell(0, 12, safe_pdf_text(project.get('title', 'Tesis').upper()), 0, 'C')
     
     pdf.ln(40)
     pdf.set_font('Times', '', 14)
-    pdf.cell(0, 10, f"Autor: {project.get('author', 'Autor')}", 0, 1, 'C')
+    pdf.cell(0, 10, safe_pdf_text(f"Autor: {project.get('author', 'Autor')}"), 0, 1, 'C')
     if project.get('director'):
-        pdf.cell(0, 10, f"Tutor: {project['director']}", 0, 1, 'C')
+        pdf.cell(0, 10, safe_pdf_text(f"Tutor: {project['director']}"), 0, 1, 'C')
         
     pdf.ln(30)
     pdf.cell(0, 10, str(datetime.now().year), 0, 1, 'C')
@@ -765,7 +773,7 @@ async def download_pdf(project_id: str, background_tasks: BackgroundTasks):
                 level = len(line_stripped) - len(line_stripped.lstrip('#'))
                 heading = line_stripped.lstrip('#').strip()
                 pdf.set_font('Times', 'B', 14 if level == 1 else 12)
-                pdf.multi_cell(0, 10, heading, 0, 'L' if level > 1 else 'C')
+                pdf.multi_cell(0, 10, safe_pdf_text(heading), 0, 'L' if level > 1 else 'C')
                 pdf.ln(2)
                 continue
             
@@ -773,14 +781,14 @@ async def download_pdf(project_id: str, background_tasks: BackgroundTasks):
             if line_stripped.startswith(('- ', '* ')):
                 pdf.set_font('Times', '', 12)
                 pdf.cell(10, 10, chr(149), 0, 0)
-                pdf.multi_cell(0, 10, line_stripped[2:], 0, 'J')
+                pdf.multi_cell(0, 10, safe_pdf_text(line_stripped[2:]), 0, 'J')
                 continue
                 
             # Normal text
             pdf.set_font('Times', '', 12)
             # Remove basic markdown formatting for PDF output to avoid artifacts
             clean_l = re.sub(r'\*\*|\*', '', line_stripped)
-            pdf.multi_cell(0, 10, clean_l, 0, 'J')
+            pdf.multi_cell(0, 10, safe_pdf_text(clean_l), 0, 'J')
 
     # --- Content ---
     if isinstance(index, dict) and 'chapters' in index:
@@ -790,7 +798,7 @@ async def download_pdf(project_id: str, background_tasks: BackgroundTasks):
             text = content.get(title, "")
             if text:
                 pdf.set_font('Times', 'B', 14)
-                pdf.multi_cell(0, 12, title.upper(), 0, 'C')
+                pdf.multi_cell(0, 12, safe_pdf_text(title.upper()), 0, 'C')
                 pdf.ln(5)
                 pdf_markdown_parser(pdf, text)
                 
@@ -801,7 +809,8 @@ async def download_pdf(project_id: str, background_tasks: BackgroundTasks):
         pdf.multi_cell(0, 12, "REFERENCIAS BIBLIOGRÁFICAS", 0, 'C')
         pdf.ln(5)
         pdf.set_font('Times', '', 11)
-        pdf.multi_cell(0, 8, content["Bibliografía"].replace("# Referencias Bibliográficas", "").strip(), 0, 'L')
+        bib_text = content["Bibliografía"].replace("# Referencias Bibliográficas", "").strip()
+        pdf.multi_cell(0, 8, safe_pdf_text(bib_text), 0, 'L')
 
     file_path = f"temp_{project_id}.pdf"
     pdf.output(file_path)
