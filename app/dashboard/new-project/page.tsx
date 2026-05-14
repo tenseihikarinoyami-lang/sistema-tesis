@@ -161,6 +161,13 @@ export default function NewProjectPage() {
     estimatedPages: 50,
   });
 
+  const [projectId, setProjectId] = useState<string>('');
+
+  // Generar ID único una sola vez al cargar
+  useEffect(() => {
+    setProjectId(`proj_${Math.floor(Math.random() * 90000) + 10000}`);
+  }, []);
+
   // Sincronizar nombre del autor con el usuario logueado
   useEffect(() => {
     if (user?.displayName && !formData.author) {
@@ -207,16 +214,16 @@ export default function NewProjectPage() {
     setGlobalProgress(2);
 
     try {
+      // Usar el ID estable generado al inicio
+      
       // ── FASE 1: Plan estructural ──────────────────────────
       toast.info('📐 Planificando estructura…', { duration: 8000 });
 
       const planData = await callApiWithRetry(
         '/api/thesis/plan',
-        { ...formData, ownerId: user?.uid || 'anonymous' },
+        { ...formData, projectId, ownerId: user?.uid || 'anonymous' },
         'Planificación'
       );
-
-      const projectId = planData.project_id as string;
       let prevContent = planData.plan as string;
       setGlobalProgress(8);
       toast.success('✅ Plan estructural listo', { duration: 3000 });
@@ -530,17 +537,42 @@ export default function NewProjectPage() {
                   onChange={v => updateField('tone', v)}
                 />
               </FormField>
-              <FormField label="Páginas Estimadas">
-                <input
-                  id="estimatedPages"
-                  type="number"
-                  min="10"
-                  max="200"
-                  value={formData.estimatedPages}
-                  onChange={e => updateField('estimatedPages', parseInt(e.target.value) || 50)}
-                  placeholder="Ej: 50"
-                  className={inputClass}
-                />
+              <FormField label="Extensión del Documento" span="full">
+                <div className="bg-purple-500/5 border border-purple-500/20 rounded-xl p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-purple-300">Páginas Estimadas</p>
+                      <p className="text-xs text-white/50">Determina la profundidad y detalle de cada sección.</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <input
+                        id="estimatedPages"
+                        type="number"
+                        min="10"
+                        max="250"
+                        value={formData.estimatedPages}
+                        onChange={e => updateField('estimatedPages', parseInt(e.target.value) || 50)}
+                        className="w-20 bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-center text-lg font-bold text-purple-400 focus:outline-none focus:border-purple-500"
+                      />
+                      <span className="text-sm text-white/40">págs.</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {[30, 50, 80, 120].map(val => (
+                      <button
+                        key={val}
+                        onClick={() => updateField('estimatedPages', val)}
+                        className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${
+                          formData.estimatedPages === val 
+                            ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/20' 
+                            : 'bg-white/5 text-white/40 hover:bg-white/10'
+                        }`}
+                      >
+                        {val}p
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </FormField>
               <FormField label="Proveedor de IA" span="full">
                 <select

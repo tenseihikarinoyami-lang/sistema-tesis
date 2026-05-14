@@ -23,12 +23,15 @@ export async function POST(req: NextRequest) {
     
     console.log("Plan API: Received request data:", { ...data, author: "REDACTED" });
     
+    const project_id = data.projectId || `proj_${Math.floor(Math.random() * 90000) + 10000}`;
+    
     if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY && !process.env.OPENROUTER_API_KEY) {
       console.error("Plan API: No AI API keys configured!");
       return NextResponse.json({ error: "Configuración de IA faltante (API Key)." }, { status: 500 });
     }
 
     const preferredModel = data.aiModel || 'openrouter';
+    console.log(`Plan API: Using preferred model: ${preferredModel} for project ${project_id}`);
 
     const engine = new AcademicEngine(
       process.env.GEMINI_API_KEY,
@@ -44,7 +47,7 @@ export async function POST(req: NextRequest) {
       plan = await Promise.race([
         aiPromise,
         new Promise<string>((_, reject) => 
-          setTimeout(() => reject(new Error("TIMEOUT_AI: La generación tardó más de 55 segundos.")), 55000)
+          setTimeout(() => reject(new Error("TIMEOUT_AI: La generación tardó más de 90 segundos. Prueba usando el proveedor 'Groq' si esto persiste.")), 90000)
         )
       ]);
       console.log("Plan API: Structural plan generated successfully.");
@@ -65,8 +68,6 @@ export async function POST(req: NextRequest) {
         details: String(aiError)
       }, { status });
     }
-    
-    const project_id = `proj_${Math.floor(Math.random() * 90000) + 10000}`;
     
     if (!data.ownerId) {
       console.warn("Plan API: ownerId is missing, using 'anonymous' for now.");

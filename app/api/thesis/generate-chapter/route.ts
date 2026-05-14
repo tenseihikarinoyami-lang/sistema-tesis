@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
     
     try {
       let result: Record<string, unknown> = { success: true };
+      console.log(`[${projectId}] Chapter API: Using provider order for "${taskName}"`);
       
       // Step 1: Research
       if (step === 'all' || step === 'research') {
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
         const aiPromise = engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university);
         result.research = await Promise.race([
           aiPromise,
-          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La investigación tardó más de 50 segundos.")), 50000))
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La investigación tardó más de 90 segundos.")), 90000))
         ]);
         if (step === 'research') return NextResponse.json(result);
       }
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
         const aiPromise = engine.writerAgent(taskName, researchData || "", formData, prevContent);
         result.draft = await Promise.race([
           aiPromise,
-          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La redacción tardó más de 50 segundos.")), 50000))
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La redacción tardó más de 90 segundos.")), 90000))
         ]);
         if (step === 'write') return NextResponse.json(result);
       }
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
         const aiPromise = engine.auditorAgent(draftData || "", formData.level || "TEG");
         result.audit = await Promise.race([
           aiPromise,
-          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La auditoría tardó más de 50 segundos.")), 50000))
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La auditoría tardó más de 90 segundos.")), 90000))
         ]);
         if (step === 'audit') return NextResponse.json(result);
       }
@@ -86,7 +87,7 @@ export async function POST(req: NextRequest) {
         );
         const finalVersion = await Promise.race([
           aiPromise,
-          new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: El pulido tardó más de 50 segundos.")), 50000))
+          new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: El pulido tardó más de 90 segundos.")), 90000))
         ]);
         
         // Step 5: Visuals (Opcional pero recomendado)
@@ -94,7 +95,7 @@ export async function POST(req: NextRequest) {
         const visualsPromise = engine.visualsAgent(finalVersion, taskName);
         const visuals = await Promise.race([
           visualsPromise,
-          new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: Los visuales tardaron más de 30 segundos.")), 30000))
+          new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: Los visuales tardaron más de 45 segundos.")), 45000))
         ]);
         
         result.finalVersion = visuals !== "SIN_VISUAL" ? `${finalVersion}\n\n${visuals}` : finalVersion;

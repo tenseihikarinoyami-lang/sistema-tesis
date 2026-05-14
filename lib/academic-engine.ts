@@ -146,8 +146,9 @@ class GroqClient implements BaseClient {
   private readonly MODELS = [
     "llama-3.3-70b-versatile",
     "llama-3.1-70b-versatile",
+    "llama-3.2-90b-vision-preview",
+    "llama-3.2-11b-vision-preview",
     "llama3-70b-8192",
-    "llama3-8b-8192",
     "mixtral-8x7b-32768",
   ];
 
@@ -207,7 +208,8 @@ class OpenRouterClient implements BaseClient {
   // IMPORTANTE: Lista actualizada con modelos VERIFICADOS activos
   private readonly MODELS = [
     "meta-llama/llama-3.3-70b-instruct:free", // ✅ Muy potente, gratuito
-    "meta-llama/llama-3.1-8b-instruct:free",  // ✅ Estable
+    "meta-llama/llama-3.1-405b-instruct",     // 🔥 El más potente (no free, pero útil si se configura)
+    "google/gemini-2.0-flash-exp:free",       // ✅ Nuevo y rápido
     "google/gemma-2-9b-it:free",              // ✅ Rápido
     "mistralai/mistral-7b-instruct:free",     // ✅ Confiable
     "openrouter/auto:free",                    // 🔄 Fallback automático universal
@@ -466,21 +468,19 @@ export class AcademicEngine {
   private async safeGenerate(prompt: string, agentName: string): Promise<string> {
     const state = getGlobalState();
 
-    // Orden de prioridad: preferido → openrouter → groq → gemini → ollama
-    const order: Provider[] = [
+    // Orden de prioridad: preferido → groq → openrouter → gemini → ollama
+    // Eliminamos duplicados y priorizamos Groq como primer fallback por su velocidad
+    const order: Provider[] = Array.from(new Set([
       this.preferred,
-      "openrouter",
       "groq",
+      "openrouter",
       "gemini",
       "ollama",
-    ];
-    const tried = new Set<Provider>();
+    ]));
+
     const failures: string[] = [];
 
     for (const pName of order) {
-      if (tried.has(pName)) continue;
-      tried.add(pName);
-
       // Omitir Ollama en producción salvo que sea el preferido
       if (
         pName === "ollama" &&
@@ -491,41 +491,49 @@ export class AcademicEngine {
 
       const client = this.clients[pName];
       if (!client) {
-        failures.push(`${pName}: Sin API Key configurada (saltado)`);
+        failures.push(`${pName}: Sin API Key`);
         continue;
       }
 
       if (isBlacklisted(state, pName)) {
-        failures.push(`${pName}: En cuarentena temporal (cuota agotada)`);
+        failures.push(`${pName}: En cuarentena`);
         continue;
       }
 
       try {
-        console.log(`[AcademicEngine] Intentando con proveedor: ${pName}`);
-        const result = await client.generate(prompt, agentName);
+        console.log(`[AcademicEngine] [${agentName}] Intentando con: ${pName}`);
+        
+        // Timeout interno por proveedor para no agotar el tiempo total de la ruta
+        const providerPromise = client.generate(prompt, agentName);
+        const result = await Promise.race([
+          providerPromise,
+          new Promise<string>((_, reject) => 
+            setTimeout(() => reject(new Error(`TIMEOUT_PROVIDER: ${pName} tardó más de 45s`)), 45000)
+          )
+        ]);
+
         if (result && result.trim().length > 20) {
-          console.log(`[AcademicEngine] ✅ Éxito con: ${pName}`);
+          console.log(`[AcademicEngine] [${agentName}] ✅ Éxito con: ${pName}`);
           return result;
         }
-        throw new Error(`Respuesta demasiado corta de ${pName}`);
+        throw new Error(`Respuesta vacía o muy corta de ${pName}`);
       } catch (error: unknown) {
         const msg = error instanceof Error ? error.message : String(error);
-
-        if (msg.includes("OLLAMA_NOT_RUNNING")) {
-          failures.push(`Ollama: No está ejecutándose (solo disponible en local)`);
-        } else {
-          failures.push(`${pName}: ${msg.substring(0, 100)}`);
+        failures.push(`${pName}: ${msg.substring(0, 100)}`);
+        console.error(`[AcademicEngine] [${agentName}] ❌ Fallo en ${pName}: ${msg.substring(0, 150)}`);
+        
+        // Si es un error de cuota agotada, marcar para blacklist
+        if (isDailyExhausted(error)) {
+          state.blacklist.set(pName, Date.now());
         }
-        console.error(`[AcademicEngine] ❌ Fallo en ${pName}: ${msg.substring(0, 120)}`);
       }
     }
 
     const details = failures.map((f) => `• ${f}`).join("\n");
     throw new Error(
-      `No se pudo generar el contenido con ningún proveedor de IA.\n\n` +
-      `DETALLES:\n${details}\n\n` +
-      `SOLUCIÓN: Verifica que las API Keys (OPENROUTER_API_KEY, GROQ_API_KEY) ` +
-      `estén configuradas en Vercel → Settings → Environment Variables.`
+      `No se pudo completar la tarea "${agentName}" con ningún proveedor de IA.\n\n` +
+      `ESTADO DE PROVEEDORES:\n${details}\n\n` +
+      `RECOMENDACIÓN: Verifica tus API Keys y cuotas. Groq es la opción más rápida para evitar Timeouts.`
     );
   }
 
@@ -596,7 +604,8 @@ export class AcademicEngine {
       `2. PROFUNDIDAD ACADÉMICA: No seas genérico. Analiza, compara autores de la investigación, desarrolla argumentos complejos. ` +
       `3. TONO: ${data.tone || "académico formal"}, tercera persona impersonal. ` +
       `4. CITAS: Usa citas format ${data.norm || "APA 7"} integradas en el texto. ` +
-      `5. ESTRUCTURA: Usa subtítulos internos si es necesario para organizar el contenido extenso. ` +
+      `5. ESTRUCTURA: Usa subtítulos internos (###) obligatoriamente para organizar el contenido extenso. ` +
+      `6. DETALLE: Si la tesis es de ${estimatedPages} páginas, cada sub-sección debe ser extremadamente minuciosa, cubriendo antecedentes, debates actuales y aplicaciones prácticas. ` +
       `RESPONDE SOLO EL TEXTO DE LA SECCIÓN EN ESPAÑOL.`;
     return this.safeGenerate(prompt, "Redactor");
   }
@@ -677,15 +686,13 @@ export class AcademicEngine {
       const match = line.trim().match(sectionRegex);
       if (match) {
         const id = match[1];
-        const title = match[2].trim();
-        const isSection = !!match[3] || id.split('.').length >= 2; // Si tiene nivel 2 o más, es unidad de redacción
+        let title = match[2].trim();
+        // Eliminar puntos suspensivos y números de página al final
+        title = title.replace(/(?:\s*\.\.*)+\s*\d*$/, '').trim();
+        const isSection = !!match[3] || id.split('.').filter(Boolean).length >= 2;
         
-        if (isSection) {
-          sections.push({
-            id,
-            title: `${id} ${title}`,
-            level: id.split('.').length
-          });
+        if (isSection && !sections.some(s => s.id === id)) {
+          sections.push({ id, title: `${id} ${title}`, level: id.split('.').filter(Boolean).length });
         }
       }
     }
@@ -696,7 +703,8 @@ export class AcademicEngine {
       for (const line of lines) {
         const m = line.trim().match(genericRegex);
         if (m) {
-          const content = (m[1] || m[2]).trim();
+          let content = (m[1] || m[2]).trim();
+          content = content.replace(/(?:\s*\.\.*)+\s*\d*$/, '').trim();
           sections.push({ id: 'gen', title: content, level: 2 });
         }
       }
