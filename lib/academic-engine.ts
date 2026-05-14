@@ -534,7 +534,13 @@ export class AcademicEngine {
     try {
       console.log(`[Semantic Scholar] Buscando citas para: ${topic}`);
       const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(topic)}&limit=8&fields=title,authors,year,abstract,url`;
-      const res = await fetch(url);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000); // MAX 2s para evitar timeout de Vercel
+      
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      
       if (!res.ok) return "";
       const data = await res.json() as { data?: Array<{ title?: string; authors?: Array<{ name?: string }>; year?: number; abstract?: string; url?: string }> };
       if (!data.data || data.data.length === 0) return "";
@@ -573,22 +579,24 @@ export class AcademicEngine {
   async writerAgent(
     section: string,
     research: string,
-    data: Record<string, string>,
+    data: Record<string, any>,
     context: string
   ): Promise<string> {
+    const estimatedPages = Number(data.estimatedPages) || 50;
+    
     const prompt =
       `Actúa como un Redactor de Tesis Doctoral de élite. ` +
       `Redacta la sección específica: "${section}" ` +
-      `dentro de una tesis titulada "${data.title}". ` +
+      `dentro de una tesis titulada "${data.title}" que tendrá un total estimado de ${estimatedPages} páginas. ` +
       `Programa: ${data.program} (${data.level}). Universidad: ${data.university}. ` +
       `INVESTIGACIÓN DE BASE: ${research.substring(0, 3000)}. ` +
       `CONTEXTO PREVIO (Storyline): ${(context || "N/A").substring(0, 800)}. ` +
       `REGLAS CRÍTICAS: ` +
-      `1. MÍNIMO 800-1000 PALABRAS para esta sección específica. ` +
+      `1. EXTENSIÓN: Dado el objetivo de ${estimatedPages} páginas para toda la tesis, esta sección debe ser exhaustiva y profunda (MÍNIMO 800-1200 palabras). ` +
       `2. PROFUNDIDAD ACADÉMICA: No seas genérico. Analiza, compara autores de la investigación, desarrolla argumentos complejos. ` +
       `3. TONO: ${data.tone || "académico formal"}, tercera persona impersonal. ` +
       `4. CITAS: Usa citas format ${data.norm || "APA 7"} integradas en el texto. ` +
-      `5. ESTRUCTURA: Usa subtítulos internos si es necesario para organizar las 1000 palabras. ` +
+      `5. ESTRUCTURA: Usa subtítulos internos si es necesario para organizar el contenido extenso. ` +
       `RESPONDE SOLO EL TEXTO DE LA SECCIÓN EN ESPAÑOL.`;
     return this.safeGenerate(prompt, "Redactor");
   }

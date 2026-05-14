@@ -18,6 +18,7 @@ interface FormData {
   tone: string;
   aiModel: string;
   language: string;
+  estimatedPages: number;
 }
 
 interface ChapterStatus {
@@ -116,7 +117,9 @@ async function callApiWithRetry(
       const isVercelTimeout = lastErr.includes('Vercel abortó') || lastErr.includes('HTTP 504');
       
       // Errores fatales de configuración o de límites duros (como los 10s de Vercel Hobby)
-      if (isQuotaDaily || isAuthMissing || isDbTimeout || isVercelTimeout) {
+      // Nota: Retiramos isVercelTimeout de los errores fatales para permitir que el cliente
+      // reintente. A veces Groq o la red es más rápida en el segundo intento.
+      if (isQuotaDaily || isAuthMissing || isDbTimeout) {
         throw new Error(lastErr);
       }
 
@@ -155,6 +158,7 @@ export default function NewProjectPage() {
     tone: 'Académico formal',
     aiModel: 'groq',
     language: 'es',
+    estimatedPages: 50,
   });
 
   // Sincronizar nombre del autor con el usuario logueado
@@ -524,6 +528,18 @@ export default function NewProjectPage() {
                   value={formData.tone}
                   options={TONES}
                   onChange={v => updateField('tone', v)}
+                />
+              </FormField>
+              <FormField label="Páginas Estimadas">
+                <input
+                  id="estimatedPages"
+                  type="number"
+                  min="10"
+                  max="200"
+                  value={formData.estimatedPages}
+                  onChange={e => updateField('estimatedPages', parseInt(e.target.value) || 50)}
+                  placeholder="Ej: 50"
+                  className={inputClass}
                 />
               </FormField>
               <FormField label="Proveedor de IA" span="full">
