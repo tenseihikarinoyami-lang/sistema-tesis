@@ -90,7 +90,16 @@ async function callApiWithRetry(
         STEP_TIMEOUT_MS
       );
 
-      const data = await res.json() as Record<string, unknown>;
+      let data: Record<string, unknown>;
+      try {
+        const text = await res.text();
+        data = JSON.parse(text);
+      } catch (e) {
+        if (!res.ok) {
+          throw new Error(`Error del servidor (HTTP ${res.status}): Timeout o fallo crítico. Vercel pudo haber cortado la conexión.`);
+        }
+        throw new Error('La respuesta del servidor no es válida (no es JSON).');
+      }
 
       if (!res.ok) {
         const errMsg = (data.error as string) || `HTTP ${res.status}`;

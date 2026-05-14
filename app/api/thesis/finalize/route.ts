@@ -5,11 +5,16 @@ export async function POST(req: NextRequest) {
   try {
     const { projectId } = await req.json();
     
-    await adminDb.collection("projects").doc(projectId).update({
+    const dbPromise = adminDb.collection("projects").doc(projectId).update({
       status: "completed",
       progress: 100,
       current_phase: "Tesis Finalizada"
     });
+    
+    await Promise.race([
+      dbPromise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_DB: Firestore no respondió en 10 segundos.")), 10000))
+    ]);
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {

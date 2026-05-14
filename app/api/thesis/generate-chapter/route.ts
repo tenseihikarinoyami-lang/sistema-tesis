@@ -43,7 +43,11 @@ export async function POST(req: NextRequest) {
       // Step 1: Research
       if (step === 'all' || step === 'research') {
         console.log(`[${projectId}] [1/4] Researching...`);
-        result.research = await engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university);
+        const aiPromise = engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university);
+        result.research = await Promise.race([
+          aiPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La investigación tardó más de 50 segundos.")), 50000))
+        ]);
         if (step === 'research') return NextResponse.json(result);
       }
       
@@ -51,7 +55,11 @@ export async function POST(req: NextRequest) {
       if (step === 'all' || step === 'write') {
         const researchData = step === 'write' ? body.research : result.research;
         console.log(`[${projectId}] [2/4] Writing draft...`);
-        result.draft = await engine.writerAgent(taskName, researchData || "", formData, prevContent);
+        const aiPromise = engine.writerAgent(taskName, researchData || "", formData, prevContent);
+        result.draft = await Promise.race([
+          aiPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La redacción tardó más de 50 segundos.")), 50000))
+        ]);
         if (step === 'write') return NextResponse.json(result);
       }
       
@@ -59,7 +67,11 @@ export async function POST(req: NextRequest) {
       if (step === 'all' || step === 'audit') {
         const draftData = step === 'audit' ? body.draft : result.draft;
         console.log(`[${projectId}] [3/4] Auditing...`);
-        result.audit = await engine.auditorAgent(draftData || "", formData.level || "TEG");
+        const aiPromise = engine.auditorAgent(draftData || "", formData.level || "TEG");
+        result.audit = await Promise.race([
+          aiPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La auditoría tardó más de 45 segundos.")), 45000))
+        ]);
         if (step === 'audit') return NextResponse.json(result);
       }
       
@@ -69,22 +81,34 @@ export async function POST(req: NextRequest) {
         const audit = step === 'humanize' ? body.audit : result.audit;
         
         console.log(`[${projectId}] [4/4] Humanizing...`);
-        const finalVersion = await engine.humanizerAgent(
+        const aiPromise = engine.humanizerAgent(
           audit?.includes("APROBADO") ? draft : `${draft}\n\nNota de Auditoría: ${audit}`
         );
+        const finalVersion = await Promise.race([
+          aiPromise,
+          new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: El pulido tardó más de 50 segundos.")), 50000))
+        ]);
         
         // Step 5: Visuals (Opcional pero recomendado)
         console.log(`[${projectId}] [5/5] Generating Visuals...`);
-        const visuals = await engine.visualsAgent(finalVersion, taskName);
+        const visualsPromise = engine.visualsAgent(finalVersion, taskName);
+        const visuals = await Promise.race([
+          visualsPromise,
+          new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: Los visuales tardaron más de 30 segundos.")), 30000))
+        ]);
         
         result.finalVersion = visuals !== "SIN_VISUAL" ? `${finalVersion}\n\n${visuals}` : finalVersion;
 
         // Final step updates Firestore
-        await projectRef.update({
+        const dbPromise = projectRef.update({
           [`content.${taskName.replace(/\./g, '_')}`]: result.finalVersion,
           current_phase: `Completado: ${taskName}`,
           progress: FieldValue.increment(0.5) // Incremento pequeño por sección
         });
+        await Promise.race([
+          dbPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_DB: Firestore no respondió en 10 segundos.")), 10000))
+        ]);
       }
 
       return NextResponse.json(result);

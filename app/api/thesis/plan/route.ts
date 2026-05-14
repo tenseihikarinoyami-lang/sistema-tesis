@@ -40,7 +40,13 @@ export async function POST(req: NextRequest) {
     console.log("Plan API: Generating structural plan...");
     let plan;
     try {
-      plan = await engine.generateStructuralPlan(data);
+      const aiPromise = engine.generateStructuralPlan(data);
+      plan = await Promise.race([
+        aiPromise,
+        new Promise<string>((_, reject) => 
+          setTimeout(() => reject(new Error("TIMEOUT_AI: La generación tardó más de 45 segundos.")), 45000)
+        )
+      ]);
       console.log("Plan API: Structural plan generated successfully.");
     } catch (aiError: unknown) {
       console.error("Plan API: Error en motor de IA:", aiError);
@@ -85,7 +91,13 @@ export async function POST(req: NextRequest) {
 
     console.log("Plan API: Saving project to Firestore...", project_id);
     try {
-      await adminDb.collection("projects").doc(project_id).set(projectData);
+      const dbPromise = adminDb.collection("projects").doc(project_id).set(projectData);
+      await Promise.race([
+        dbPromise,
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("TIMEOUT_DB: Firestore no respondió en 10 segundos.")), 10000)
+        )
+      ]);
       console.log("Plan API: Project saved successfully.");
     } catch (dbError: unknown) {
       console.error("Plan API: Error saving to Firestore:", dbError);
