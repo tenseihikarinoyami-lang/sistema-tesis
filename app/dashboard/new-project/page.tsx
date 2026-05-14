@@ -204,7 +204,8 @@ export default function NewProjectPage() {
       toast.success('✅ Plan estructural listo', { duration: 3000 });
 
       // ── FASE 2: Secciones Detalladas ──────────────────────
-      const sections = (planData.sections as any[]) || [];
+      const baseSections = (planData.sections as any[]) || [];
+      const sections = [...baseSections, { title: "Referencias Bibliográficas", id: "ref" }];
       const totalSteps = sections.length;
       
       // Actualizar estados para mostrar secciones

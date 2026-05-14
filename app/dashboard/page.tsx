@@ -125,6 +125,7 @@ export default function DashboardPage() {
                   title={project.title} 
                   subject={project.university} 
                   progress={project.progress} 
+                  status={project.status}
                   date={project.created_at ? new Date(project.created_at).toLocaleDateString() : 'Pendiente'} 
                 />
               ))
@@ -199,21 +200,32 @@ function SubjectCard({ icon, name, color }: any) {
   );
 }
 
-function ProjectCard({ id, title, subject, progress, date }: any) {
+function ProjectCard({ id, title, subject, progress, status, date }: any) {
+  const isCompleted = status === 'completed';
+  
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ x: 5 }}
-      className="group p-8 rounded-[2.5rem] bg-white border border-gray-100 hover:border-primary/10 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 flex flex-col md:flex-row md:items-center justify-between gap-8 cursor-pointer"
+      className={`group p-8 rounded-[2.5rem] bg-white border ${isCompleted ? 'border-emerald-100' : 'border-gray-100'} hover:border-primary/10 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 flex flex-col md:flex-row md:items-center justify-between gap-8 cursor-pointer relative overflow-hidden`}
     >
+      {isCompleted && (
+        <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/10 rounded-bl-[2.5rem] flex items-center justify-center">
+          <CheckCircle2 size={24} className="text-emerald-500" />
+        </div>
+      )}
+      
       <div className="flex gap-6 items-center">
-        <div className="w-16 h-16 rounded-2xl academic-gradient flex items-center justify-center text-white font-black text-xl academic-text shadow-lg shadow-primary/20">
+        <div className={`w-16 h-16 rounded-2xl ${isCompleted ? 'bg-gradient-to-br from-emerald-500 to-teal-600' : 'academic-gradient'} flex items-center justify-center text-white font-black text-xl academic-text shadow-lg shadow-primary/20`}>
           {title.charAt(0)}
         </div>
         <div className="space-y-1">
           <div className="flex items-center gap-3">
             <span className="px-3 py-1 bg-primary/5 text-primary text-[10px] font-black rounded-lg uppercase tracking-widest">{subject}</span>
+            <span className={`px-3 py-1 text-[10px] font-black rounded-lg uppercase tracking-widest ${isCompleted ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
+              {isCompleted ? 'Finalizado' : 'Borrador'}
+            </span>
             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{date}</span>
           </div>
           <h4 className="font-black text-primary text-xl academic-text group-hover:text-primary/80 transition-colors truncate max-w-[300px]">{title}</h4>

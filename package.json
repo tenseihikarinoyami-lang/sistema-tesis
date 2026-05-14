@@ -10,6 +10,12 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@stripe/stripe-js": "^9.5.0",
+    "@tiptap/pm": "^3.23.2",
+    "@tiptap/react": "^3.23.2",
+    "@tiptap/starter-kit": "^3.23.2",
+    "@types/marked": "^5.0.2",
+    "@types/turndown": "^5.0.6",
     "docx": "^9.6.1",
     "dotenv": "^17.4.2",
     "firebase": "^12.12.1",
@@ -17,12 +23,16 @@
     "framer-motion": "^11.11.17",
     "groq-sdk": "^1.1.2",
     "lucide-react": "^0.468.0",
+    "marked": "^18.0.3",
     "motion-dom": "^12.38.0",
     "motion-utils": "^12.36.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sonner": "^2.0.1"
+    "resend": "^6.12.3",
+    "sonner": "^2.0.1",
+    "stripe": "^22.1.1",
+    "turndown": "^7.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",

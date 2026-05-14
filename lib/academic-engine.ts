@@ -529,13 +529,43 @@ export class AcademicEngine {
     );
   }
 
+  // ── Citations (Semantic Scholar) ───────────────────────────
+  private async fetchRealCitations(topic: string): Promise<string> {
+    try {
+      console.log(`[Semantic Scholar] Buscando citas para: ${topic}`);
+      const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(topic)}&limit=8&fields=title,authors,year,abstract,url`;
+      const res = await fetch(url);
+      if (!res.ok) return "";
+      const data = await res.json() as { data?: Array<{ title?: string; authors?: Array<{ name?: string }>; year?: number; abstract?: string; url?: string }> };
+      if (!data.data || data.data.length === 0) return "";
+      
+      let citations = "REFERENCIAS VERIFICADAS EXTRAÍDAS DE SEMANTIC SCHOLAR:\n\n";
+      for (const paper of data.data) {
+        const authors = paper.authors?.map(a => a.name).join(", ") || "Autores desconocidos";
+        const year = paper.year || "s.f.";
+        const title = paper.title || "Sin título";
+        const url = paper.url ? ` URL: ${paper.url}` : "";
+        citations += `- ${authors} (${year}). ${title}. Abstract: ${paper.abstract?.substring(0, 300) || "Sin abstract"}.${url}\n`;
+      }
+      return citations;
+    } catch (e) {
+      console.error("[Semantic Scholar] Error fetching citations:", e);
+      return "";
+    }
+  }
+
   // ── Agentes ──────────────────────────────────────────────
   async researcherAgent(topic: string, context: string): Promise<string> {
+    const realCitations = await this.fetchRealCitations(topic);
+    
     const prompt =
       `Actúa como un investigador académico experto. ` +
       `Investiga bibliografía APA 7 actualizada y conceptos clave para el tema: "${topic}". ` +
       `Contexto institucional: ${context}. ` +
-      `Incluye al menos 8 referencias académicas reales con autores, años y títulos de publicaciones. ` +
+      (realCitations 
+        ? `\n\nATENCIÓN: Usa ESTRICTAMENTE las siguientes referencias verificadas para construir tu respuesta y evitar alucinaciones:\n${realCitations}\n` 
+        : `Incluye al menos 8 referencias académicas reales con autores, años y títulos de publicaciones. `) +
+      `Asegúrate de citar adecuadamente las fuentes y extraer los conceptos clave del abstract. ` +
       `Responde en ESPAÑOL académico formal.`;
     return this.safeGenerate(prompt, "Investigador");
   }
@@ -594,6 +624,17 @@ export class AcademicEngine {
       `Usa transiciones elegantes y vocabulario sofisticado. ` +
       `Responde SOLO el texto pulido en ESPAÑOL.`;
     return this.safeGenerate(prompt, "Humanizador");
+  }
+
+  async bibliographyAgent(fullContent: string): Promise<string> {
+    const prompt =
+      `Actúa como un revisor bibliográfico experto. ` +
+      `Extrae todas las referencias y autores mencionados o utilizados implícitamente en el siguiente texto de tesis: ` +
+      `${fullContent.substring(0, 8000)}... ` +
+      `Genera la lista final de "Referencias Bibliográficas" en estricto formato APA 7. ` +
+      `Inventa URLs plausibles (como DOIs) solo si son necesarias y parecen reales. ` +
+      `Responde ÚNICAMENTE con la lista de referencias formateadas en Markdown.`;
+    return this.safeGenerate(prompt, "Bibliógrafo");
   }
 
   async generateStructuralPlan(data: Record<string, string>): Promise<string> {
