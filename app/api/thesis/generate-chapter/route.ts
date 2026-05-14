@@ -150,7 +150,13 @@ export async function POST(req: NextRequest) {
     } catch (aiError: unknown) {
       console.error(`[${projectId}] Chapter API Failure:`, aiError);
       const aiMsg: string = aiError instanceof Error ? aiError.message : String(aiError);
-      const isRateLimit = aiMsg.includes("CUOTA_DIARIA_AGOTADA") || aiMsg.includes("LIMITE_ALCANZADO") || aiMsg.includes("429");
+      const isRateLimit = aiMsg.includes("CUOTA_DIARIA_AGOTADA") || 
+                          aiMsg.includes("LIMITE_ALCANZADO") || 
+                          aiMsg.includes("429") || 
+                          aiMsg.toLowerCase().includes("quota") || 
+                          aiMsg.toLowerCase().includes("rate limit") || 
+                          aiMsg.toLowerCase().includes("exhausted") ||
+                          aiMsg.toLowerCase().includes("overloaded");
       return NextResponse.json({ 
         error: aiMsg || `Error en motor de IA durante ${chapter} (${step})`,
         timeElapsed: Date.now() - startTime

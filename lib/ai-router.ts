@@ -8,6 +8,7 @@ export interface AIROptions {
   temperature?: number;
   section?: string;
   model?: string;
+  preferredProvider?: AIProvider;
 }
 
 export async function generateWithFallback(
@@ -155,8 +156,10 @@ export async function generateWithFallback(
     }
   ];
 
-  // Reordenar proveedores según especialización
+  // Reordenar proveedores según especialización y preferencia
   let orderedProviders = [...providers];
+  
+  const pref = options.preferredProvider;
   
   if (prompt.toLowerCase().includes("humanizador") || prompt.toLowerCase().includes("corrector de estilo")) {
     orderedProviders = [
@@ -167,6 +170,11 @@ export async function generateWithFallback(
       providers.find(p => p.name === "huggingface")!,
       providers.find(p => p.name === "openrouter")!,
     ].filter(Boolean);
+  } else if (pref) {
+    // Si hay preferencia, ponerla primero
+    const preferredObj = providers.find(p => p.name === pref);
+    const others = providers.filter(p => p.name !== pref);
+    orderedProviders = preferredObj ? [preferredObj, ...others] : providers;
   } else {
     orderedProviders = [
       providers.find(p => p.name === "gemini")!,
@@ -179,19 +187,63 @@ export async function generateWithFallback(
   }
 
   const errors: string[] = [];
-  for (const provider of orderedProviders) {
-    try {
-      console.log(`🔄 Intentando con ${provider.name}...`);
-      const result = await provider.generate();
-      if (result && result.trim().length > 50) {
-        return { provider: provider.name, content: result };
+  let attempts = 0;
+  const maxGlobalAttempts = 15; // Resistencia extrema para generación autónoma
+
+  while (attempts < maxGlobalAttempts) {
+    attempts++;
+    for (const provider of orderedProviders) {
+      try {
+        console.log(`🔄 [Intento ${attempts}/${maxGlobalAttempts}] Probando con ${provider.name}...`);
+        
+        // Timeout de seguridad por proveedor
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("TIMEOUT_PROVIDER")), 45000)
+        );
+        
+        const result = await Promise.race([
+          provider.generate(),
+          timeoutPromise
+        ]) as string;
+        
+        if (result && result.trim().length > 30) {
+          console.log(`✅ [${provider.name}] Éxito en intento ${attempts}`);
+          return { provider: provider.name, content: result };
+        }
+        throw new Error(`Respuesta vacía o insuficiente de ${provider.name}`);
+      } catch (error: any) {
+        const errMsg = error.message || "Error desconocido";
+        console.warn(`❌ ${provider.name} falló (intento ${attempts}):`, errMsg);
+        errors.push(`${provider.name} (Intento ${attempts}): ${errMsg}`);
+        
+        // Detectar errores de red o cuota para esperar
+        const isRetryable = 
+          errMsg.includes("429") || 
+          errMsg.includes("503") ||
+          errMsg.includes("500") ||
+          errMsg.includes("504") ||
+          errMsg.toLowerCase().includes("limit") ||
+          errMsg.toLowerCase().includes("quota") ||
+          errMsg.toLowerCase().includes("exhausted") ||
+          errMsg.toLowerCase().includes("overloaded") ||
+          errMsg.toLowerCase().includes("timeout") ||
+          errMsg.toLowerCase().includes("fetch");
+
+        if (isRetryable) {
+          const waitTime = 2000 + (attempts * 1500); 
+          console.log(`⏳ Error recuperable en ${provider.name}. Esperando ${waitTime}ms para el siguiente...`);
+          await new Promise(r => setTimeout(r, waitTime));
+        }
+        
+        // Si es el último proveedor de la lista, forzar una espera mayor
+        if (provider === orderedProviders[orderedProviders.length - 1]) {
+           const globalWait = 10000 + (attempts * 5000);
+           console.log(`⚠️ Fin de ronda ${attempts}. Esperando ${globalWait}ms...`);
+           await new Promise(r => setTimeout(r, globalWait));
+        }
       }
-      throw new Error(`Respuesta vacía o muy corta de ${provider.name}`);
-    } catch (error: any) {
-      console.warn(`❌ ${provider.name} falló:`, error.message);
-      errors.push(`${provider.name}: ${error.message}`);
-      continue;
     }
   }
-  throw new Error(`Todos los proveedores de IA fallaron:\n${errors.join("\n")}`);
+
+  throw new Error(`QUOTA_LIMIT_EXHAUSTED: Tras ${maxGlobalAttempts} rondas, todos los servicios (Gemini, Groq, OpenRouter, Cohere, Replicate, HF) están saturados. El sistema intentará recuperarse automáticamente en breve. No detengas el proceso.`);
 }

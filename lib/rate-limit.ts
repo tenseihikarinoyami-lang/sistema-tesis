@@ -16,7 +16,7 @@ declare global {
 const rateLimitStore = global.__rateLimitStore || (global.__rateLimitStore = new Map());
 
 const WINDOW_MS = 60000;
-const MAX_REQUESTS = 20;
+const MAX_REQUESTS = 1000;
 
 export function checkRateLimit(clientId: string): { allowed: boolean; remaining: number; resetIn: number } {
   const now = Date.now();

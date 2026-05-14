@@ -22,6 +22,7 @@ export class AcademicEngine {
   private async safeGenerate(prompt: string, agentName: string, options: AIROptions = {}): Promise<string> {
     const result = await generateWithFallback(prompt, {
       ...options,
+      preferredProvider: this.preferred as any,
       model: options.model || (this.preferred === "groq" ? "llama-3.3-70b-versatile" : undefined)
     });
     return result.content;

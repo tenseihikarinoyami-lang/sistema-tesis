@@ -50,9 +50,9 @@ const AI_MODELS = [
   { value: 'gemini', label: '🔵 Google Gemini — Rápido pero con límites diarios' },
 ];
 
-const MAX_RETRIES_PER_STEP = 3;
+const MAX_RETRIES_PER_STEP = 100; // Resistencia extrema para generación autónoma
 const STEP_TIMEOUT_MS = 110_000; // 110s (Vercel corta a 120s)
-const RETRY_DELAY_MS = 8_000;    // 8s entre reintentos
+const RETRY_DELAY_MS = 10_000;    // 10s base entre reintentos
 
 // ─── Helper: fetch con timeout propio ─────────────────────────
 async function fetchWithTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
@@ -84,53 +84,55 @@ async function callApiWithRetry(
   let lastErr = '';
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const res = await fetchWithTimeout(
-        url,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        },
-        STEP_TIMEOUT_MS
-      );
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
 
-      let data: Record<string, unknown>;
-      try {
-        const text = await res.text();
-        data = JSON.parse(text);
-      } catch (e) {
-        if (!res.ok) {
-          throw new Error(`Error del servidor (HTTP ${res.status}): Vercel abortó la conexión (Timeout). Si usas el plan gratuito (Hobby), el límite es de 10-15s.`);
-        }
-        throw new Error('La respuesta del servidor no es válida (no es JSON).');
+      // Manejo de errores 429 y 503 (Sobrecapacidad)
+      if (res.status === 429 || res.status === 503 || res.status === 504) {
+        const waitMs = 60000; // 60s de espera
+        toast.info(`⏳ Red saturada (${attempt}/${maxRetries})`, { 
+          description: `Esperando ${Math.round(waitMs/1000)}s para continuar automáticamente...`,
+          duration: waitMs 
+        });
+        await sleep(waitMs);
+        continue;
       }
 
       if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
         const errMsg = (data.error as string) || `HTTP ${res.status}`;
         throw new Error(errMsg);
       }
 
-      return data;
-    } catch (err) {
-      lastErr = err instanceof Error ? err.message : String(err);
+      return await res.json();
+    } catch (err: any) {
+      lastErr = err.message || String(err);
+      console.warn(`[Retry] ${stepName} intento ${attempt} falló:`, lastErr);
       
-      const isQuotaDaily = lastErr.toLowerCase().includes('diario') || lastErr.includes('CUOTA_DIARIA_AGOTADA');
-      const isAuthMissing = lastErr.includes('Configuración de IA faltante');
-      const isDbTimeout = lastErr.includes('TIMEOUT_DB');
-      const isVercelTimeout = lastErr.includes('Vercel abortó') || lastErr.includes('HTTP 504');
-      
-      // Errores fatales de configuración o de límites duros (como los 10s de Vercel Hobby)
-      // Nota: Retiramos isVercelTimeout de los errores fatales para permitir que el cliente
-      // reintente. A veces Groq o la red es más rápida en el segundo intento.
-      if (isQuotaDaily || isAuthMissing || isDbTimeout) {
-        throw new Error(lastErr);
-      }
+      const lastErrLower = lastErr.toLowerCase();
+      const isQuota = lastErrLower.includes('cuota') || 
+                      lastErrLower.includes('429') || 
+                      lastErrLower.includes('limit') ||
+                      lastErrLower.includes('límite') ||
+                      lastErrLower.includes('agotada') ||
+                      lastErrLower.includes('alcanzado') ||
+                      lastErrLower.includes('exhausted') ||
+                      lastErrLower.includes('overloaded') ||
+                      lastErrLower.includes('saturada') ||
+                      lastErrLower.includes('solicitudes');
 
       if (attempt < maxRetries) {
-        const waitSec = Math.round(RETRY_DELAY_MS * attempt / 1000);
-        // Mostrar el error real en el toast para que el usuario no crea que está "trabado" sin razón
-        toast.warning(`⚠️ Reintento ${attempt}/${maxRetries} (${stepName}): ${lastErr.substring(0, 60)}... Esperando ${waitSec}s`, { duration: waitSec * 1000 });
-        await sleep(RETRY_DELAY_MS * attempt);
+        const waitSec = isQuota ? 90 : Math.min(60, 15 + (attempt * 10));
+        toast.warning(`⚠️ [${attempt}/${maxRetries}] ${stepName}: Reintentando en ${waitSec}s...`, { 
+          description: lastErr.substring(0, 80),
+          duration: waitSec * 1000 
+        });
+        await sleep(waitSec * 1000);
+      } else {
+        throw new Error(`${stepName} falló tras ${maxRetries} intentos: ${lastErr}`);
       }
     }
   }
@@ -416,36 +418,74 @@ export default function NewProjectPage() {
 
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : String(error);
-      console.error('[Generate] Error crítico:', msg);
+      console.error('[Generate] Error detectado:', msg);
 
-      // Marcar la sección actual con error si es posible
-      setChapterStatuses(prev => {
-        const next = [...prev];
-        const currentIdx = next.findIndex(s => s.status !== 'done' && s.status !== 'pending');
-        if (currentIdx !== -1) {
-          next[currentIdx].status = 'error';
-          next[currentIdx].error = msg;
-        }
-        return next;
-      });
+      // Detección ultra-sensible de límites de cuota o saturación
+      const msgLower = msg.toLowerCase();
+      const isQuota = msgLower.includes('cuota') || 
+                      msgLower.includes('429') || 
+                      msgLower.includes('limit') ||
+                      msgLower.includes('límite') ||
+                      msgLower.includes('agotada') ||
+                      msgLower.includes('alcanzado') ||
+                      msgLower.includes('exhausted') ||
+                      msgLower.includes('overloaded') ||
+                      msgLower.includes('solicitudes') ||
+                      msgLower.includes('rate') ||
+                      msgLower.includes('quota') ||
+                      msgLower.includes('saturada') ||
+                      msgLower.includes('capacidad') ||
+                      msg.includes('QUOTA_LIMIT_EXHAUSTED');
 
-      if (msg.includes('CUOTA') || msg.includes('429')) {
-        toast.error('⏳ Límite de API alcanzado', {
-          description: 'Se ha agotado la cuota de la IA. Espera unos minutos y haz clic en "Reanudar".',
-          duration: 15000,
+      if (isQuota) {
+        const waitSec = 90; // Un poco más de tiempo para que se limpien los buckets de rate limit
+        toast.info(`🔄 RECUPERACIÓN AUTÓNOMA ACTIVA`, {
+          description: `Se detectó saturación en los proveedores de IA. El sistema OBELISCO esperará ${waitSec}s y continuará la tesis desde donde quedó. No es necesario que hagas nada.`,
+          duration: waitSec * 1000,
         });
+        
+        // Auto-reintento persistente
+        setTimeout(() => {
+          console.log("Reanudando generación automáticamente tras límite de cuota...");
+          handleGenerate(true);
+        }, waitSec * 1000);
+        
+        return; 
       } else {
-        toast.error('❌ Error en la generación', {
-          description: msg.substring(0, 150) + '...',
-          duration: 15000,
+        // Error potencialmente transitorio (500, 503, etc)
+        const isTransient = msg.includes('503') || msg.includes('500') || msg.includes('timeout') || msg.includes('fetch');
+        
+        if (isTransient) {
+           const waitSec = 120;
+           toast.warning(`⚠️ Error de red/servidor detectado.`, {
+             description: `El servidor está bajo mucha carga. Reintentando automáticamente en ${waitSec}s...`,
+             duration: waitSec * 1000
+           });
+           setTimeout(() => handleGenerate(true), waitSec * 1000);
+           return;
+        }
+
+        // Error fatal real
+        setChapterStatuses(prev => {
+          const next = [...prev];
+          const currentIdx = next.findIndex(s => s.status !== 'done' && s.status !== 'pending' && s.status !== 'error');
+          if (currentIdx !== -1) {
+            next[currentIdx].status = 'error';
+            next[currentIdx].error = msg;
+          }
+          return next;
+        });
+
+        toast.error('❌ Proceso Interrumpido', {
+          description: msg.substring(0, 150),
+          duration: 30000,
           action: {
-            label: 'Reanudar',
+            label: 'Reanudar Manualmente',
             onClick: () => handleGenerate(true)
           }
         });
+        setGenerating(false);
       }
-    } finally {
-      setGenerating(false);
     }
   };
 
