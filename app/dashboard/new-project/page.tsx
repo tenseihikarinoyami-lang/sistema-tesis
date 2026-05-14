@@ -41,9 +41,9 @@ const LEVELS = ['TEG', 'Pregrado', 'Maestría', 'Doctorado'];
 const NORMS = ['APA 7', 'IEEE', 'Vancouver', 'Chicago'];
 const TONES = ['Académico formal', 'Técnico-científico', 'Descriptivo', 'Analítico'];
 const AI_MODELS = [
-  { value: 'openrouter', label: '🤖 OpenRouter (Llama / GPT-OSS) — Recomendado' },
-  { value: 'groq', label: '⚡ Groq (Llama 3.3 70B) — Muy rápido' },
-  { value: 'gemini', label: '🔵 Google Gemini — Puede tener límites diarios' },
+  { value: 'groq', label: '⚡ Groq (Llama 3) — Recomendado (Evita bloqueos de Vercel)' },
+  { value: 'openrouter', label: '🤖 OpenRouter (Varios modelos) — Puede dar Timeout' },
+  { value: 'gemini', label: '🔵 Google Gemini — Rápido pero con límites diarios' },
 ];
 
 const MAX_RETRIES_PER_STEP = 3;
@@ -96,29 +96,34 @@ async function callApiWithRetry(
         data = JSON.parse(text);
       } catch (e) {
         if (!res.ok) {
-          throw new Error(`Error del servidor (HTTP ${res.status}): Timeout o fallo crítico. Vercel pudo haber cortado la conexión.`);
+          throw new Error(`Error del servidor (HTTP ${res.status}): Vercel abortó la conexión (Timeout). Si usas el plan gratuito (Hobby), el límite es de 10-15s.`);
         }
         throw new Error('La respuesta del servidor no es válida (no es JSON).');
       }
 
       if (!res.ok) {
         const errMsg = (data.error as string) || `HTTP ${res.status}`;
-        // Si es cuota diaria agotada no tiene sentido reintentar
-        if (res.status === 429 && errMsg.toLowerCase().includes('diario')) {
-          throw new Error(errMsg);
-        }
         throw new Error(errMsg);
       }
 
       return data;
     } catch (err) {
       lastErr = err instanceof Error ? err.message : String(err);
+      
       const isQuotaDaily = lastErr.toLowerCase().includes('diario') || lastErr.includes('CUOTA_DIARIA_AGOTADA');
-      if (isQuotaDaily) throw new Error(lastErr); // No reintentar
+      const isAuthMissing = lastErr.includes('Configuración de IA faltante');
+      const isDbTimeout = lastErr.includes('TIMEOUT_DB');
+      const isVercelTimeout = lastErr.includes('Vercel abortó') || lastErr.includes('HTTP 504');
+      
+      // Errores fatales de configuración o de límites duros (como los 10s de Vercel Hobby)
+      if (isQuotaDaily || isAuthMissing || isDbTimeout || isVercelTimeout) {
+        throw new Error(lastErr);
+      }
 
       if (attempt < maxRetries) {
         const waitSec = Math.round(RETRY_DELAY_MS * attempt / 1000);
-        toast.warning(`⚠️ ${stepName} — Reintentando (${attempt}/${maxRetries}) en ${waitSec}s…`, { duration: waitSec * 1000 });
+        // Mostrar el error real en el toast para que el usuario no crea que está "trabado" sin razón
+        toast.warning(`⚠️ Reintento ${attempt}/${maxRetries} (${stepName}): ${lastErr.substring(0, 60)}... Esperando ${waitSec}s`, { duration: waitSec * 1000 });
         await sleep(RETRY_DELAY_MS * attempt);
       }
     }
@@ -148,7 +153,7 @@ export default function NewProjectPage() {
     chapters: [...DEFAULT_CHAPTERS],
     norm: 'APA 7',
     tone: 'Académico formal',
-    aiModel: 'openrouter',
+    aiModel: 'groq',
     language: 'es',
   });
 
@@ -309,9 +314,19 @@ export default function NewProjectPage() {
           description: 'Los proveedores gratuitos (OpenRouter/Groq) han alcanzado su límite. Espera unos minutos y vuelve a intentarlo, o cambia de proveedor de IA.',
           duration: 12000,
         });
-      } else if (msg.includes('TIMEOUT')) {
-        toast.error('⌛ Tiempo de espera excedido', {
-          description: 'El servidor tardó demasiado. Esto puede ocurrir en horas de mucho tráfico. Intenta de nuevo en unos minutos.',
+      } else if (msg.includes('Vercel') || msg.includes('504')) {
+        toast.error('⏳ Límite de Vercel excedido (504)', {
+          description: 'El plan gratuito de Vercel corta las conexiones a los 10s. La IA o Base de datos tardó demasiado. Solución: Usa el modelo "⚡ Groq", verifica Firebase, o actualiza Vercel a Pro.',
+          duration: 15000,
+        });
+      } else if (msg.includes('TIMEOUT_DB')) {
+        toast.error('🗄️ Error de Base de Datos', {
+          description: 'Firebase no respondió a tiempo. Verifica que FIREBASE_SERVICE_ACCOUNT esté correctamente configurado en las variables de entorno de Vercel.',
+          duration: 15000,
+        });
+      } else if (msg.includes('TIMEOUT_AI') || msg.includes('TIMEOUT')) {
+        toast.error('⌛ Tiempo de IA excedido', {
+          description: 'La Inteligencia Artificial tardó demasiado en generar el contenido. Intenta seleccionar un modelo más rápido como Groq.',
           duration: 10000,
         });
       } else if (msg.includes('API Key') || msg.includes('configurada') || msg.includes('401')) {
