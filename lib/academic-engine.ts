@@ -645,16 +645,22 @@ export class AcademicEngine {
     return this.safeGenerate(prompt, "Bibliógrafo");
   }
 
-  async generateStructuralPlan(data: Record<string, string>): Promise<string> {
+  async generateStructuralPlan(data: Record<string, any>): Promise<string> {
+    const estimatedPages = Number(data.estimatedPages) || 50;
+    const isShort = estimatedPages <= 30;
+    const levels = isShort ? "2 o 3 niveles" : "3 o 4 niveles";
+    const subSections = isShort ? "2 a 3 sub-secciones" : "3 a 4 sub-secciones";
+
     const prompt =
       `Genera un ÍNDICE TÉCNICO DETALLADO para una tesis de ${data.level} titulada "${data.title}". ` +
       `Descripción: ${data.description}. Programa: ${data.program}. ` +
+      `Páginas estimadas: ${estimatedPages}. ` +
       `REGLAS DEL ÍNDICE: ` +
-      `1. Debe tener una estructura jerárquica de 3 o 4 niveles (ej. 1.1., 1.1.1., 1.1.1.1.). ` +
-      `2. Cada capítulo debe tener al menos 4 sub-secciones detalladas. ` +
+      `1. Debe tener una estructura jerárquica de ${levels} (ej. 1.1., 1.1.1.). ` +
+      `2. Cada capítulo debe tener ${subSections} detalladas para adecuarse a la meta de ${estimatedPages} páginas. ` +
       `3. El índice debe estar en formato Markdown limpio. ` +
       `4. Añade una etiqueta [TYPE:SECTION] al final de cada línea que represente una unidad de redacción. ` +
-      `Responde SOLO el índice en ESPAÑOL.`;
+      `Responde SOLO el índice en ESPAÑOL y sin introducciones.`;
     return this.safeGenerate(prompt, "Planificador");
   }
 

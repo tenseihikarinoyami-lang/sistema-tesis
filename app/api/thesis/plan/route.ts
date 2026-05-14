@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       plan = await Promise.race([
         aiPromise,
         new Promise<string>((_, reject) => 
-          setTimeout(() => reject(new Error("TIMEOUT_AI: La generación tardó más de 45 segundos.")), 45000)
+          setTimeout(() => reject(new Error("TIMEOUT_AI: La generación tardó más de 55 segundos.")), 55000)
         )
       ]);
       console.log("Plan API: Structural plan generated successfully.");
