@@ -175,7 +175,6 @@ export async function POST(req: NextRequest) {
       // PERSISTENCIA FINAL
       return await persistAndReturn('done');
     } catch (aiError: unknown) {
-(aiError: unknown) {
       console.error(`[${projectId}] Chapter API Failure:`, aiError);
       const aiMsg: string = aiError instanceof Error ? aiError.message : String(aiError);
       

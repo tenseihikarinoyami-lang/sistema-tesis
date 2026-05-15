@@ -45,7 +45,16 @@ export class AcademicEngine {
         const url = paper.url ? ` URL: ${paper.url}` : "";
         const oa = paper.isOpenAccess ? " [Open Access]" : "";
         const cit = paper.citationCount ? ` (Citado por: ${paper.citationCount})` : "";
-        cita  // ── REGLAS DE ORO ACADÉMICAS ──
+        citations += `- ${authors} (${year}). ${title}.${url}${oa}${cit}\n`;
+      }
+      return citations;
+    } catch (error) {
+      console.error(`[AcademicEngine] Error obteniendo citas reales:`, error);
+      return "";
+    }
+  }
+
+  // ── REGLAS DE ORO ACADÉMICAS ──
   private getAcademicRules(options: { section?: string; level?: string } = {}): string {
     const section = (options.section || "").toLowerCase();
     
@@ -194,16 +203,6 @@ REGLAS CRÍTICAS DE REDACCIÓN (MANUALES IUTA/IUTAR/UPTAEB/UPEL):
       `Debes separar tu respuesta con estas etiquetas exactas:\n` +
       `<RESEARCH>\n(Resumen de la investigación y bibliografía APA 7 usada)\n</RESEARCH>\n` +
       `<CONTENT>\n(El cuerpo de la tesis redactado con subtítulos y PÁRRAFOS DE 5 A 12 LÍNEAS. Usa TERCERA PERSONA IMPERSONAL (Se analizó, se procedió). Cada párrafo DEBE tener al menos una cita parentética)\n</CONTENT>\n` +
-      `<VISUALS>\n(Código Markdown de tabla o Mermaid, o "SIN_VISUAL")\n</VISUALS>`;
-
-    const response = await this.safeGenerate(prompt, "Agente Unificado", { 
-      temperature: 0.3,
-      maxTokens: 8192, // Intentar máximo de tokens para salida larga
-      signal
-    });
- respuesta con estas etiquetas exactas:\n` +
-      `<RESEARCH>\n(Resumen de la investigación y bibliografía APA 7 usada)\n</RESEARCH>\n` +
-      `<CONTENT>\n(El cuerpo de la tesis redactado con subtítulos y PÁRRAFOS DE 5 A 12 LÍNEAS. Usa TERCERA PERSONA IMPERSONAL)\n</CONTENT>\n` +
       `<VISUALS>\n(Código Markdown de tabla o Mermaid, o "SIN_VISUAL")\n</VISUALS>`;
 
     const response = await this.safeGenerate(prompt, "Agente Unificado", { 
