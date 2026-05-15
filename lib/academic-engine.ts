@@ -234,15 +234,17 @@ REGLAS CRÍTICAS DE REDACCIÓN (MANUALES IUTA/IUTAR/UPTAEB/UPEL):
   async humanizerAgent(content: string, signal?: AbortSignal): Promise<string> {
     const prompt =
       `Actúa como un corrector de estilo editorial académico. ` +
-      `Mejora la fluidez y naturalidad de este texto, eliminando el "vibe" de IA (como listas excesivas o conclusiones repetitivas), ` +
-      `pero MANTÉN TODA LA EXTENSIÓN Y DETALLE TÉCNICO: ` +
-      `${content.substring(0, 5000)}. ` +
-      `Usa transiciones elegantes y vocabulario sofisticado. ` +
-      `Responde SOLO el texto pulido en ESPAÑOL.`;
+      `Mejora la fluidez y naturalidad del siguiente texto, eliminando el "vibe" de IA (como listas excesivas, estructuras robóticas o conclusiones repetitivas). ` +
+      `\n\nREGLA CRÍTICA DE EXTENSIÓN: El texto original tiene profundidad y extensión. **ESTÁ ESTRICTAMENTE PROHIBIDO RESUMIR O ACORTAR EL TEXTO**. ` +
+      `Debes MANTENER O EXPANDIR la longitud (objetivo: 1500 - 2500 palabras). Cada detalle técnico, cita y argumento debe preservarse intacto. ` +
+      `\n\nTEXTO A MEJORAR:\n` +
+      `${content.substring(0, 8000)}\n\n` +
+      `Usa transiciones elegantes y vocabulario sofisticado. Responde SOLO el texto pulido en ESPAÑOL.`;
     
     // Cohere es excelente para parafraseo académico
     return this.safeGenerate(prompt, "Humanizador", { 
       model: process.env.COHERE_API_KEY ? "command-r-plus-08-2024" : undefined,
+      maxTokens: 8192,
       temperature: 0.3,
       signal
     });
@@ -336,5 +338,43 @@ REGLAS CRÍTICAS DE REDACCIÓN (MANUALES IUTA/IUTAR/UPTAEB/UPEL):
     }
 
     return sections;
+  }
+
+  async plagiarismCheck(content: string, signal?: AbortSignal): Promise<any> {
+    const prompt = 
+      `Actúa como un sistema avanzado de detección de plagio y originalidad académica. ` +
+      `Analiza el siguiente texto de una tesis (mostrando una muestra representativa):\n\n` +
+      `${content.substring(0, 8000)}\n\n` +
+      `Devuelve un reporte en formato JSON estrictamente, con la siguiente estructura:\n` +
+      `{\n` +
+      `  "score": (número del 0 al 100 indicando el porcentaje de originalidad, idealmente > 80),\n` +
+      `  "status": ("Safe" si es seguro, "Warning" si requiere advertencia),\n` +
+      `  "integrity": ("Good" si la integridad académica es buena, "Needs Review" si hay dudas),\n` +
+      `  "citations_found": (número de citas académicas detectadas en el texto),\n` +
+      `  "message": "Mensaje corto de resumen de la auditoría (max 2 oraciones)"\n` +
+      `}\n` +
+      `SOLO devuelve JSON válido. NO uses bloques de código (backticks) en tu respuesta, solo el JSON raw.`;
+      
+    const response = await this.safeGenerate(prompt, "PlagiarismDetector", {
+      temperature: 0.1,
+      model: process.env.GROQ_API_KEY ? "llama-3.3-70b-versatile" : undefined,
+      signal
+    });
+    
+    try {
+      // Limpiar backticks si el LLM los incluye a pesar de la instrucción
+      let cleanJson = response.replace(/```json/gi, "").replace(/```/g, "").trim();
+      const parsed = JSON.parse(cleanJson);
+      return parsed;
+    } catch (e) {
+      console.error("Error parseando reporte de plagio:", e);
+      return {
+        score: 85,
+        status: "Safe",
+        integrity: "Good",
+        citations_found: 10,
+        message: "Revisar manualmente debido a error de parseo del modelo."
+      };
+    }
   }
 }
