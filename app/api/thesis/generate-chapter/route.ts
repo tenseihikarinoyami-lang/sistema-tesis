@@ -70,51 +70,78 @@ export async function POST(req: NextRequest) {
           console.error(`[${projectId}] Database update failed (non-critical):`, dbError);
         }
         return NextResponse.json(result);
-      };
+      }      // Step 0: Unified (QUOTA OPTIMIZER)
+      if (step === 'all' || step === 'unified') {
+        console.log(`[${projectId}] Running UNIFIED agent for "${taskName}"...`);
+        const unifiedResult = await engine.unifiedAgent(
+          taskName,
+          formData,
+          prevContent || "",
+          projectId,
+          req.signal
+        );
+        
+        result.research = unifiedResult.research;
+        result.draft = unifiedResult.content;
+        result.visuals = unifiedResult.visuals;
+        
+        // El contenido final inicial es el borrador + visuales si existen
+        result.finalVersion = result.visuals !== "SIN_VISUAL" 
+          ? `${result.draft}\n\n${result.visuals}` 
+          : result.draft;
+
+        // Si es 'all' o 'unified', ya tenemos lo básico. 
+        // En modo 'all' podríamos querer auditar/humanizar extra, pero para máxima robustez y ahorro
+        // vamos a considerar 'unified' como suficiente si el prompt ya incluye esas instrucciones.
+        if (step === 'unified' || step === 'all') return await persistAndReturn(step);
+      }
+      
+      // Los pasos individuales se mantienen por si se llaman específicamente (ej. re-generar solo visuales)
       
       // Step 1: Research
-      if (step === 'all' || step === 'research') {
+      if (step === 'research') {
         console.log(`[${projectId}] [1/5] Researching...`);
-        const aiPromise = engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university || "Institución Académica");
+        const aiPromise = engine.researcherAgent(`${taskName} sobre: ${formData.title}`, formData.university || "Institución Académica", req.signal);
         result.research = await Promise.race([
           aiPromise,
           new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La investigación tardó más de 90 segundos.")), 90000))
         ]);
-        if (step === 'research') return await persistAndReturn('research');
+        return await persistAndReturn('research');
       }
       
       // Step 2: Write
-      if (step === 'all' || step === 'write') {
-        const researchData = step === 'write' ? body.research : result.research;
+      if (step === 'write') {
+        const researchData = body.research || result.research;
         console.log(`[${projectId}] [2/5] Writing draft with RAG context...`);
-        const aiPromise = engine.writerAgent(taskName, researchData || "", formData, prevContent || "", projectId);
+        const aiPromise = engine.writerAgent(taskName, researchData || "", formData, prevContent || "", projectId, req.signal);
         result.draft = await Promise.race([
           aiPromise,
           new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La redacción tardó más de 90 segundos.")), 90000))
         ]);
-        if (step === 'write') return await persistAndReturn('write');
+        return await persistAndReturn('write');
       }
       
       // Step 3: Audit
-      if (step === 'all' || step === 'audit') {
-        const draftData = step === 'audit' ? body.draft : result.draft;
+      if (step === 'audit') {
+        const draftData = body.draft || result.draft;
         console.log(`[${projectId}] [3/5] Auditing...`);
-        const aiPromise = engine.auditorAgent(draftData || "", formData.level || "TEG");
+        const aiPromise = engine.auditorAgent(draftData || "", formData.level || "TEG", req.signal);
         result.audit = await Promise.race([
           aiPromise,
           new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: La auditoría tardó más de 90 segundos.")), 90000))
         ]);
-        if (step === 'audit') return await persistAndReturn('audit');
+        return await persistAndReturn('audit');
       }
       
       // Step 4: Humanize
-      if (step === 'all' || step === 'humanize') {
-        const draft = step === 'humanize' ? body.draft : result.draft;
-        const audit = step === 'humanize' ? body.audit : result.audit;
+      if (step === 'humanize') {
+        const draft = body.draft || result.draft || "";
+        const audit = body.audit || result.audit || "";
         
         console.log(`[${projectId}] [4/5] Humanizing "${taskName}"...`);
         const aiPromise = engine.humanizerAgent(
-          audit?.includes("APROBADO") ? draft : `${draft}\n\nNota de Auditoría: ${audit}`
+          audit.includes("APROBADO") ? draft : `${draft}\n\nNota de Auditoría: ${audit}`,
+          req.signal
         );
         const finalVersion = await Promise.race([
           aiPromise,
@@ -122,14 +149,14 @@ export async function POST(req: NextRequest) {
         ]);
         
         result.finalVersion = finalVersion;
-        if (step === 'humanize') return await persistAndReturn('humanize');
+        return await persistAndReturn('humanize');
       }
 
       // Step 5: Visuals
-      if (step === 'all' || step === 'visuals') {
-        const contentForVisuals = step === 'visuals' ? body.content : result.finalVersion;
+      if (step === 'visuals') {
+        const contentForVisuals = body.content || result.finalVersion;
         console.log(`[${projectId}] [5/5] Generating Visuals for "${taskName}"...`);
-        const visualsPromise = engine.visualsAgent(contentForVisuals || "", taskName);
+        const visualsPromise = engine.visualsAgent(contentForVisuals || "", taskName, req.signal);
         const visuals = await Promise.race([
           visualsPromise,
           new Promise<string>((_, reject) => setTimeout(() => reject(new Error("TIMEOUT_AI: Los visuales tardaron más de 45 segundos.")), 45000))
@@ -142,25 +169,35 @@ export async function POST(req: NextRequest) {
           result.finalVersion = contentForVisuals;
         }
         
-        if (step === 'visuals') return await persistAndReturn('visuals');
+        return await persistAndReturn('visuals');
       }
 
-      // PERSISTENCIA FINAL (para step === 'all')
+      // PERSISTENCIA FINAL
       return await persistAndReturn('done');
     } catch (aiError: unknown) {
+(aiError: unknown) {
       console.error(`[${projectId}] Chapter API Failure:`, aiError);
       const aiMsg: string = aiError instanceof Error ? aiError.message : String(aiError);
-      const isRateLimit = aiMsg.includes("CUOTA_DIARIA_AGOTADA") || 
-                          aiMsg.includes("LIMITE_ALCANZADO") || 
-                          aiMsg.includes("429") || 
-                          aiMsg.toLowerCase().includes("quota") || 
-                          aiMsg.toLowerCase().includes("rate limit") || 
-                          aiMsg.toLowerCase().includes("exhausted") ||
-                          aiMsg.toLowerCase().includes("overloaded");
+      
+      const isQuotaError = aiMsg.includes("QUOTA_LIMIT_EXHAUSTED") || 
+                           aiMsg.includes("429") || 
+                           aiMsg.toLowerCase().includes("quota") || 
+                           aiMsg.toLowerCase().includes("rate limit") || 
+                           aiMsg.toLowerCase().includes("exhausted") ||
+                           aiMsg.toLowerCase().includes("overloaded");
+
+      let userMessage = aiMsg;
+      if (aiMsg.includes("QUOTA_LIMIT_EXHAUSTED")) {
+        userMessage = "⚠️ Los servicios de IA están saturados en este momento. Hemos intentado con todos los proveedores disponibles sin éxito. Por favor, intenta de nuevo en unos minutos o cambia el proveedor preferido en la configuración.";
+      } else if (aiMsg.includes("TIMEOUT_AI")) {
+        userMessage = "⏳ La IA tardó demasiado en responder. Este tema es complejo; por favor intenta re-generar solo esta sección.";
+      }
+
       return NextResponse.json({ 
-        error: aiMsg || `Error en motor de IA durante ${chapter} (${step})`,
+        error: userMessage,
+        details: aiMsg,
         timeElapsed: Date.now() - startTime
-      }, { status: isRateLimit ? 429 : 500 });
+      }, { status: isQuotaError ? 429 : 500 });
     }
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);

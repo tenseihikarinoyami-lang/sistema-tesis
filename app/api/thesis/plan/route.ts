@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     console.log("Plan API: Generating structural plan...");
     let plan;
     try {
-      const aiPromise = engine.generateStructuralPlan(data);
+      const aiPromise = engine.generateStructuralPlan(data, req.signal);
       plan = await Promise.race([
         aiPromise,
         new Promise<string>((_, reject) => 

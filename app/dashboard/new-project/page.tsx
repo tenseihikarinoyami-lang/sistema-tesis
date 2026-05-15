@@ -21,11 +21,11 @@ interface FormData {
   estimatedPages: number;
 }
 
-type SubStep = 'idle' | 'research' | 'write' | 'audit' | 'humanize' | 'visuals' | 'done';
+type SubStep = 'idle' | 'unified' | 'research' | 'write' | 'audit' | 'humanize' | 'visuals' | 'done';
 
 interface ChapterStatus {
   name: string;
-  status: 'pending' | 'researching' | 'writing' | 'auditing' | 'humanizing' | 'done' | 'error';
+  status: 'pending' | 'generating' | 'researching' | 'writing' | 'auditing' | 'humanizing' | 'done' | 'error';
   subStep: SubStep;
   error?: string;
   retries: number;
@@ -319,77 +319,21 @@ export default function NewProjectPage() {
         // --- PASO 1: Research ---
         let research = existingData?.research?.[sectionId];
         if (!research) {
-          updateChapterStatus(i, { status: 'researching', subStep: 'research' });
-          toast.info(`🔬 [${i + 1}/${totalSteps}] Investigando: ${sectionTitle}`, { duration: 5000 });
+          updateChapterStatus(i, { status: 'generating', subStep: 'unified' });
+          toast.info(`🚀 [${i + 1}/${totalSteps}] Generación Unificada: ${sectionTitle}`, { duration: 8000 });
 
           const resData = await callApiWithRetry(
             '/api/thesis/generate-chapter',
-            { projectId, sectionTitle, formData, prevContent, step: 'research' },
-            `Investigación de "${sectionTitle}"`
+            { projectId, sectionTitle, formData, prevContent, step: 'unified' },
+            `Generación de "${sectionTitle}"`
           );
-          research = resData.research as string;
-        }
-        setGlobalProgress(progressForThisSection + 2);
-
-        // --- PASO 2: Write ---
-        let draft = existingData?.drafts?.[sectionId];
-        if (!draft) {
-          updateChapterStatus(i, { status: 'writing', subStep: 'write' });
-          toast.info(`✍️ [${i + 1}/${totalSteps}] Redactando contenido: ${sectionTitle}`, { duration: 8000 });
-
-          const writeData = await callApiWithRetry(
-            '/api/thesis/generate-chapter',
-            { projectId, sectionTitle, formData, prevContent, research, step: 'write' },
-            `Redacción de "${sectionTitle}"`
-          );
-          draft = writeData.draft as string;
+          
+          prevContent = resData.finalVersion as string;
         } else {
-          console.log(`Borrador para "${sectionTitle}" ya existe. Usando existente.`);
-        }
-        setGlobalProgress(progressForThisSection + 5);
-
-        // --- PASO 3: Audit ---
-        let audit = existingData?.audits?.[sectionId];
-        if (!audit) {
-          updateChapterStatus(i, { status: 'auditing', subStep: 'audit' });
-          const auditData = await callApiWithRetry(
-            '/api/thesis/generate-chapter',
-            { projectId, sectionTitle, formData, draft, step: 'audit' },
-            `Auditoría de "${sectionTitle}"`
-          );
-          audit = auditData.audit as string;
+          console.log(`Section "${sectionTitle}" already exists in DB. Skipping...`);
+          prevContent = existingData.content[sectionId];
         }
 
-        // --- PASO 4: Humanize ---
-        updateChapterStatus(i, { status: 'humanizing', subStep: 'humanize' });
-        toast.info(`💎 [${i + 1}/${totalSteps}] Optimizando escritura: ${sectionTitle}`, { duration: 6000 });
-
-        const humanData = await callApiWithRetry(
-          '/api/thesis/generate-chapter',
-          { projectId, sectionTitle, formData, draft, audit, step: 'humanize' },
-          `Humanización de "${sectionTitle}"`
-        );
-        let finalVersion = humanData.finalVersion as string;
-        setGlobalProgress(progressForThisSection + 10);
-
-        // --- PASO 5: Visuals (Opcional) ---
-        if (sectionTitle !== "Referencias Bibliográficas") {
-          try {
-            updateChapterStatus(i, { status: 'humanizing', subStep: 'visuals' });
-            const visualsData = await callApiWithRetry(
-              '/api/thesis/generate-chapter',
-              { projectId, sectionTitle, formData, content: finalVersion, step: 'visuals' },
-              `Visuales de "${sectionTitle}"`,
-              1 // Solo 1 reintento para visuales ya que son secundarios
-            );
-            finalVersion = visualsData.finalVersion as string;
-          } catch (vErr) {
-            console.warn("Visuals failed for section, skipping visuals:", vErr);
-            // No fallamos el proceso por los visuales
-          }
-        }
-
-        prevContent = finalVersion;
         updateChapterStatus(i, { status: 'done', subStep: 'done' });
         setGlobalProgress(progressForThisSection + 15);
         toast.success(`✅ Sección lista: ${sectionTitle.substring(0, 30)}...`, { duration: 3000 });
@@ -491,7 +435,7 @@ export default function NewProjectPage() {
 
   // ─── UI ───────────────────────────────────────────────────
   const statusIcon: Record<ChapterStatus['status'], string> = {
-    pending: '○',
+    generating: '🚀',
     researching: '🔬',
     writing: '✍️',
     auditing: '🔍',
@@ -502,6 +446,7 @@ export default function NewProjectPage() {
 
   const statusLabel: Record<ChapterStatus['status'], string> = {
     pending: 'Pendiente',
+    generating: 'Generando…',
     researching: 'Investigando…',
     writing: 'Redactando…',
     auditing: 'Auditando…',
@@ -585,13 +530,14 @@ export default function NewProjectPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 max-h-72 overflow-y-auto pr-2 custom-scrollbar">
                 {chapterStatuses.map((cs, idx) => {
                   const PIPELINE: { key: SubStep; icon: string; label: string }[] = [
+                    { key: 'unified',   icon: '🚀', label: 'Unificado' },
                     { key: 'research',  icon: '🔬', label: 'Investigar' },
                     { key: 'write',     icon: '✍️', label: 'Redactar'  },
                     { key: 'audit',     icon: '🛡️', label: 'Auditar'   },
                     { key: 'humanize',  icon: '💎', label: 'Pulir'     },
                     { key: 'visuals',   icon: '🎨', label: 'Visuales'  },
                   ];
-                  const pipelineOrder: SubStep[] = ['research','write','audit','humanize','visuals'];
+                  const pipelineOrder: SubStep[] = ['unified', 'research','write','audit','humanize','visuals'];
                   const activeIdx = pipelineOrder.indexOf(cs.subStep);
                   const isActive = cs.status !== 'pending' && cs.status !== 'done' && cs.status !== 'error';
                   return (
