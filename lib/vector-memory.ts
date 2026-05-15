@@ -15,6 +15,39 @@ function getClient() {
   return client;
 }
 
+async function generateEmbedding(text: string): Promise<number[]> {
+  if (!process.env.HUGGINGFACE_API_KEY) {
+    console.warn("Hugging Face API key not found, using fallback placeholder vector");
+    return Array(384).fill(0).map((_, i) => (text.charCodeAt(i % text.length) / 255));
+  }
+
+  try {
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2",
+      {
+        headers: { 
+          Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify({ inputs: text, options: { wait_for_model: true } }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HF API error: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    // all-MiniLM-L6-v2 devuelve un array simple de números si se envía un string, 
+    // o un array de arrays si se envía una lista.
+    return Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
+  } catch (error) {
+    console.error("Embedding generation failed:", error);
+    return Array(384).fill(0).map((_, i) => (text.charCodeAt(i % text.length) / 255));
+  }
+}
+
 export async function storeThesisChunk(
   projectId: string,
   chapter: string,
@@ -28,16 +61,12 @@ export async function storeThesisChunk(
   }
 
   try {
-    // En una implementación real, aquí generaríamos un embedding real usando OpenAI o Transformers
-    // Por ahora, usamos un vector determinista basado en el contenido para el placeholder
-    const vector = Array(384).fill(0).map((_, i) => (content.charCodeAt(i % content.length) / 255));
-    
-    const id = `${projectId}_${chapter.replace(/\s+/g, '_')}_${Date.now()}`;
+    const vector = await generateEmbedding(content);
     
     await qdrant.upsert(COLLECTION, {
       wait: true,
       points: [{
-        id: Math.random().toString(36).substring(7), // Qdrant prefiere UUID o int, pero aceptamos strings en JS SDK a veces
+        id: crypto.randomUUID(), 
         vector,
         payload: { 
           projectId, 
@@ -63,8 +92,7 @@ export async function retrieveRelevantContext(
   if (!qdrant) return [];
 
   try {
-    // Generar vector placeholder (debe coincidir con la lógica de store)
-    const vector = Array(384).fill(0).map((_, i) => (query.charCodeAt(i % query.length) / 255));
+    const vector = await generateEmbedding(query);
 
     const results = await qdrant.search(COLLECTION, {
       vector,
@@ -107,3 +135,4 @@ export async function initVectorDb() {
     console.error("Error initializing Qdrant:", error);
   }
 }
+

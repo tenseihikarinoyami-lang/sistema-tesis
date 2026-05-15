@@ -45,16 +45,7 @@ export class AcademicEngine {
         const url = paper.url ? ` URL: ${paper.url}` : "";
         const oa = paper.isOpenAccess ? " [Open Access]" : "";
         const cit = paper.citationCount ? ` (Citado por: ${paper.citationCount})` : "";
-        citations += `- ${authors} (${year}). ${title}.${oa}${cit} Venue: ${paper.journal || "N/A"}. Abstract: ${paper.abstract?.substring(0, 300) || "N/A"}.${url}\n`;
-      }
-      return citations;
-    } catch (e) {
-      console.error("[AcademicEngine] Error fetching citations:", e);
-      return "";
-    }
-  }
-
-  // ── REGLAS DE ORO ACADÉMICAS ──
+        cita  // ── REGLAS DE ORO ACADÉMICAS ──
   private getAcademicRules(options: { section?: string; level?: string } = {}): string {
     const section = (options.section || "").toLowerCase();
     
@@ -76,10 +67,10 @@ export class AcademicEngine {
 
     return `
 REGLAS CRÍTICAS DE REDACCIÓN (MANUALES IUTA/IUTAR/UPTAEB/UPEL):
-1. TERCERA PERSONA IMPERSONAL obligatoria: "Se investigó", "Se concluyó", "Se analizó". NUNCA uses "Nosotros", "Mi", "Nuestro" ni verbos en primera persona.
-2. TONO: Estrictamente formal, objetivo y técnico. Evita adjetivos subjetivos.
-3. PÁRRAFOS: Rigurosamente de entre 5 a 12 líneas. Un párrafo de menos de 5 líneas o más de 12 se considera un error metodológico.
-4. CITAS: Formato (Apellido, Año). Cada párrafo de desarrollo DEBE estar respaldado por al menos una cita de las fuentes proporcionadas.
+1. VOZ PASIVA REFLEJA (IMPERSONAL): Usa "Se observó", "Se procedió", "Se determinó". EVITA "Yo", "Nosotros", "El investigador" o "Este autor". El sujeto es el proceso, no la persona.
+2. TONO: Estrictamente formal, objetivo y técnico. Usa vocabulario especializado (ej. "paralelismo", "dicotomía", "empírico", "metodológico").
+3. PÁRRAFOS: Rigurosamente de entre 5 a 12 líneas de texto. Párrafos más cortos carecen de profundidad; párrafos más largos fatigan al lector.
+4. CITAS APA 7: Formato (Apellido, Año). Cada párrafo de desarrollo DEBE estar respaldado por al menos una cita. Si usas citas textuales, indica el número de página.
 5. CONTEXTO VENEZOLANO: Referencia siempre el marco institucional, social y legal de Venezuela.
 6. NIVEL: ${options.level || "Técnico/Superior"}. Sección actual: ${options.section || "General"}.${specificRule}`;
   }
@@ -201,6 +192,16 @@ REGLAS CRÍTICAS DE REDACCIÓN (MANUALES IUTA/IUTAR/UPTAEB/UPEL):
       `\n${this.getAcademicRules({ section, level: data.level })} ` +
       `\nFORMATO DE RESPUESTA (OBLIGATORIO - NO INCLUIR NADA MÁS):\n` +
       `Debes separar tu respuesta con estas etiquetas exactas:\n` +
+      `<RESEARCH>\n(Resumen de la investigación y bibliografía APA 7 usada)\n</RESEARCH>\n` +
+      `<CONTENT>\n(El cuerpo de la tesis redactado con subtítulos y PÁRRAFOS DE 5 A 12 LÍNEAS. Usa TERCERA PERSONA IMPERSONAL (Se analizó, se procedió). Cada párrafo DEBE tener al menos una cita parentética)\n</CONTENT>\n` +
+      `<VISUALS>\n(Código Markdown de tabla o Mermaid, o "SIN_VISUAL")\n</VISUALS>`;
+
+    const response = await this.safeGenerate(prompt, "Agente Unificado", { 
+      temperature: 0.3,
+      maxTokens: 8192, // Intentar máximo de tokens para salida larga
+      signal
+    });
+ respuesta con estas etiquetas exactas:\n` +
       `<RESEARCH>\n(Resumen de la investigación y bibliografía APA 7 usada)\n</RESEARCH>\n` +
       `<CONTENT>\n(El cuerpo de la tesis redactado con subtítulos y PÁRRAFOS DE 5 A 12 LÍNEAS. Usa TERCERA PERSONA IMPERSONAL)\n</CONTENT>\n` +
       `<VISUALS>\n(Código Markdown de tabla o Mermaid, o "SIN_VISUAL")\n</VISUALS>`;
