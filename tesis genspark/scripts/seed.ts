@@ -1,3 +1,4 @@
+import 'dotenv/config'
 /**
  * ThesisForge AI - Script de Datos Iniciales (Seed)
  * Ejecutar con: npx tsx scripts/seed.ts
